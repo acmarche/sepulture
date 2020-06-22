@@ -6,7 +6,7 @@ doctrine:
         type: annotation
         dir: '%kernel.project_dir%/src/AcMarche/Sepulture/src/Entity'
         prefix: 'AcMarche\Sepulture'
-        alias: AcMarcheSepulture
+        alias: AcMarche\Sepulture
     dql:
       string_functions:
         any_value: AcMarche\Sepulture\DoctrineExtensions\AnyValue

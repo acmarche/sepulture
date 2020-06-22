@@ -67,6 +67,7 @@ class LoadDataCommand extends Command
             'Défaut d\'entretien ou abandon',
             'Contrefacon',
         ];
+
         foreach ($legals as $nom) {
             $legal = new Legal();
             $legal->setNom($nom);
