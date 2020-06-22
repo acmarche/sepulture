@@ -1,0 +1,29 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>Nouvelle sépulture</h3>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Les étapes</h3>
+        </div>
+        <div class="panel-body">
+            <ol>
+                <li>Ajout du nom de la parcelle</li>
+                <li>Ajout des images</li>
+                <li>Ajout des informations</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            {{ form(form) }}
+        </div>
+    </div>
+
+    <br/>
+{% endblock %}

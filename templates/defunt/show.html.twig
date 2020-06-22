@@ -1,0 +1,62 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block title %}Défunt {{ entity.nom }} {{ entity.prenom }} {{ entity.sepulture.cimetiere }}{% endblock %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>Défunt <strong> {{ entity.nom }} {{ entity.prenom }} </strong></h3>
+    </div>
+
+    {% include '@Sepulture/defunt/actions.html.twig' %}
+<br />
+    <table class="table table-bordered table-hover table-condensed table-responsive">
+        <tr>
+            <th>Repose dans le cimetière</th>
+            <td>
+                <a href="{{ path('cimetiere_show', { 'slug': entity.sepulture.cimetiere.slug }) }}">
+                    {{ entity.sepulture.cimetiere }}
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Sépulture</th>
+            <td>
+                {% if entity.sepulture %}
+                    <a href="{{ path('sepulture_show', { 'slug': entity.sepulture.slug }) }}">
+                        {{ entity.sepulture.parcelle }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Né le</th>
+            <td>{{ entity.birthday }}</td>
+        </tr>
+        <tr>
+            <th>Lieu de naissance</th>
+            <td>{{ entity.lieunaissance }}</td>
+        </tr>
+        <tr>
+            <th>Fonction</th>
+            <td>{{ entity.fonction }}</td>
+        </tr>
+        <tr>
+            <th>Décédé le</th>
+            <td>{{ entity.datedeces }}</td>
+        </tr>
+        <tr>
+            <th>Lieu de décès</th>
+            <td>{{ entity.lieudeces }}</td>
+        </tr>
+    </table>
+    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+        <p class="text-muted">
+            {{ 'Created' | trans }} {{ entity.createdAt|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
+            . {{ 'Updated' | trans }} {{ entity.updatedAt|date('d-m-Y H:i:s') }}
+        </p>
+    {% endif %}
+
+    {% include '@Sepulture/defunt/delete.html.twig' %}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+
+    <div class="page-header">
+        <h3>Liste des cimetières</h3>
+    </div>
+
+    {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+        <a href="{{ path('cimetiere_new') }}">
+            <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Ajouter
+                un cimetière
+            </button>
+        </a>
+        <a href="{{ path('export_rw') }}" class="text-muted pull-right">Le dernier export</a>
+        <br/><br/>
+    {% endif %}
+
+    <table class="table table-bordered table-hover table-responsive">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Nombre de sépultures</th>
+            <th>Sépultures à intérêt historique</th>
+            <th>Sépultures inhumées avant 1945</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cimetiere in entities %}
+            <tr>
+                <td>
+                    {% if cimetiere.imageName %}
+                        <img src="{{ cimetiere.imageName | acmarche_sepulture_download_cimetiere | imagine_filter('acmarche_sepulture_thumb') }}"
+                             alt="img" class="img-thumbnail"/>
+                    {% endif %}
+                    <a href="{{ path('cimetiere_show', { 'slug': cimetiere.slug }) }}">
+                        {{ cimetiere.nom }}
+                    </a>
+                </td>
+                <td class="text-center">{{ cimetiere.sepultures|length }}</td>
+
+                <td class="text-center">
+                    {{ cimetiere.ihsCount }}
+                    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %} <br/>
+                        <a href="{{ path('export_sihl_pdf', { 'id': cimetiere.id }) }}" rel="nofollow">Exporter (Pdf)</a>
+                        <br/><br/>
+                        <a href="{{ path('export_sihl_pdf', { 'id': cimetiere.id, 'rw': true }) }}" rel="nofollow"
+                           class="text-muted">Exporter
+                            + Rw</a>
+                    {% endif %}
+                    <br/><br/>
+                    <a href="{{ path('sepulture_sihl', {'id':cimetiere.id}) }}">Consulter</a>
+                </td>
+                <td class="text-center">
+                    {{ cimetiere.a1945Count }}
+                    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+                        <br/>
+                        <a href="{{ path('export_avant1945_pdf', { 'id': cimetiere.id }) }}" rel="nofollow">Exporter
+                            (Pdf)</a>
+                        <br/><br/>
+                        <a href="{{ path('export_avant1945_pdf', { 'id': cimetiere.id, 'rw': true }) }}" rel="nofollow"
+                           class="text-muted">Exporter + Rw
+                        </a>
+                    {% endif %}
+                    <br/><br/>
+                    <a href="{{ path('sepulture_a1945',{'id':cimetiere.id}) }}">Consulter</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{
+  "name": "acmarche/sepulture",
+  "description": "Gestion patrimoniale des cimetières",
+  "homepage": "https://github.com/acmarche/sepulture",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jean-François Sénéchal",
+      "email": "informatique@marche.be",
+      "homepage": "http://cst.marche.be",
+      "role": "Developer"
+    }
+  ],
+  "type": "project",
+  "require": {
+    "php": "^7.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "AcMarche\\Sepulture\\": "src/AcMarche/Sepulture/src"
+    }
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": "true"
+    }
+  }
+}

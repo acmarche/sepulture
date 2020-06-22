@@ -1,0 +1,15 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>{{ entity }}</h3>
+    </div>
+
+    {% include '@Sepulture/materiaux/actions.html.twig' %}
+
+    {% include '@Sepulture/cimetiere/sepultures.html.twig' with {'sepultures': entity.sepultures } %}
+
+    {% include '@Sepulture/materiaux/delete.html.twig' %}
+
+{% endblock %}

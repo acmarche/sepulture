@@ -1,0 +1,15 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>Edition du défunt <b>{{ entity }}</b></h3>
+    </div>
+
+    {% include '@Sepulture/defunt/form.html.twig' with {'form' : edit_form} %}
+
+    <a href="{{ path('sepulture_show', { 'slug': entity.sepulture.slug }) }}">
+        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la sépulture
+    </a>
+
+{% endblock %}

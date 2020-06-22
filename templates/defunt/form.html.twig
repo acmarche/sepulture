@@ -1,0 +1,30 @@
+{{ form_start(form, { 'attr': {'class': 'well'}}) }}            
+{{ form_errors(form) }}
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.prenom) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.lieu_naissance) }}            
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.birthday) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.lieu_deces) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.date_deces) }}            
+    </div>        
+</div>
+
+{{ form_end(form) }} 

@@ -1,0 +1,17 @@
+ {% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3><strong>{{ entity }}</strong></h3>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Pour la sépulture <a href="{{ path('sepulture_show', { 'slug': entity.sepulture.slug }) }}">{{entity.sepulture }}</a></h3>
+        </div>
+        <div class="panel-body">
+            {{ entity.remarques | nl2br }}
+        </div>
+    </div>
+{% endblock %}

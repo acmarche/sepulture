@@ -1,0 +1,20 @@
+<h3 id="comment">Ajouter un commentaire</h3>
+<p class='alert alert-info'>
+    Si vous pensez pouvoir nous aider à compléter la fiche, n'hésitez pas à remplir
+    le formulaire ci dessous
+</p>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.nom) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.remarques) }}
+    </div>
+    <div class="col-md-6">
+        <div class="g-recaptcha" data-sitekey="{{ siteKey }}"></div>
+    </div>
+</div>
+{{ form_row(form.g_recaptcha_response) }}
+{{ form_rest(form) }}
+{{ form_end(form) }}

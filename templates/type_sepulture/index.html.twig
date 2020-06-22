@@ -1,0 +1,33 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Liste des types</h3>
+    </div>
+
+    {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+        <a href="{{ path('typesepulture_new') }}" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus">
+            </i> Ajouter un type
+        </a>
+        <br/><br/>
+    {% endif %}
+
+    <table class="table table-bordered table-hover table-condensed table-responsive">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Nombre de sépultures</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('typesepulture_show', { 'id': entity.id }) }}">{{ entity.nom }}</a></td>
+                <td>{{ entity.sepultures|length }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

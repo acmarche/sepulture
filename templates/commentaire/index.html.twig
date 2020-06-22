@@ -1,0 +1,32 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+
+    <div class="page-header">
+        <h3>Liste des {{ entities | length }} commentaires</h3>
+    </div>
+
+    <table class="table table-bordered table-hover table-condensed table-responsive">
+        <thead>
+        <tr>
+            <th style="width: 20%;">Date</th>
+            <th style="width: 20%;">Par</th>
+            <th style="width: 20%;">Email</th>
+            <th style="width: 20%;">Sepulture</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>
+                    <a href="{{ path('commentaire_show', { 'id' : entity.id }) }}">{{ entity.createdAt | date('d-m-Y') }}</a>
+                </td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.sepulture }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

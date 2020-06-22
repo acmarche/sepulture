@@ -1,0 +1,75 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Liste des sépultures</h3>
+    </div>
+
+    {% include '@Sepulture/search/form.html.twig' with {'form': search_form } %}
+
+    {% if search %}
+        {% if entities | length > 0 %}
+            <h4 class="text-success">{{ entities | length }} sépulture(s) trouvée(s)</h4>
+            <table class="table table-bordered table-hover table-condensed table-responsive">
+                <thead>
+                <tr>
+                    <th style="width: 10%;">Parcelle</th>
+                    <th style="width: 15%;">Cimetière</th>
+                    <th style="width: 10%;">Images</th>
+                    <th style="width: 10%;">Etat visuel</th>
+                    <th style="width: 35%;">Défunts</th>
+                    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+                        <th style="width: 10%;">Actions</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('sepulture_show', { 'slug': entity.slug }) }}">{{ entity.parcelle }}</a>
+                        </td>
+                        <td>
+                            {{ entity.cimetiere }}
+                        </td>
+                        <td>
+                            {% set image = entity.id | acmarche_sepulture_getimage %}
+
+                            {% if image %}
+                                <a href="{{ path('sepulture_show', { 'slug': entity.slug }) }}"
+                                   title="Consulter le détail">
+                                    <img src="{{ image.url | imagine_filter('acmarche_sepulture_thumb') }}" alt="img"
+                                         class="img-responsive img-thumbnail">
+                                </a>
+                            {% else %}
+                                Aucune
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ entity.visuel }}
+                        </td>
+                        <td>
+                            {% if entity.defunts | length > 0 %}
+                                {% for defunt in entity.defunts %}
+                                    <a href="{{ path('defunt_show', {'id': defunt.id }) }}">{{ defunt }}</a>
+                                    {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                        {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+                            <td>
+                                <a href="{{ path('sepulture_edit', { 'slug': entity.slug }) }}" title="Editer"
+                                   role="button" class="btn btn-primary btn-sm"><i
+                                            class="glyphicon glyphicon-pencil"></i> Editer
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-warning">Aucune sépulture trouvée suivant vos critères de recherche</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

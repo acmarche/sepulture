@@ -1,0 +1,34 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>Liste des utilisateurs</h3>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Roles</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.prenom }} {{ user.nom }}</td>
+                <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
+                <td>{{ user.roles|join(',') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_new') }}">Create new</a>
+{% endblock %}

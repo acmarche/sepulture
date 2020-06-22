@@ -1,0 +1,83 @@
+{{ form_start(form, { 'attr': {'class': 'form-inline'}}) }}
+{{ form_errors(form) }}
+
+<div class="hidden-print">
+
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.clef) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.cimetiere) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.visuel) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.parcelle) }}
+        </div>
+
+    </div>
+</div>
+<br/>
+<div class="hidden-print">
+    <div class="form-group">
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.types) }}
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            {{ form_widget(form.sihls) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.combattant14) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.combattant40) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.social) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.guerre) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.annee) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.submit) }}
+        </div>
+
+        <div class="input-group">
+            {{ form_row(form.raz) }}
+        </div>
+        {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+            <div class="input-group">
+                <a role="button" href="{{ path('export_sepulture_search_pdf') }}" title="Exporter"
+                   class="btn btn-sm btn-success">
+                    <span class="glyphicon glyphicon-export"></span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{{ form_end(form) }}
+<br/>

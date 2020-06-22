@@ -1,0 +1,21 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+
+    <div class="page-header">
+        <h3>{{ entity }}</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            {{ form(edit_form) }}
+        </div>
+    </div>
+
+    <a href="{{ path('home') }}">
+        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
+    </a>
+
+{% endblock %}
+
+

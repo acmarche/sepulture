@@ -1,0 +1,7 @@
+<div id="links">
+{% for image in images %} 
+     <a href="{{ image.url | imagine_filter('acmarche_sepulture_zoom_thumb') }}" title="{{image.name}}" data-gallery>
+        <img src="{{ image.url | imagine_filter('acmarche_sepulture_edit_thumb') }}" alt="img">
+    </a>               
+{% endfor %}
+</div>

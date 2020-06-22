@@ -1,0 +1,20 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>Nouvel aspect visuel</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            {{ form(form) }}
+        </div>
+    </div>
+
+    <a href="{{ path('visuel') }}">
+        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
+    </a>
+
+{% endblock %}
+

@@ -1,0 +1,11 @@
+Un commentaire sur la sépulture : {{ commentaire.sepulture }}
+
+Fait par {{ commentaire.nom }} {{ commentaire.email }}
+
+{{ commentaire.remarques }}
+
+{{ absolute_url(path('sepulture_show', {'slug':commentaire.sepulture.slug})) }}
+
+{% if error is defined %}
+Erreur: {{ error }}
+{% endif %}

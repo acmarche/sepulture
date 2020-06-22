@@ -1,0 +1,12 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+     <div class="page-header">
+        <h3>Nouvel utilisateur</h3>
+    </div>
+
+    {{ include('@Sepulture/user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">Annuler</a>
+{% endblock %}

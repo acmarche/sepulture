@@ -1,0 +1,12 @@
+<img src="{{ absolute_url(asset('bundles/sepulture/images/Marche_logo.png')) }}" alt="logo"
+     class="img-thumbnail"/>
+<br> <br><br> <br>
+<h3 class="text-success text-center">Sépultures à centre d'intérêt historique<br/>
+    <strong>{{ cimetiere }}</strong> <br> <br>
+
+    de la commune {% if ville %}de  {{ ville }} {% endif %}
+</h3>
+<br> <br><br> <br>
+<h4>Date de l'export : {{ 'now' | date('d-m-Y') }}</h4>
+
+<div class="page-breaker"></div>

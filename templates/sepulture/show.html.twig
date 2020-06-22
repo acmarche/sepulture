@@ -1,0 +1,208 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block title %}Sépulture {{ entity.parcelle }} dans {{ entity.cimetiere }} {% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/sepulture/blueimp/css/blueimp-gallery.min.css') }}">
+{% endblock %}
+
+{% block scriptshead %}
+    {% if siteKey %}
+        <script src='https://www.google.com/recaptcha/api.js?render={{ siteKey }}'></script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <h3>
+        Sépulture <strong>{{ entity.parcelle }}</strong> dans
+        <a href="{{ path('cimetiere_show', { 'slug': entity.cimetiere.slug }) }}">
+            {{ entity.cimetiere }}
+        </a>
+    </h3>
+
+    <br/>
+
+    {% include '@Sepulture/sepulture/gallery_controls.html.twig' %}
+
+    {% include '@Sepulture/sepulture/actions.html.twig' %}
+    <br/>
+    {% include '@Sepulture/sepulture/images.html.twig' %}
+    <br/><br/>
+    <div class="row">
+        <div class="col-md6 col-lg-6">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                <tr>
+                    <th>Type(s) de sépulture</th>
+                    <td>{{ entity.types | join('|') }}</td>
+                </tr>
+                <tr>
+                    <th>Autre type ?</th>
+                    <td>{{ entity.typeautre }}</td>
+                </tr>
+                <tr>
+                    <th>Matériaux</th>
+                    <td>{{ entity.materiaux | join('|') }}</td>
+                </tr>
+                <tr>
+                    <th>Autre matériaux ?</th>
+                    <td>{{ entity.materiauxautre }}</td>
+                </tr>
+                <tr>
+                    <th>Aspect visuel</th>
+                    <td>
+                        {{ entity.visuel }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Aspect légal</th>
+                    <td>{{ entity.legal }}</td>
+                </tr>
+                <tr>
+                    <th>Symbole</th>
+                    <td>{{ entity.symbole | nl2br }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md6 col-lg-6">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                <tr>
+                    <th>Sépulture Intérêt Historique Locale</th>
+                    <td>{{ entity.sihls | join('|') }}</td>
+                </tr>
+                <tr>
+                    <th>Architectural</th>
+                    <td>{{ entity.architectural }}</td>
+                </tr>
+                <tr>
+                    <th>Fonction sociale</th>
+                    <td>{{ entity.sociale }}</td>
+                </tr>
+                <tr>
+                    <th>Aucune inscription sociale</th>
+                    <td>
+                        {% if entity.socialecheck %}
+                            <i class="glyphicon glyphicon-ok"></i>
+                        {% else %}
+                            Non défini
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Inhumation avant 1945 ?</th>
+                    <td>
+                        {% if entity.guerre %}
+                            <i class="glyphicon glyphicon-ok"></i>
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Combattant 14-18</th>
+                    <td>
+                        {% if entity.combattant14 %}
+                            <i class="glyphicon glyphicon-ok"></i>
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Combattant 40-45</th>
+                    <td>
+                        {% if entity.combattant40 %}
+                            <i class="glyphicon glyphicon-ok"></i>
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <h4>Epitaphe</h4>
+    {{ entity.epitaphe | nl2br }}
+
+    <br/>
+    <p>
+        {{ entity.description | nl2br }}
+    </p>
+
+    {% if entity.descriptionautre %}
+
+        <p>
+            {{ entity.descriptionautre | nl2br }}
+        </p>
+
+    {% endif %}
+    <br/>
+    <h4 class='info'>Liste des défunts reposant dans cette sépulture :</h4>
+    {% include '@Sepulture/sepulture/defunts.html.twig' with {'defunts': entity.defunts } %}
+
+    <br/>
+    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+
+        <div class="row">
+            <div class="col-md6 col-lg-6">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr class='info'>
+                        <td colspan='3'>Information relative à l'encodage</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Statut de l'encodage</th>
+                        <td>{{ entity.statut }}</td>
+                    </tr>
+                    <tr>
+                        <th>Contact</th>
+                        <td>{{ entity.contact }}</td>
+                    </tr>
+                    <tr>
+                        <th>Année de relevé</th>
+                        <td>{{ entity.anneereleve }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <p class="text-muted">
+            {{ 'Created' | trans }} {{ entity.createdAt|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
+            . {{ 'Updated' | trans }} {{ entity.updatedAt|date('d-m-Y H:i:s') }}
+        </p>
+
+    {% else %}
+        {% include '@Sepulture/commentaire/new.html.twig' with {'form': form_commentaire } %}
+    {% endif %}
+
+    {% include '@Sepulture/sepulture/delete.html.twig' %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/sepulture/blueimp/js/blueimp-gallery.min.js') }}"></script>
+    <script src="{{ asset('bundles/sepulture/js/gallery.js') }}"></script>
+{% endblock %}
+
+{% block scripts %}
+    {% if siteKey %}
+        <script>
+          //  $("#commentaire_remarques").focus(function () {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('{{ siteKey }}', {action: 'homepage'})
+                        .then(function (token) {
+                            $("#commentaire_g_recaptcha_response").val(token);
+                        })
+                });
+           // });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+    <div class="page-header">
+        <h3>Contact pour la Région Wallonne</h3>
+    </div>
+
+    {% if is_granted('ROLE_SEPULTURE_ADMIN') and contacts|length == 0 %}
+        <a href="{{ path('contact_rw_new') }}" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus">
+            </i> Ajouter un contact
+        </a>
+        <br/><br/>
+    {% endif %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Gestionnaire</th>
+            <th>CodeIns</th>
+            <th>Nom</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>
+                    <a href="{{ path('contact_rw_show', {'id': contact.id}) }}">
+                        {{ contact.gestionnaire }}
+                    </a>
+                </td>
+                <td>{{ contact.codeIns }}</td>
+                <td>{{ contact.nom }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

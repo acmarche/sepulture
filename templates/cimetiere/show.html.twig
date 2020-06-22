@@ -1,0 +1,59 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block title %}Cimetière - {{ cimetiere.nom }} {% endblock %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3><strong>{{ cimetiere }}</strong></h3>
+    </div>
+
+    {% include '@Sepulture/cimetiere/actions.html.twig' %}
+    <br/>
+
+    {{ cimetiere.description | nl2br }}<br/>
+
+    {% if cimetiere.planName or cimetiere.imageName %}
+
+        {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+            {{ form_start(delete_file_form) }}
+            {{ form_errors(delete_file_form) }}
+        {% endif %}
+
+        {% if cimetiere.imageName %}
+            <br/>
+            {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+                <label>
+                    <input type="checkbox" name="imageName" value="{{ cimetiere.imageName }}"/>
+                </label>
+            {% endif %}
+            <img src="{{ cimetiere.imageName | acmarche_sepulture_download_cimetiere | imagine_filter('acmarche_sepulture_thumb') }}"
+                 alt="img" class="img-thumbnail"/><br/><br/>
+        {% endif %}
+
+        {% if cimetiere.planName %}
+            <h4>Plan du cimetière</h4>
+            {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+                <label>
+                    <input type="checkbox" name="planName" value="{{ cimetiere.planName }}"/>
+                </label>
+            {% endif %}
+            <a href="{{ cimetiere.planName | acmarche_sepulture_download_cimetiere }}">
+                <span class="glyphicon glyphicon-download"></span> Télécharger
+            </a>
+            <br/><br/>
+        {% endif %}
+
+        {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+            {{ form_row(delete_file_form.submit) }}
+            {{ form_end(delete_file_form) }}
+        {% endif %}
+
+    {% endif %}
+
+    {% include '@Sepulture/cimetiere/sepultures.html.twig'  %}
+
+    <br/>
+    {% include '@Sepulture/cimetiere/delete.html.twig' %}
+
+{% endblock %}

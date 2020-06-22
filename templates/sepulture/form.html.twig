@@ -1,0 +1,53 @@
+{{ form_start(form, { 'attr': {'class': 'well'}}) }}
+{{ form_errors(form) }}
+<div class="row">
+
+    <div class="col-md-6">
+        {{ form_row(form.parcelle) }}
+        {{ form_row(form.cimetiere) }}
+        {{ form_row(form.annee_releve) }}
+        {{ form_row(form.statut) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.visuel) }}
+        {{ form_row(form.legal) }}
+        {{ form_row(form.architectural) }}
+        <div class="col-md-6">
+            {{ form_row(form.sociale) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.sociale_check) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.types) }}
+        {{ form_row(form.type_autre) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.materiaux) }}
+        {{ form_row(form.materiaux_autre) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.sihls) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.guerre) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.combattant14) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.combattant40) }}
+    </div>
+</div>
+{{ form_row(form.description) }}
+{{ form_row(form.symbole) }}
+{{ form_row(form.description_autre) }}
+{{ form_row(form.contact) }}
+{{ form_end(form) }}

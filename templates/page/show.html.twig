@@ -1,0 +1,17 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="page-header">
+        <h3>{{ page }}</h3>
+    </div>
+
+    {% include '@Sepulture/page/actions.html.twig' %}
+
+    <div class="col-lg-6 text-justify">
+        {{ page.contenu | raw }}
+    </div>
+
+    {% include '@Sepulture/page/delete.html.twig' %}
+
+{% endblock %}

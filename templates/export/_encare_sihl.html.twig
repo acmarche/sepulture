@@ -1,0 +1,23 @@
+<div class="text-center">
+    <h4>Sépultures d’importance historique</h4><br/>
+    <span class="text-muted">(Décret du GW 6 mars 2009 – Art 1232-29)</span> <br/>
+    <strong>Formulaire de renseignements</strong><br/>
+</div><br/>
+<div class="table-bordered" style="padding-left: 15px;">
+    Cadre réservé au Service public de Wallonie (SPW)<br/>
+    <br/>
+    {{ form(formRw) }}
+</div>
+<br/><br/>
+Date : {{ contactRw.dateRapport|date('d/m/Y') }}<br/>
+Gestionnaire public : {{ contactRw.gestionnaire }}<br/>
+Adresse : {{ contactRw.adresse }}<br/>
+Code INS : {{ contactRw.codeIns }}<br/>
+Personne de contact (nom + tel./courriel) : {{ contactRw.nom }} {{ contactRw.telephone }} {{ contactRw.email }}<br/>
+<br/>
+{{ form_start(form, { 'attr': {'class': 'form-inline'}}) }}
+{{ form_label(form.statutSih, 'Statut de la sépulture' , {'label_attr': {'class': 'radio-inline'}}) }}
+{{ form_widget(form.statutSih, {'attr': {'class': 'radio-inline'}}) }}
+{{ form_end(form) }}
+<br/><br/>
+Description du monument

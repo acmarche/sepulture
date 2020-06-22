@@ -1,0 +1,17 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+
+
+{% block body %}
+
+     <div class="page-header">
+        <h3>{{ contact.gestionnaire }}</h3>
+    </div>
+
+    {{ include('@Sepulture/contact_rw/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a href="{{ path('contact_rw_show', {'id':contact.id}) }}">
+        <span class="glyphicon glyphicon-list"></span> Annuler
+    </a>
+
+{% endblock %}

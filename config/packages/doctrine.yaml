@@ -1,0 +1,12 @@
+doctrine:
+  orm:
+    mappings:
+      AcMarche\Sepulture:
+        is_bundle: false
+        type: annotation
+        dir: '%kernel.project_dir%/src/AcMarche/Sepulture/src/Entity'
+        prefix: 'AcMarche\Sepulture'
+        alias: AcMarcheSepulture
+    dql:
+      string_functions:
+        any_value: AcMarche\Sepulture\DoctrineExtensions\AnyValue

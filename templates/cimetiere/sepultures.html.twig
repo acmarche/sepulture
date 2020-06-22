@@ -1,0 +1,56 @@
+<br/>
+<div class="panel panel-default">
+    <div class="panel-heading">{{ sepultures | length }} sépultures</div>
+    <div class="panel-body">
+
+        {% if sepultures | length > 0 %}
+            <table class="table table-bordered table-hover table-condensed table-responsive">
+                <thead>
+                <tr>
+                    <th style="width: 20%;">Parcelle</th>
+                    <th style="width: 20%;">Images</th>
+                    <th style="width: 10%;">Etat visuel</th>
+                    <th style="width: 40%;">Défunts</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sepulture in sepultures %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}">{{ sepulture.parcelle }}</a>
+                        </td>
+                        <td>
+                            {% set image = sepulture.id | acmarche_sepulture_getimage %}
+                            {% if image %}
+                                <div class="media">
+                                    <div class="media-middle">
+                                        <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}"
+                                           class="pull-left" title="Consulter le détail">
+                                            <img src="{{ image.url | imagine_filter('acmarche_sepulture_thumb') }}" alt="img"
+                                                 class="media-object img-responsive img-thumbnail">
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                Aucune
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ sepulture.visuel }}
+                        </td>
+                        <td>
+                            {% if sepulture.defunts | length > 0 %}
+                                {% for defunt in sepulture.defunts %}
+                                    <a href="{{ path('defunt_show', {'id': defunt.id }) }}">{{ defunt }}</a>
+                                    {% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+

@@ -1,0 +1,10 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+    <div class="page-header">
+        <h3>Liste des sépultures à Intérêt Historique Locale dans "{{ cimetiere }}"</h3>
+    </div>
+
+    {% include '@Sepulture/sepulture/_list_sepultures.html.twig' %}
+
+{% endblock %}

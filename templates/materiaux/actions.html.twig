@@ -1,0 +1,12 @@
+{% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+    <div class="btn-toolbar" role="toolbar" style="margin: 0;">
+        <div class="btn-group">
+            <a href="{{ path('materiaux_edit', { 'id': entity.id }) }}" role="button" class="btn btn-primary"><i
+                        class="glyphicon glyphicon-pencil"></i> Editer</a>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('materiaux') }}" class="btn btn-primary" role='button'><i
+                        class="glyphicon glyphicon-list"></i> Retour à la Liste</a>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,25 @@
+{% extends '@Sepulture/base.html.twig' %}
+{% block body %}
+
+    <div class="page-header">
+        <h3>{{ page.titre }}</h3>
+    </div>
+
+    {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+        <a href="{{ path('page_edit', {'id':page.id}) }}" class="btn btn-primary"><span
+                    class="glyphicon glyphicon-edit"></span> Editer </a>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-6 text-justify">
+            {{ page.contenu | raw }}
+        </div>
+        <div class="col-lg-6">
+            {% if page.imageName %}
+                <img src="{{ page.imageName | acmarche_sepulture_download_cimetiere }}"
+                     alt="img" class="img-thumbnail"/>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

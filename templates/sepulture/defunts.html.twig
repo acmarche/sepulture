@@ -1,0 +1,27 @@
+{% if defunts | length > 0 %}
+    <table class="table table-bordered table-hover table-condensed table-responsive">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Né le</th>
+                <th>Décédé le</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for defunt in defunts %}
+                <tr>
+                    <td>
+                        <a href="{{ path('defunt_show', { 'id': defunt.id }) }}" title="Consulter le détail">
+                            {{ defunt.nom }} {{ defunt.prenom }}
+                        </a>
+                    </td>
+                    <td>{{ defunt.birthday }} </td>
+                    <td>{{ defunt.datedeces }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Aucun défunt encodé</p>
+{% endif %}
+
