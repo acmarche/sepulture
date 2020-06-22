@@ -10,7 +10,7 @@ use AcMarche\Sepulture\Entity\TypeSepulture;
 use AcMarche\Sepulture\Entity\User;
 use AcMarche\Sepulture\Security\SecurityData;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadData extends Fixture
 {
@@ -75,7 +75,7 @@ class LoadData extends Fixture
 
         $page = new Page();
         $page->setTitre('Les sépultures des cimetières de Marche-en-Famenne');
-        $page->setSlugname('home');
+        $page->setSlug('home');
         $page->setContenu('voucou');
         $manager->persist($page);
 

@@ -39,15 +39,17 @@ class LoadDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('acsepulture:loaddata')
+            ->setName('sepulture:loaddata')
             ->setDescription('Initialise les données et utilisateurs par défaut dans la base de données');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->loadData();
         $this->loadUsers();
         $output->writeln('Les données ont bien été enregistrées');
+
+        return 0;
     }
 
     public function loadData()
@@ -82,7 +84,7 @@ class LoadDataCommand extends Command
         foreach ($shils as $nom => $slug) {
             $shil = new Sihl();
             $shil->setNom($nom);
-            $shil->setSlugname($slug);
+            $shil->setSlug($slug);
             $this->entityManager->persist($shil);
         }
 
@@ -102,13 +104,13 @@ class LoadDataCommand extends Command
 
         $page = new Page();
         $page->setTitre('Les sépultures des cimetières de Marche-en-Famenne');
-        $page->setSlugname('home');
+        $page->setSlug('home');
         $page->setContenu('Contenu');
         $this->entityManager->persist($page);
 
         $page = new Page();
         $page->setTitre('Contactez nous');
-        $page->setSlugname('contact');
+        $page->setSlug('contact');
         $page->setContenu('Contenu');
         $this->entityManager->persist($page);
 
