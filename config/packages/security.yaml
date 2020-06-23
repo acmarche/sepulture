@@ -19,3 +19,5 @@ security:
                     - AcMarche\Sepulture\Security\AppAuthenticator
             logout:
                 path: app_logout
+    role_hierarchy:
+        ROLE_SEPULTURE_ADMIN: [ROLE_SEPULTURE_EDITEUR]
