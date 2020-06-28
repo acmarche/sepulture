@@ -53,13 +53,13 @@ class Defunt implements SluggableInterface, TimestampableInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=25, nullable=true, options={"comment" = "date anniversaire"})
+     * @ORM\Column(type="string", length=120, nullable=true, options={"comment" = "date anniversaire"})
      */
     protected $birthday;
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=25, nullable=true, options={"comment" = "date de mort"})
+     * @ORM\Column(type="string", length=120, nullable=true, options={"comment" = "date de mort"})
      */
     protected $date_deces;
 
