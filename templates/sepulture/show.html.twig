@@ -29,6 +29,17 @@
     <br/>
     {% include '@Sepulture/sepulture/images.html.twig' %}
     <br/><br/>
+    <p class="text-muted">
+        {{ entity.description | nl2br }}
+    </p>
+
+    {% if entity.descriptionautre %}
+
+        <p class="text-muted">
+            {{ entity.descriptionautre | nl2br }}
+        </p>
+    {% endif %}
+    <br/>
     <div class="row">
         <div class="col-md6 col-lg-6">
             <table class="table table-bordered table-hover">
@@ -126,21 +137,12 @@
             </table>
         </div>
     </div>
+    <h4>Symbole</h4>
+    {{ entity.symbole | nl2br }}
+
     <h4>Epitaphe</h4>
     {{ entity.epitaphe | nl2br }}
 
-    <br/>
-    <p>
-        {{ entity.description | nl2br }}
-    </p>
-
-    {% if entity.descriptionautre %}
-
-        <p>
-            {{ entity.descriptionautre | nl2br }}
-        </p>
-
-    {% endif %}
     <br/>
     <h4 class='info'>Liste des défunts reposant dans cette sépulture :</h4>
     {% include '@Sepulture/sepulture/defunts.html.twig' with {'defunts': entity.defunts } %}
@@ -195,14 +197,14 @@
 {% block scripts %}
     {% if siteKey %}
         <script>
-          //  $("#commentaire_remarques").focus(function () {
-                grecaptcha.ready(function () {
-                    grecaptcha.execute('{{ siteKey }}', {action: 'homepage'})
-                        .then(function (token) {
-                            $("#commentaire_g_recaptcha_response").val(token);
-                        })
-                });
-           // });
+            //  $("#commentaire_remarques").focus(function () {
+            grecaptcha.ready(function () {
+                grecaptcha.execute('{{ siteKey }}', {action: 'homepage'})
+                    .then(function (token) {
+                        $("#commentaire_g_recaptcha_response").val(token);
+                    })
+            });
+            // });
         </script>
     {% endif %}
 {% endblock %}
