@@ -28,13 +28,12 @@
     {% include '@Sepulture/sepulture/actions.html.twig' %}
     <br/>
     {% include '@Sepulture/sepulture/images.html.twig' %}
-    <br/><br/>
+    <br/>
     <p class="text-muted">
         {{ entity.description | nl2br }}
     </p>
 
     {% if entity.descriptionautre %}
-
         <p class="text-muted">
             {{ entity.descriptionautre | nl2br }}
         </p>
@@ -70,10 +69,6 @@
                 <tr>
                     <th>Aspect légal</th>
                     <td>{{ entity.legal }}</td>
-                </tr>
-                <tr>
-                    <th>Symbole</th>
-                    <td>{{ entity.symbole | nl2br }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -137,14 +132,15 @@
             </table>
         </div>
     </div>
-    <h4>Symbole</h4>
+    <h4 class="text-success">Symbole</h4>
     {{ entity.symbole | nl2br }}
 
-    <h4>Epitaphe</h4>
+    <h4 class="text-success">Epitaphe</h4>
     {{ entity.epitaphe | nl2br }}
 
     <br/>
-    <h4 class='info'>Liste des défunts reposant dans cette sépulture :</h4>
+    <h4 class="text-success">Liste des défunts reposant dans cette sépulture</h4>
+    <hr/>
     {% include '@Sepulture/sepulture/defunts.html.twig' with {'defunts': entity.defunts } %}
 
     <br/>
