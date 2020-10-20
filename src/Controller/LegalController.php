@@ -22,7 +22,7 @@ class LegalController extends AbstractController
      *
      * @Route("/", name="legal", methods={"GET"})
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -65,7 +65,7 @@ class LegalController extends AbstractController
      * @Route("/new", name="legal_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $entity = new Legal();
         $form = $this->createCreateForm($entity);
@@ -94,7 +94,7 @@ class LegalController extends AbstractController
      *
      * @Route("/{id}", name="legal_show", methods={"GET"})
      */
-    public function showAction(Legal $legal)
+    public function show(Legal $legal)
     {
         $deleteForm = $this->createDeleteForm($legal->getId());
 
@@ -113,7 +113,7 @@ class LegalController extends AbstractController
      * @Route("/{id}/edit", name="legal_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, Legal $legal)
+    public function edit(Request $request, Legal $legal)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -166,7 +166,7 @@ class LegalController extends AbstractController
      * @Route("/{id}", name="legal_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

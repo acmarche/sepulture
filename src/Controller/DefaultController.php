@@ -14,7 +14,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -35,7 +35,7 @@ class DefaultController extends AbstractController
      * @Route("/plantage", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function newAction()
+    public function plantage()
     {
         $this->propo->findAll();
 

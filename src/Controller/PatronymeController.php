@@ -16,7 +16,7 @@ class PatronymeController extends AbstractController
     /**
      * @Route("/", name="patronymes")
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
         $defunts = $em->getRepository(Defunt::class)->findAllGroupByName();
@@ -30,7 +30,7 @@ class PatronymeController extends AbstractController
     /**
      * @Route("/show/{id}", name="patronyme_show")
      */
-    public function showAction(Defunt $defunt)
+    public function show(Defunt $defunt)
     {
         $nom = $defunt->getNom();
 

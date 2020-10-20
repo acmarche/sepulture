@@ -42,7 +42,7 @@ class ImageController extends AbstractController
      * @Route("/new/{id}", name="image_edit", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function editAction(Sepulture $sepulture)
+    public function edit(Sepulture $sepulture)
     {
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('image_upload', ['id' => $sepulture->getId()]))
@@ -67,7 +67,7 @@ class ImageController extends AbstractController
      * @Route("/upload/{id}", name="image_upload", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function uploadAction(Request $request, Sepulture $sepulture)
+    public function upload(Request $request, Sepulture $sepulture)
     {
         if ($request->isXmlHttpRequest()) {
             $file = $request->files->get('file');
@@ -102,7 +102,7 @@ class ImageController extends AbstractController
      * @Route("/delete/{sepultureId}", name="image_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function deleteAction(Request $request, $sepultureId)
+    public function delete(Request $request, $sepultureId)
     {
         $em = $this->getDoctrine()->getManager();
         $sepulture = $em->getRepository(Sepulture::class)->find($sepultureId);

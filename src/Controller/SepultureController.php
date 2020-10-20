@@ -67,7 +67,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/", name="sepulture", methods={"GET"})
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $session = $request->getSession();
         $search = false;
@@ -123,7 +123,7 @@ class SepultureController extends AbstractController
      * @Route("/new", name="sepulture_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -173,7 +173,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/{slug}", name="sepulture_show", methods={"GET","POST"})
      */
-    public function showAction(Sepulture $sepulture, Request $request)
+    public function show(Sepulture $sepulture, Request $request)
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
 
@@ -219,7 +219,7 @@ class SepultureController extends AbstractController
      * @Route("/{slug}/edit", name="sepulture_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function editAction(Request $request, Sepulture $sepulture)
+    public function edit(Request $request, Sepulture $sepulture)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -256,7 +256,7 @@ class SepultureController extends AbstractController
      * @Route("/{id}", name="sepulture_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

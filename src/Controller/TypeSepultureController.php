@@ -22,7 +22,7 @@ class TypeSepultureController extends AbstractController
      *
      * @Route("/", name="typesepulture", methods={"GET"})
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -65,7 +65,7 @@ class TypeSepultureController extends AbstractController
      * @Route("/new", name="typesepulture_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $entity = new TypeSepulture();
         $form = $this->createCreateForm($entity);
@@ -94,7 +94,7 @@ class TypeSepultureController extends AbstractController
      *
      * @Route("/{id}", name="typesepulture_show", methods={"GET"})
      */
-    public function showAction(TypeSepulture $type)
+    public function show(TypeSepulture $type)
     {
         $deleteForm = $this->createDeleteForm($type->getId());
 
@@ -113,7 +113,7 @@ class TypeSepultureController extends AbstractController
      * @Route("/{id}/edit", name="typesepulture_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, TypeSepulture $type)
+    public function edit(Request $request, TypeSepulture $type)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -165,7 +165,7 @@ class TypeSepultureController extends AbstractController
      * @Route("/{id}", name="typesepulture_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

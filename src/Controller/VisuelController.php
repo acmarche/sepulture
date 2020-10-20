@@ -22,7 +22,7 @@ class VisuelController extends AbstractController
      *
      * @Route("/", name="visuel", methods={"GET"})
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -65,7 +65,7 @@ class VisuelController extends AbstractController
      * @Route("/new", name="visuel_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $entity = new Visuel();
         $form = $this->createCreateForm($entity);
@@ -94,7 +94,7 @@ class VisuelController extends AbstractController
      *
      * @Route("/{id}", name="visuel_show", methods={"GET"})
      */
-    public function showAction(Visuel $visuel)
+    public function show(Visuel $visuel)
     {
         $deleteForm = $this->createDeleteForm($visuel->getId());
 
@@ -113,7 +113,7 @@ class VisuelController extends AbstractController
      * @Route("/{id}/edit", name="visuel_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, Visuel $visuel)
+    public function edit(Request $request, Visuel $visuel)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -166,7 +166,7 @@ class VisuelController extends AbstractController
      * @Route("/{id}", name="visuel_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

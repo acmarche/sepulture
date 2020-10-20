@@ -57,7 +57,7 @@ class CimetiereController extends AbstractController
      *
      * @Route("/", name="cimetiere", methods={"GET"})
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -83,7 +83,7 @@ class CimetiereController extends AbstractController
      * @Route("/new", name="cimetiere_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $entity = new Cimetiere();
 
@@ -128,7 +128,7 @@ class CimetiereController extends AbstractController
      *
      * @Route("/{slug}", name="cimetiere_show", methods={"GET"})
      */
-    public function showAction(Cimetiere $cimetiere)
+    public function show(Cimetiere $cimetiere)
     {
         $em = $this->getDoctrine()->getManager();
         $sepultures = $em->getRepository(Sepulture::class)->search(['cimetiere' => $cimetiere]);
@@ -153,7 +153,7 @@ class CimetiereController extends AbstractController
      * @Route("/{slug}/edit", name="cimetiere_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, Cimetiere $cimetiere)
+    public function edit(Request $request, Cimetiere $cimetiere)
     {
         $em = $this->getDoctrine()->getManager();
         $editForm = $this->createEditForm($cimetiere);
@@ -206,7 +206,7 @@ class CimetiereController extends AbstractController
      * @Route("/{id}", name="cimetiere_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -250,7 +250,7 @@ class CimetiereController extends AbstractController
      * @Route("/delete/file/{id}", name="cimetiere_file_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteFileAction(Request $request, Cimetiere $cimetiere)
+    public function deleteFile(Request $request, Cimetiere $cimetiere)
     {
         $em = $this->getDoctrine()->getManager();
 

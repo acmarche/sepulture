@@ -24,7 +24,7 @@ class DefuntController extends AbstractController
      * @Route("/new/{id}", name="defunt_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function newAction(Request $request, Sepulture $sepulture)
+    public function new(Request $request, Sepulture $sepulture)
     {
         $entity = new Defunt();
         $entity->setSepulture($sepulture);
@@ -64,7 +64,7 @@ class DefuntController extends AbstractController
      *
      * @Route("/{id}", name="defunt_show", methods={"GET"})
      */
-    public function showAction(Defunt $defunt)
+    public function show(Defunt $defunt)
     {
         $deleteForm = $this->createDeleteForm($defunt->getId());
 
@@ -83,7 +83,7 @@ class DefuntController extends AbstractController
      * @Route("/{id}/edit", name="defunt_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function editAction(Request $request, Defunt $defunt)
+    public function edit(Request $request, Defunt $defunt)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -137,7 +137,7 @@ class DefuntController extends AbstractController
      * @Route("/{id}", name="defunt_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

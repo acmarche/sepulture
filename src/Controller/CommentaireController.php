@@ -41,7 +41,7 @@ class CommentaireController extends AbstractController
      * @Route("/", name="commentaire", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -60,7 +60,7 @@ class CommentaireController extends AbstractController
      *
      * @Route("/new/{id}", name="commentaire_new", methods={"GET","POST"})
      */
-    public function newAction(Request $request, Sepulture $sepulture)
+    public function new(Request $request, Sepulture $sepulture)
     {
         $commentaire = new Commentaire();
         $commentaire->setSepulture($sepulture);
@@ -113,7 +113,7 @@ class CommentaireController extends AbstractController
      * @Route("/{id}", name="commentaire_show", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function showAction(Commentaire $commentaire)
+    public function show(Commentaire $commentaire)
     {
         $deleteForm = $this->createDeleteForm($commentaire->getId());
 
@@ -132,7 +132,7 @@ class CommentaireController extends AbstractController
      * @Route("/{id}", name="commentaire_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

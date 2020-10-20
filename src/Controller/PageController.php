@@ -36,7 +36,7 @@ class PageController extends AbstractController
      *
      * @Route("/{slug}", name="page_show", methods={"GET"})
      */
-    public function showAction(Page $page)
+    public function show(Page $page)
     {
         $deleteForm = $this->createDeleteForm($page->getId());
 
@@ -55,7 +55,7 @@ class PageController extends AbstractController
      * @Route("/{id}/edit", name="page_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, Page $page)
+    public function edit(Request $request, Page $page)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -89,7 +89,7 @@ class PageController extends AbstractController
      * @Route("/{id}", name="page_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);

@@ -22,7 +22,7 @@ class SihlController extends AbstractController
      *
      * @Route("/", name="sihl", methods={"GET"})
      */
-    public function indexAction()
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -63,7 +63,7 @@ class SihlController extends AbstractController
      * @Route("/new", name="sihl_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $entity = new Sihl();
         $form = $this->createCreateForm($entity);
@@ -90,7 +90,7 @@ class SihlController extends AbstractController
      *
      * @Route("/{id}", name="sihl_show", methods={"GET"})
      */
-    public function showAction(Sihl $sihl)
+    public function show(Sihl $sihl)
     {
         $deleteForm = $this->createDeleteForm($sihl->getId());
 
@@ -107,7 +107,7 @@ class SihlController extends AbstractController
      * @Route("/{id}/edit", name="sihl_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function editAction(Request $request, Sihl $sihl)
+    public function edit(Request $request, Sihl $sihl)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -158,7 +158,7 @@ class SihlController extends AbstractController
      * @Route("/{id}", name="sihl_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
