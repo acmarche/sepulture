@@ -191,7 +191,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% if siteKey %}
+    {% if siteKey != '' %}
         <script>
             //  $("#commentaire_remarques").focus(function () {
             grecaptcha.ready(function () {
