@@ -3,11 +3,14 @@
 namespace AcMarche\Sepulture\Controller;
 
 use AcMarche\Sepulture\Entity\Page;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
+    private $propo;
+
     /**
      * @Route("/", name="home")
      */
@@ -23,6 +26,22 @@ class DefaultController extends AbstractController
         return $this->render(
             '@Sepulture/default/index.html.twig',
             ['page' => $page]
+        );
+    }
+
+    /**
+     * Displays a form to create a new Defunt entity.
+     *
+     * @Route("/plantage", methods={"GET","POST"})
+     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
+     */
+    public function newAction()
+    {
+        $this->propo->findAll();
+
+        return $this->render(
+            '@Sepulture/default/index.html.twig',
+            []
         );
     }
 

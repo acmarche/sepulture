@@ -98,7 +98,7 @@ class CommentaireController extends AbstractController
            //         );
            //     }
           //  } else {
-                $this->addFlash('danger', 'Le contrôle anti-spam a bloqué votre commentaire');
+           //     $this->addFlash('danger', 'Le contrôle anti-spam a bloqué votre commentaire');
           //  }
         } else {
             $this->addFlash('danger', 'Form error: ' . $form->getErrors());
