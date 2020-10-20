@@ -4,7 +4,7 @@ namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Entity\Sihl;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Sihl|null find($id, $lockMode = null, $lockVersion = null)

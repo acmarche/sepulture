@@ -4,7 +4,7 @@ namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Entity\ContactRw;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ContactRw|null find($id, $lockMode = null, $lockVersion = null)

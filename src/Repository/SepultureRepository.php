@@ -5,7 +5,7 @@ namespace AcMarche\Sepulture\Repository;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Sepulture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Sepulture|null find($id, $lockMode = null, $lockVersion = null)

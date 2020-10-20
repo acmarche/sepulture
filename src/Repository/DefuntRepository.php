@@ -4,7 +4,7 @@ namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Entity\Defunt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Defunt|null find($id, $lockMode = null, $lockVersion = null)

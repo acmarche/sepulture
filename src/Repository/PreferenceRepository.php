@@ -4,7 +4,7 @@ namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Entity\Preference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Preference|null find($id, $lockMode = null, $lockVersion = null)
