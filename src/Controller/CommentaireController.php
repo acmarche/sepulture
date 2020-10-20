@@ -84,23 +84,22 @@ class CommentaireController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->get('commentaire');
 
-            if ($data['g_recaptcha_response']) {
-                if ($this->cimetiereUtil->captchaverify($data['g_recaptcha_response'])) {
+         //   if ($data['g_recaptcha_response']) {
+        //        if ($this->cimetiereUtil->captchaverify($data['g_recaptcha_response'])) {
                     $this->mailer->sendCommentaire($commentaire, $this->cimetiereUtil->error);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commentaire);
                     $em->flush();
                     $this->addFlash('success', 'Le commentaire a bien été ajouté, merci de votre collaboration');
-                } else {
-                //    $this->mailer->sendCaptchaNotWork($commentaire, $this->cimetiereUtil->error);
-                    $this->addFlash(
-                        'danger',
-                        'Le commentaire n\'a pas été ajouté, erreur:' . $this->cimetiereUtil->error
-                    );
-                }
-            } else {
+           //     } else {
+           //         $this->addFlash(
+           //             'danger',
+           //             'Le commentaire n\'a pas été ajouté, erreur:' . $this->cimetiereUtil->error
+           //         );
+           //     }
+          //  } else {
                 $this->addFlash('danger', 'Le contrôle anti-spam a bloqué votre commentaire');
-            }
+          //  }
         } else {
             $this->addFlash('danger', 'Form error: ' . $form->getErrors());
         }
