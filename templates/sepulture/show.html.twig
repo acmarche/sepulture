@@ -1,23 +1,17 @@
 {% extends '@Sepulture/base.html.twig' %}
 
-{% block title %}Sépulture {{ entity.parcelle }} dans {{ entity.cimetiere }} {% endblock %}
+{% block title %}Sépulture {{ sepulture.parcelle }} dans {{ sepulture.cimetiere }} {% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/sepulture/blueimp/css/blueimp-gallery.min.css') }}">
 {% endblock %}
 
-{% block scriptshead %}
-    {% if siteKey %}
-        <script src='https://www.google.com/recaptcha/api.js?render={{ siteKey }}'></script>
-    {% endif %}
-{% endblock %}
-
 {% block body %}
 
     <h3>
-        Sépulture <strong>{{ entity.parcelle }}</strong> dans
-        <a href="{{ path('cimetiere_show', { 'slug': entity.cimetiere.slug }) }}">
-            {{ entity.cimetiere }}
+        Sépulture <strong>{{ sepulture.parcelle }}</strong> dans
+        <a href="{{ path('cimetiere_show', { 'slug': sepulture.cimetiere.slug }) }}">
+            {{ sepulture.cimetiere }}
         </a>
     </h3>
 
@@ -30,12 +24,12 @@
     {% include '@Sepulture/sepulture/images.html.twig' %}
     <br/>
     <p class="text-muted">
-        {{ entity.description | nl2br }}
+        {{ sepulture.description | nl2br }}
     </p>
 
-    {% if entity.descriptionautre %}
+    {% if sepulture.descriptionautre %}
         <p class="text-muted">
-            {{ entity.descriptionautre | nl2br }}
+            {{ sepulture.descriptionautre | nl2br }}
         </p>
     {% endif %}
     <br/>
@@ -45,30 +39,30 @@
                 <tbody>
                 <tr>
                     <th>Type(s) de sépulture</th>
-                    <td>{{ entity.types | join('|') }}</td>
+                    <td>{{ sepulture.types | join('|') }}</td>
                 </tr>
                 <tr>
                     <th>Autre type ?</th>
-                    <td>{{ entity.typeautre }}</td>
+                    <td>{{ sepulture.typeautre }}</td>
                 </tr>
                 <tr>
                     <th>Matériaux</th>
-                    <td>{{ entity.materiaux | join('|') }}</td>
+                    <td>{{ sepulture.materiaux | join('|') }}</td>
                 </tr>
                 <tr>
                     <th>Autre matériaux ?</th>
-                    <td>{{ entity.materiauxautre }}</td>
+                    <td>{{ sepulture.materiauxautre }}</td>
                 </tr>
                 <tr>
                     <th>Aspect visuel</th>
                     <td>
-                        {{ entity.visuel }}
+                        {{ sepulture.visuel }}
                     </td>
                 </tr>
 
                 <tr>
                     <th>Aspect légal</th>
-                    <td>{{ entity.legal }}</td>
+                    <td>{{ sepulture.legal }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -78,20 +72,20 @@
                 <tbody>
                 <tr>
                     <th>Sépulture Intérêt Historique Locale</th>
-                    <td>{{ entity.sihls | join('|') }}</td>
+                    <td>{{ sepulture.sihls | join('|') }}</td>
                 </tr>
                 <tr>
                     <th>Architectural</th>
-                    <td>{{ entity.architectural }}</td>
+                    <td>{{ sepulture.architectural }}</td>
                 </tr>
                 <tr>
                     <th>Fonction sociale</th>
-                    <td>{{ entity.sociale }}</td>
+                    <td>{{ sepulture.sociale }}</td>
                 </tr>
                 <tr>
                     <th>Aucune inscription sociale</th>
                     <td>
-                        {% if entity.socialecheck %}
+                        {% if sepulture.socialecheck %}
                             <i class="glyphicon glyphicon-ok"></i>
                         {% else %}
                             Non défini
@@ -101,7 +95,7 @@
                 <tr>
                     <th>Inhumation avant 1945 ?</th>
                     <td>
-                        {% if entity.guerre %}
+                        {% if sepulture.guerre %}
                             <i class="glyphicon glyphicon-ok"></i>
                         {% else %}
                             Non
@@ -111,7 +105,7 @@
                 <tr>
                     <th>Combattant 14-18</th>
                     <td>
-                        {% if entity.combattant14 %}
+                        {% if sepulture.combattant14 %}
                             <i class="glyphicon glyphicon-ok"></i>
                         {% else %}
                             Non
@@ -121,7 +115,7 @@
                 <tr>
                     <th>Combattant 40-45</th>
                     <td>
-                        {% if entity.combattant40 %}
+                        {% if sepulture.combattant40 %}
                             <i class="glyphicon glyphicon-ok"></i>
                         {% else %}
                             Non
@@ -133,15 +127,15 @@
         </div>
     </div>
     <h4 class="text-success">Symbole</h4>
-    {{ entity.symbole | nl2br }}
+    {{ sepulture.symbole | nl2br }}
 
     <h4 class="text-success">Epitaphe</h4>
-    {{ entity.epitaphe | nl2br }}
+    {{ sepulture.epitaphe | nl2br }}
 
     <br/>
     <h4 class="text-success">Liste des défunts reposant dans cette sépulture</h4>
     <hr/>
-    {% include '@Sepulture/sepulture/defunts.html.twig' with {'defunts': entity.defunts } %}
+    {% include '@Sepulture/sepulture/defunts.html.twig' with {'defunts': sepulture.defunts } %}
 
     <br/>
     {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
@@ -157,15 +151,15 @@
                     <tbody>
                     <tr>
                         <th>Statut de l'encodage</th>
-                        <td>{{ entity.statut }}</td>
+                        <td>{{ sepulture.statut }}</td>
                     </tr>
                     <tr>
                         <th>Contact</th>
-                        <td>{{ entity.contact }}</td>
+                        <td>{{ sepulture.contact }}</td>
                     </tr>
                     <tr>
                         <th>Année de relevé</th>
-                        <td>{{ entity.anneereleve }}</td>
+                        <td>{{ sepulture.anneereleve }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -173,8 +167,8 @@
         </div>
 
         <p class="text-muted">
-            {{ 'Created' | trans }} {{ entity.createdAt|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
-            . {{ 'Updated' | trans }} {{ entity.updatedAt|date('d-m-Y H:i:s') }}
+            {{ 'Created' | trans }} {{ sepulture.createdAt|date('d-m-Y H:i:s') }} par {{ sepulture.useradd }}
+            . {{ 'Updated' | trans }} {{ sepulture.updatedAt|date('d-m-Y H:i:s') }}
         </p>
 
     {% else %}
@@ -188,19 +182,13 @@
 {% block javascripts %}
     <script src="{{ asset('bundles/sepulture/blueimp/js/blueimp-gallery.min.js') }}"></script>
     <script src="{{ asset('bundles/sepulture/js/gallery.js') }}"></script>
-{% endblock %}
-
-{% block scripts %}
-    {% if siteKey != '' %}
-        <script>
-            //  $("#commentaire_remarques").focus(function () {
-            grecaptcha.ready(function () {
-                grecaptcha.execute('{{ siteKey }}', {action: 'homepage'})
-                    .then(function (token) {
-                        $("#commentaire_g_recaptcha_response").val(token);
-                    })
-            });
-            // });
-        </script>
-    {% endif %}
+    <script>
+        $('.animal').click(function () {
+            $('.animal').removeClass('animalselected'); // removes the previous selected class
+            $(this).addClass('animalselected'); // adds the class to the clicked image
+            var url = $(this).data('url');
+            console.log(url);
+            $('#commentaire_captcha').val(url);
+        });
+    </script>
 {% endblock %}

@@ -2,15 +2,18 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Form\CommentaireType;
+use AcMarche\Sepulture\Repository\CommentaireRepository;
 use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -28,11 +31,31 @@ class CommentaireController extends AbstractController
      * @var Mailer
      */
     private $mailer;
+    /**
+     * @var CommentaireRepository
+     */
+    private $commentaireRepository;
+    /**
+     * @var Captcha
+     */
+    private $captcha;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
-    public function __construct(CimetiereUtil $cimetiereUtil, Mailer $mailer)
-    {
+    public function __construct(
+        CommentaireRepository $commentaireRepository,
+        CimetiereUtil $cimetiereUtil,
+        Mailer $mailer,
+        Captcha $captcha,
+        SessionInterface $session
+    ) {
         $this->cimetiereUtil = $cimetiereUtil;
         $this->mailer = $mailer;
+        $this->commentaireRepository = $commentaireRepository;
+        $this->captcha = $captcha;
+        $this->session = $session;
     }
 
     /**
@@ -43,9 +66,7 @@ class CommentaireController extends AbstractController
      */
     public function index()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository(Commentaire::class)->findAll();
+        $entities = $this->commentaireRepository->findAll();
 
         return $this->render(
             '@Sepulture/commentaire/index.html.twig',
@@ -83,25 +104,22 @@ class CommentaireController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->get('commentaire');
+            if ($this->captcha->check($data['captcha'])) {
+                $this->mailer->sendCommentaire($commentaire, $this->cimetiereUtil->error);
+                $this->commentaireRepository->persist($commentaire);
+                $this->commentaireRepository->flush();
 
-         //   if ($data['g_recaptcha_response']) {
-        //        if ($this->cimetiereUtil->captchaverify($data['g_recaptcha_response'])) {
-                    $this->mailer->sendCommentaire($commentaire, $this->cimetiereUtil->error);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($commentaire);
-                    $em->flush();
-                    $this->addFlash('success', 'Le commentaire a bien été ajouté, merci de votre collaboration');
-           //     } else {
-           //         $this->addFlash(
-           //             'danger',
-           //             'Le commentaire n\'a pas été ajouté, erreur:' . $this->cimetiereUtil->error
-           //         );
-           //     }
-          //  } else {
-           //     $this->addFlash('danger', 'Le contrôle anti-spam a bloqué votre commentaire');
-          //  }
+                if ($this->session->has(Captcha::SESSION_NAME)) {
+                    $this->session->remove(Captcha::SESSION_NAME);
+                }
+
+                $this->addFlash('success', 'Le commentaire a bien été ajouté, merci de votre collaboration');
+            } else {
+                $this->session->set(Captcha::SESSION_NAME, $commentaire);
+                $this->addFlash('danger', 'Le contrôle anti-spam a échoué');
+            }
         } else {
-            $this->addFlash('danger', 'Form error: ' . $form->getErrors());
+            $this->addFlash('danger', 'Form error: '.$form->getErrors());
         }
 
         return $this->redirectToRoute('sepulture_show', array('slug' => $sepulture->getSlug()));

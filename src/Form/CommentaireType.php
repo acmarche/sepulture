@@ -4,6 +4,7 @@ namespace AcMarche\Sepulture\Form;
 
 use AcMarche\Sepulture\Entity\Commentaire;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -39,8 +40,8 @@ class CommentaireType extends AbstractType
                 ]
             )
             ->add(
-                'g_recaptcha_response',
-                HiddenType::class,
+                'captcha',
+                TextType::class,
                 [
                     'required' => true,
                     'mapped' => false,

@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\Sepulture;
@@ -18,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -47,19 +49,31 @@ class SepultureController extends AbstractController
      * @var SepultureRepository
      */
     private $sepultureRepository;
+    /**
+     * @var Captcha
+     */
+    private $captcha;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     public function __construct(
         SepultureRepository $sepultureRepository,
         FileHelper $fileHelper,
         Mailer $mailer,
         CimetiereUtil $cimetiereUtil,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        Captcha $captcha,
+        SessionInterface $session
     ) {
         $this->fileHelper = $fileHelper;
         $this->mailer = $mailer;
         $this->cimetiereUtil = $cimetiereUtil;
         $this->parameterBag = $parameterBag;
         $this->sepultureRepository = $sepultureRepository;
+        $this->captcha = $captcha;
+        $this->session = $session;
     }
 
     /**
@@ -171,21 +185,21 @@ class SepultureController extends AbstractController
     /**
      * Finds and displays a Sepulture entity.
      *
-     * @Route("/{slug}", name="sepulture_show", methods={"GET","POST"})
+     * @Route("/{slug}", name="sepulture_show", methods={"GET"})
      */
-    public function show(Sepulture $sepulture, Request $request)
+    public function show(Sepulture $sepulture)
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
 
-        $commentaire = new Commentaire();
-        $commentaire->setSepulture($sepulture);
-        $siteKey = false;
-
-        if ($this->parameterBag->has('acmarche_sepulture_captcha_site_key')) {
-            $siteKey = $this->parameterBag->get('acmarche_sepulture_captcha_site_key');
+        if ($this->session->has(Captcha::SESSION_NAME)) {
+            $commentaire = $this->session->get(Captcha::SESSION_NAME);
+        } else {
+            $commentaire = new Commentaire();
+            $commentaire->setSepulture($sepulture);
         }
 
         $deleteForm = $this->createDeleteForm($sepulture->getId());
+        $animals = $this->captcha->getAnimals();
 
         $form = $this->createForm(
             CommentaireType::class,
@@ -205,9 +219,9 @@ class SepultureController extends AbstractController
             '@Sepulture/sepulture/show.html.twig',
             [
                 'form_commentaire' => $form->createView(),
-                'siteKey' => $siteKey,
-                'entity' => $sepulture,
+                'sepulture' => $sepulture,
                 'images' => $images,
+                'animals' => $animals,
                 'delete_form' => $deleteForm->createView(),
             ]
         );

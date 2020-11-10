@@ -6,7 +6,7 @@ section {
     margin-top: 25px;
 }
 
-.page-header {    
+.page-header {
     margin: 20px 0 5px;
 }
 
@@ -56,4 +56,9 @@ code {
 
 #links img {
     margin-bottom: 10px;
+}
+
+.animalselected{
+   box-shadow:0 12px 22px 1px #333;
+   border: solid 4px green;
 }

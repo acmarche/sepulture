@@ -23,4 +23,14 @@ class CommentaireRepository extends ServiceEntityRepository
     {
         return $this->findBy([], ['createdAt' => 'DESC']);
     }
+
+    public function persist(Commentaire $commentaire)
+    {
+        $this->_em->persist($commentaire);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
 }

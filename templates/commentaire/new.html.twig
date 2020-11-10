@@ -12,9 +12,14 @@
         {{ form_row(form.remarques) }}
     </div>
     <div class="col-md-6">
-        <div class="g-recaptcha" data-sitekey="{{ siteKey }}"></div>
+        <h4 class="text-success">Filtre anti-spam</h4>
+        <hr>
+        <p>Sélectionnez l'image représentant un chat</p>
+
+      {% include '@Sepulture/commentaire/_animals.html.twig' %}
+
     </div>
 </div>
-{{ form_row(form.g_recaptcha_response) }}
+{{ form_row(form.captcha) }}
 {{ form_rest(form) }}
 {{ form_end(form) }}
