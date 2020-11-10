@@ -213,7 +213,7 @@ class SepultureController extends AbstractController
                 ),
             ]
         )
-            ->add('submit', SubmitType::class, ['label' => 'Create']);
+            ->add('submit', SubmitType::class, ['label' => 'Envoyer']);
 
         return $this->render(
             '@Sepulture/sepulture/show.html.twig',

@@ -41,7 +41,7 @@ class CommentaireType extends AbstractType
             )
             ->add(
                 'captcha',
-                TextType::class,
+                HiddenType::class,
                 [
                     'required' => true,
                     'mapped' => false,
