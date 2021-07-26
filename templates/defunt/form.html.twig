@@ -1,4 +1,4 @@
-{{ form_start(form, { 'attr': {'class': 'well'}}) }}            
+{{ form_start(form, { 'attr': {'class': 'well'}}) }}
 {{ form_errors(form) }}
 <div class="row">
     <div class="col-md-6">
@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        {{ form_row(form.lieu_naissance) }}            
+        {{ form_row(form.lieu_naissance) }}
     </div>
     <div class="col-md-6">
         {{ form_row(form.birthday) }}
@@ -23,8 +23,9 @@
         {{ form_row(form.lieu_deces) }}
     </div>
     <div class="col-md-6">
-        {{ form_row(form.date_deces) }}            
-    </div>        
+        {{ form_row(form.date_deces) }}
+    </div>
 </div>
 
-{{ form_end(form) }} 
+{{ form_row(form.description) }}
+{{ form_end(form) }}

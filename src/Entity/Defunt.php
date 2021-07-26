@@ -98,6 +98,13 @@ class Defunt implements SluggableInterface, TimestampableInterface
      */
     private $user;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
     public function __toString()
     {
         return $this->getNom() . ' ' . $this->getPrenom();

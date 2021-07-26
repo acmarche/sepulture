@@ -9,7 +9,7 @@
     </div>
 
     {% include '@Sepulture/defunt/actions.html.twig' %}
-<br />
+    <br/>
     <table class="table table-bordered table-hover table-condensed table-responsive">
         <tr>
             <th>Repose dans le cimetière</th>
@@ -50,6 +50,11 @@
             <td>{{ entity.lieudeces }}</td>
         </tr>
     </table>
+
+    {% if defunt.description %}
+        <p>{{ defunt.description | nl2br }}</p>
+    {% endif %}
+
     {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
         <p class="text-muted">
             {{ 'Created' | trans }} {{ entity.createdAt|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
@@ -60,3 +65,4 @@
     {% include '@Sepulture/defunt/delete.html.twig' %}
 
 {% endblock %}
+
