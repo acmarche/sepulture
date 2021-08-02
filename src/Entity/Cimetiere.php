@@ -21,74 +21,58 @@ class Cimetiere implements SluggableInterface
     use SluggableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(name="nom", type="string", length=150, unique=true)
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @var Sepulture|null
      * @ORM\OneToMany(targetEntity="Sepulture", mappedBy="cimetiere", cascade={"remove"})
      */
-    protected $sepultures;
+    protected Collection $sepultures;
 
     /**
      * @Assert\File(
      *     maxSize = "7M"
      * )
-     *
-     * @var File|null
      */
-    protected $planFile;
+    protected ?File $planFile = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $planName;
+    protected ?string $planName = null;
 
     /**
      * @Assert\File(
      *     maxSize = "7M"
      * )
-     *
-     * @var File|null
      */
-    protected $imageFile;
+    protected ?File $imageFile = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $imageName;
+    protected ?string $imageName = null;
 
-    /**
-     * @var int
-     */
-    protected $ihsCount=0;
+    protected int $ihsCount=0;
 
-    /**
-     * @var int
-     */
-    protected $a1945Count=0;
+    protected int $a1945Count=0;
 
     public function __construct()
     {
@@ -100,28 +84,22 @@ class Cimetiere implements SluggableInterface
         return ['nom'];
     }
 
-    /**
-     * @return File|null
-     */
-    public function getPlanFile()
+    public function getPlanFile(): ?File
     {
         return $this->planFile;
     }
 
-    public function setPlanFile(File $planFile)
+    public function setPlanFile(File $planFile): void
     {
         $this->planFile = $planFile;
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    public function setImageFile(File $imageFile)
+    public function setImageFile(File $imageFile): void
     {
         $this->imageFile = $imageFile;
     }
@@ -219,7 +197,7 @@ class Cimetiere implements SluggableInterface
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): Collection
+    public function getSepultures(): ?Sepulture
     {
         return $this->sepultures;
     }

@@ -18,22 +18,10 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class CimetiereFileService
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
-    /**
-     * @var CimetiereRepository
-     */
-    private $cimetiereRepository;
+    private ParameterBagInterface $parameterBag;
+    private FileHelper $fileHelper;
+    private FlashBagInterface $flashBag;
+    private CimetiereRepository $cimetiereRepository;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -47,7 +35,7 @@ class CimetiereFileService
         $this->cimetiereRepository = $cimetiereRepository;
     }
 
-    public function traitfiles(FormInterface $form, Cimetiere $cimetiere)
+    public function traitfiles(FormInterface $form, Cimetiere $cimetiere): void
     {
         $image = $form->get('imageFile')->getData();
         $plan = $form->get('planFile')->getData();

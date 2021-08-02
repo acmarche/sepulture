@@ -18,14 +18,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class LoadDataCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private EntityManagerInterface $entityManager;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -36,7 +30,7 @@ class LoadDataCommand extends Command
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('sepulture:loaddata')
@@ -52,7 +46,7 @@ class LoadDataCommand extends Command
         return 0;
     }
 
-    public function loadData()
+    public function loadData(): void
     {
         $visuels = ['Toujours utilisé', 'Bon', 'Moyen', 'Défaut d\'entretien', 'Ruine'];
         foreach ($visuels as $nom) {
@@ -118,7 +112,7 @@ class LoadDataCommand extends Command
         $this->entityManager->flush();
     }
 
-    public function loadUsers()
+    public function loadUsers(): void
     {
         $admin = new User();
         //$admin->setUsername('admin');

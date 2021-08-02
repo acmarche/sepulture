@@ -14,9 +14,7 @@ security:
         main:
             #anonymous: lazy
             provider: sepulture_user_provider
-            guard:
-                authenticators:
-                    - AcMarche\Sepulture\Security\AppAuthenticator
+            custom_authenticator: AcMarche\Sepulture\Security\AppAuthenticator
             logout:
                 path: app_logout
     role_hierarchy:

@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use AcMarche\Sepulture\Entity\Defunt;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +17,7 @@ class PatronymeController extends AbstractController
     /**
      * @Route("/", name="patronymes")
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
         $defunts = $em->getRepository(Defunt::class)->findAllGroupByName();
@@ -30,7 +31,7 @@ class PatronymeController extends AbstractController
     /**
      * @Route("/show/{id}", name="patronyme_show")
      */
-    public function show(Defunt $defunt)
+    public function show(Defunt $defunt): Response
     {
         $nom = $defunt->getNom();
 

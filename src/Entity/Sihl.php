@@ -20,27 +20,25 @@ class Sihl implements SluggableInterface
     use SluggableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", length=150, nullable=false)
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
      * @var Sepulture[]|iterable
      * @ORM\ManyToMany(targetEntity="Sepulture", mappedBy="sihls")
      * */
-    private $sepultures;
+    private Collection $sepultures;
 
     public function __construct()
     {
@@ -77,7 +75,7 @@ class Sihl implements SluggableInterface
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): Collection
+    public function getSepultures(): iterable
     {
         return $this->sepultures;
     }

@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+
 use AcMarche\Sepulture\Entity\Legal;
 use AcMarche\Sepulture\Form\LegalType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +26,7 @@ class LegalController extends AbstractController
      *
      * @Route("/", name="legal", methods={"GET"})
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -41,9 +45,9 @@ class LegalController extends AbstractController
      *
      * @param Legal $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createCreateForm(Legal $entity)
+    private function createCreateForm(Legal $entity): FormInterface
     {
         $form = $this->createForm(
             LegalType::class,
@@ -65,7 +69,7 @@ class LegalController extends AbstractController
      * @Route("/new", name="legal_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $entity = new Legal();
         $form = $this->createCreateForm($entity);
@@ -94,7 +98,7 @@ class LegalController extends AbstractController
      *
      * @Route("/{id}", name="legal_show", methods={"GET"})
      */
-    public function show(Legal $legal)
+    public function show(Legal $legal): Response
     {
         $deleteForm = $this->createDeleteForm($legal->getId());
 
@@ -113,7 +117,7 @@ class LegalController extends AbstractController
      * @Route("/{id}/edit", name="legal_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Legal $legal)
+    public function edit(Request $request, Legal $legal): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -142,9 +146,9 @@ class LegalController extends AbstractController
      *
      * @param Legal $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createEditForm(Legal $entity)
+    private function createEditForm(Legal $entity): FormInterface
     {
         $form = $this->createForm(
             LegalType::class,
@@ -166,7 +170,7 @@ class LegalController extends AbstractController
      * @Route("/{id}", name="legal_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -175,7 +179,7 @@ class LegalController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Legal::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Legal entity.');
             }
 
@@ -192,9 +196,9 @@ class LegalController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('legal_delete', ['id' => $id]))

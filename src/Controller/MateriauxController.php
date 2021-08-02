@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+
 use AcMarche\Sepulture\Entity\Materiaux;
 use AcMarche\Sepulture\Form\MateriauxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +26,7 @@ class MateriauxController extends AbstractController
      *
      * @Route("/", name="materiaux", methods={"GET"})
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -41,9 +45,9 @@ class MateriauxController extends AbstractController
      *
      * @param Materiaux $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createCreateForm(Materiaux $entity)
+    private function createCreateForm(Materiaux $entity): FormInterface
     {
         $form = $this->createForm(
             MateriauxType::class,
@@ -65,7 +69,7 @@ class MateriauxController extends AbstractController
      * @Route("/new", name="materiaux_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $entity = new Materiaux();
         $form = $this->createCreateForm($entity);
@@ -94,7 +98,7 @@ class MateriauxController extends AbstractController
      *
      * @Route("/{id}", name="materiaux_show", methods={"GET"})
      */
-    public function show(Materiaux $materiaux)
+    public function show(Materiaux $materiaux): Response
     {
         $deleteForm = $this->createDeleteForm($materiaux->getId());
 
@@ -113,7 +117,7 @@ class MateriauxController extends AbstractController
      * @Route("/{id}/edit", name="materiaux_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Materiaux $materiaux)
+    public function edit(Request $request, Materiaux $materiaux): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -142,9 +146,9 @@ class MateriauxController extends AbstractController
      *
      * @param Materiaux $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createEditForm(Materiaux $entity)
+    private function createEditForm(Materiaux $entity): FormInterface
     {
         $form = $this->createForm(
             MateriauxType::class,
@@ -166,7 +170,7 @@ class MateriauxController extends AbstractController
      * @Route("/{id}", name="materiaux_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -175,7 +179,7 @@ class MateriauxController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Materiaux::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Materiaux entity.');
             }
 
@@ -192,9 +196,9 @@ class MateriauxController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('materiaux_delete', ['id' => $id]))

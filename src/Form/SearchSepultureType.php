@@ -17,22 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchSepultureType extends AbstractType
 {
-    /**
-     * @var TypeSepultureRepository
-     */
-    private $typeSepultureRepository;
-    /**
-     * @var CimetiereRepository
-     */
-    private $cimetiereRepository;
-    /**
-     * @var VisuelRepository
-     */
-    private $visuelRepository;
-    /**
-     * @var SihlRepository
-     */
-    private $sihlRepository;
+    private TypeSepultureRepository $typeSepultureRepository;
+    private CimetiereRepository $cimetiereRepository;
+    private VisuelRepository $visuelRepository;
+    private SihlRepository $sihlRepository;
 
     public function __construct(
         TypeSepultureRepository $typeSepultureRepository,
@@ -46,7 +34,7 @@ class SearchSepultureType extends AbstractType
         $this->sihlRepository = $sihlRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $types = $this->typeSepultureRepository->getForSearch();
         $cimetieres = $this->cimetiereRepository->getForSearch();
@@ -169,7 +157,7 @@ class SearchSepultureType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 }

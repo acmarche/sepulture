@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Service;
 
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\ContactRw;
 use AcMarche\Sepulture\Entity\Preference;
@@ -15,26 +19,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class CimetiereUtil
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var PreferenceRepository
-     */
-    private $preferenceRepository;
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
+    private ParameterBagInterface $parameterBag;
+    private PreferenceRepository $preferenceRepository;
+    private HttpClientInterface $httpClient;
     /**
      * @var string
      */
     public $error;
-    /**
-     * @var ContactRwRepository
-     */
-    private $contactRwRepository;
+    private ContactRwRepository $contactRwRepository;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -49,7 +41,7 @@ class CimetiereUtil
         $this->contactRwRepository = $contactRwRepository;
     }
 
-    public static function getStatuts()
+    public static function getStatuts(): array
     {
         $statut_tmp = ['Terminé', 'A relire'];
         $statuts = [];
@@ -64,10 +56,10 @@ class CimetiereUtil
      * @param string $token
      *
      * @return bool
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function captchaverify(string $token = null): bool
     {
@@ -93,7 +85,7 @@ class CimetiereUtil
         $data = json_decode($response->getContent(), true);
         $success = (bool)$data['success'];
 
-        if (false === $success) {
+        if (!$success) {
             foreach ($data['error-codes'] as $error) {
                 $this->error = $error;
             }
@@ -102,7 +94,7 @@ class CimetiereUtil
         return $success;
     }
 
-    public function getCimetiereByDefault($username)
+    public function getCimetiereByDefault($username): ?string
     {
         $preference = $this->preferenceRepository->findOneBy(
             [
@@ -111,14 +103,14 @@ class CimetiereUtil
             ]
         );
 
-        if ($preference) {
+        if ($preference !== null) {
             return $preference->getValeur();
         }
 
         return null;
     }
 
-    public function setCimetiereByDefault($username, Cimetiere $cimetiere)
+    public function setCimetiereByDefault($username, Cimetiere $cimetiere): void
     {
         $preference = $this->preferenceRepository->findOneBy(
             [
@@ -127,7 +119,7 @@ class CimetiereUtil
             ]
         );
 
-        if (!$preference) {
+        if ($preference === null) {
             $preference = new Preference();
             $preference->setClef('cimetiere');
             $preference->setNom('Cimetiere par defaut pour encodage');

@@ -19,44 +19,38 @@ class Page implements SluggableInterface
     use SluggableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank()
      */
-    private $titre;
+    private ?string $titre = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotBlank()
      */
-    private $contenu;
+    private ?string $contenu = null;
 
     /**
      * @Assert\File(
      *     maxSize = "7M"
      * )
-     *
-     * @var File|null
      */
-    private $imageFile;
+    private ?File $imageFile = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
-    private $imageName;
+    private ?string $imageName = null;
 
     public function __toString()
     {

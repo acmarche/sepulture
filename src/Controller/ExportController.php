@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Service\CimetiereUtil;
@@ -23,30 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ExportController extends AbstractController
 {
-    /**
-     * @var PdfFactory
-     */
-    private $pdfFactory;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-    /**
-     * @var XlsFactory
-     */
-    private $xlsFactory;
-    /**
-     * @var FinderJf
-     */
-    private $finderJf;
-    /**
-     * @var CimetiereUtil
-     */
-    private $cimetiereUtil;
-    /**
-     * @var ZipFactory
-     */
-    private $zipFactory;
+    private PdfFactory $pdfFactory;
+    private SessionInterface $session;
+    private XlsFactory $xlsFactory;
+    private FinderJf $finderJf;
+    private CimetiereUtil $cimetiereUtil;
+    private ZipFactory $zipFactory;
 
     public function __construct(
         SessionInterface $session,
@@ -67,7 +50,7 @@ class ExportController extends AbstractController
     /**
      * @Route("/sepulture/{slug}", name="export_sepulture_pdf", methods={"GET"})
      */
-    public function sepulture(Sepulture $sepulture)
+    public function sepulture(Sepulture $sepulture): Response
     {
         return $this->pdfFactory->sepulture($sepulture);
     }
@@ -75,7 +58,7 @@ class ExportController extends AbstractController
     /**
      * @Route("/search", name="export_sepulture_search_pdf", methods={"GET"})
      */
-    public function search()
+    public function search(): Response
     {
         if (!$this->session->has('sepulture_search')) {
             return $this->redirectToRoute('sepulture');
@@ -87,7 +70,7 @@ class ExportController extends AbstractController
     /**
      * @Route("/cimetiere/{slug}", name="export_cimetiere_pdf", methods={"GET"})
      */
-    public function cimetiere(Cimetiere $cimetiere)
+    public function cimetiere(Cimetiere $cimetiere): PdfResponse
     {
         return $this->pdfFactory->cimetiere($cimetiere);
     }
@@ -122,7 +105,7 @@ class ExportController extends AbstractController
     /**
      * @Route("/indigent/", name="export_indigent_xls", methods={"GET"})
      */
-    public function indigent()
+    public function indigent(): BinaryFileResponse
     {
         return $this->xlsFactory->create();
     }
@@ -131,14 +114,14 @@ class ExportController extends AbstractController
      * @Route("/finish/{slug}", name="export_rw_cimetiere", methods={"GET"})
      * @Route("/finish", name="export_rw", methods={"GET"})
      */
-    public function rw(Cimetiere $cimetiere = null)
+    public function rw(Cimetiere $cimetiere = null): Response
     {
         $path = $this->finderJf->getExportDirectory();
         $directories = $this->finderJf->findDirectories($path);
 
         $files = [];
 
-        if ($cimetiere) {
+        if ($cimetiere !== null) {
             $fullpath = $this->finderJf->getOuputPath($cimetiere);
             $files = $this->finderJf->find_all_files($fullpath, $cimetiere->getSlug());
         }
@@ -156,7 +139,7 @@ class ExportController extends AbstractController
     /**
      * @Route("/zip/{id}", name="export_rw_cimetiere_zip", methods={"GET"})
      */
-    public function downloadZip(Cimetiere $cimetiere)
+    public function downloadZip(Cimetiere $cimetiere): Response
     {
         $zip = $this->zipFactory->create($cimetiere);
         $fileName = $zip->filename;

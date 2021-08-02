@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Exception;
+
 use AcMarche\Sepulture\Form\User\LostPasswordType;
 use AcMarche\Sepulture\Form\User\ResettingFormType;
 use AcMarche\Sepulture\Repository\UserRepository;
@@ -20,18 +22,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class ResettingController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private Mailer $mailer;
 
     public function __construct(
         UserRepository $userRepository,
@@ -46,11 +39,10 @@ class ResettingController extends AbstractController
     /**
      * @Route("/", name="sepulture_password_lost", methods={"GET", "POST"})
      *
-     * @return Response
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function request(Request $request)
+    public function request(Request $request): Response
     {
         $form = $this->createForm(LostPasswordType::class)
             ->add('submit', SubmitType::class, ['label' => 'Demander un nouveau mot de passe']);
@@ -59,7 +51,7 @@ class ResettingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->userRepository->findOneBy(['email' => $form->getData()->getEmail()]);
-            if (!$user) {
+            if ($user === null) {
                 $this->addFlash('warning', 'Aucun utilisateur trouvé');
 
                 return $this->redirectToRoute('sepulture_password_lost');
@@ -82,10 +74,8 @@ class ResettingController extends AbstractController
 
     /**
      * @Route("/confirmation", name="sepulture_password_confirmation", methods={"GET"})
-     *
-     * @return Response
      */
-    public function requestConfirmed()
+    public function requestConfirmed(): Response
     {
         return $this->render(
             'resetting/confirmed.html.twig'
@@ -98,10 +88,8 @@ class ResettingController extends AbstractController
      * @Route("/reset/{token}", name="sepulture_password_reset", methods={"GET","POST"})
      *
      * @param string $token
-     *
-     * @return Response
      */
-    public function reset(Request $request, $token)
+    public function reset(Request $request, $token): Response
     {
         $user = $this->userRepository->findOneBy(['confirmationToken' => $token]);
 
@@ -136,7 +124,7 @@ class ResettingController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function generateToken(): string
     {

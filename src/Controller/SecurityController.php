@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +14,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $tokenManager;
+    private CsrfTokenManagerInterface $tokenManager;
 
     public function __construct(CsrfTokenManagerInterface $tokenManager)
     {
@@ -25,10 +23,8 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/login", name="app_login")
-     *
-     * @return Response
      */
-    public function login(Request $request)
+    public function login(Request $request): Response
     {
         /** @var $session Session */
         $session = $request->getSession();
@@ -69,26 +65,24 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login_check", name="app_login_check")
      */
-    public function check()
+    public function check(): void
     {
-        throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
+        throw new RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
     }
 
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout()
+    public function logout(): void
     {
-        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
+        throw new RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 
     /**
      * Renders the login template with the given parameters. Overwrite this function in
      * an extended controller to provide additional data for the login template.
-     *
-     * @return Response
      */
-    protected function renderLogin(array $data)
+    protected function renderLogin(array $data): Response
     {
         return $this->render('@Sepulture/security/login.html.twig', $data);
     }

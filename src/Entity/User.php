@@ -3,26 +3,26 @@
 namespace AcMarche\Sepulture\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="AcMarche\Sepulture\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
-class User implements UserInterface
+class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -33,37 +33,31 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private ?string $password = null;
 
     /**
-     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
-    private $salt;
+    private ?string $salt = null;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $prenom;
+    private ?string $prenom = null;
 
     /**
      * Random string sent to the user email address in order to verify it.
      *
      * @ORM\Column(name="confirmation_token",type="string", length=180, unique=true, nullable=true)
-     *
-     * @var string|null
      */
-    private $confirmationToken;
+    private ?string $confirmationToken = null;
 
-    /**
-     * @var string|null
-     */
-    private $plain_password;
+    private ?string $plain_password = null;
 
     public function __construct()
     {
@@ -80,7 +74,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -139,7 +133,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): string
     {
         return (string) $this->salt;  // not needed when using the "bcrypt" algorithm in security.yaml
     }
@@ -147,7 +141,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

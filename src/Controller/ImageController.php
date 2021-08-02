@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
+use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Service\FileHelper;
 use AcMarche\Sepulture\Service\Mailer;
@@ -21,14 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ImageController extends AbstractController
 {
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private FileHelper $fileHelper;
+    private Mailer $mailer;
 
     public function __construct(FileHelper $fileHelper, Mailer $mailer)
     {
@@ -42,7 +38,7 @@ class ImageController extends AbstractController
      * @Route("/new/{id}", name="image_edit", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function edit(Sepulture $sepulture)
+    public function edit(Sepulture $sepulture): Response
     {
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('image_upload', ['id' => $sepulture->getId()]))
@@ -67,7 +63,7 @@ class ImageController extends AbstractController
      * @Route("/upload/{id}", name="image_upload", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function upload(Request $request, Sepulture $sepulture)
+    public function upload(Request $request, Sepulture $sepulture): Response
     {
         if ($request->isXmlHttpRequest()) {
             $file = $request->files->get('file');
@@ -102,12 +98,12 @@ class ImageController extends AbstractController
      * @Route("/delete/{sepultureId}", name="image_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function delete(Request $request, $sepultureId)
+    public function delete(Request $request, $sepultureId): Response
     {
         $em = $this->getDoctrine()->getManager();
         $sepulture = $em->getRepository(Sepulture::class)->find($sepultureId);
 
-        if (!$sepulture) {
+        if ($sepulture === null) {
             throw $this->createNotFoundException('Unable to find Sepulture entity.');
         }
 
@@ -144,9 +140,9 @@ class ImageController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('image_delete', ['sepultureId' => $id]))

@@ -26,42 +26,15 @@ use Twig\Environment;
 
 class PdfFactory
 {
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
-    /**
-     * @var Environment
-     */
-    private $environment;
-    /**
-     * @var Pdf
-     */
-    private $pdf;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-    /**
-     * @var SepultureRepository
-     */
-    private $sepultureRepository;
-    /**
-     * @var CimetiereUtil
-     */
-    private $cimetiereUtil;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-    /**
-     * @var FinderJf
-     */
-    private $finderJf;
+    private FileHelper $fileHelper;
+    private Environment $environment;
+    private Pdf $pdf;
+    private SessionInterface $session;
+    private SepultureRepository $sepultureRepository;
+    private CimetiereUtil $cimetiereUtil;
+    private ParameterBagInterface $parameterBag;
+    private FormFactoryInterface $formFactory;
+    private FinderJf $finderJf;
 
     public function __construct(
         FileHelper $fileHelper,
@@ -85,7 +58,7 @@ class PdfFactory
         $this->finderJf = $finderJf;
     }
 
-    public function sepulture(Sepulture $sepulture)
+    public function sepulture(Sepulture $sepulture): Response
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
 
@@ -109,7 +82,7 @@ class PdfFactory
     }
 
 
-    public function search()
+    public function search(): PdfResponse
     {
         $data = unserialize($this->session->get('sepulture_search'));
 
@@ -148,7 +121,7 @@ class PdfFactory
     }
 
 
-    public function cimetiere(Cimetiere $cimetiere)
+    public function cimetiere(Cimetiere $cimetiere): PdfResponse
     {
         $sepultures = $this->sepultureRepository->search(['cimetiere' => $cimetiere]);
 
@@ -185,7 +158,7 @@ class PdfFactory
         );
     }
 
-    public function sihl(Cimetiere $cimetiere, bool $rw = false)
+    public function sihl(Cimetiere $cimetiere, bool $rw = false): ?PdfResponse
     {
         $ville = $this->parameterBag->get('acmarche_sepulture_nom_ville');
 
@@ -262,7 +235,7 @@ class PdfFactory
     }
 
 
-    public function a1945(Cimetiere $cimetiere, bool $rw = false)
+    public function a1945(Cimetiere $cimetiere, bool $rw = false): ?PdfResponse
     {
         $ville = $this->parameterBag->get('acmarche_sepulture_nom_ville');
 

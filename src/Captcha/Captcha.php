@@ -4,15 +4,13 @@
 namespace AcMarche\Sepulture\Captcha;
 
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 class Captcha
 {
     const SESSION_NAME = 'sepul_comment';
-    /**
-     * @var HttpClient
-     */
-    private $client;
+    private HttpClientInterface $client;
 
     public function __construct()
     {
@@ -24,11 +22,7 @@ class Captcha
         if (!$value) {
             return false;
         }
-        if (preg_match('#kitten#', $value)) {
-            return true;
-        }
-
-        return false;
+        return (bool) preg_match('#kitten#', $value);
     }
 
     public function getDog(): string
@@ -56,7 +50,7 @@ class Captcha
         return $animals;
     }
 
-    public function getObjects()
+    public function getObjects(): void
     {
         // https://picsum.photos/seed/picsum/200/300
         // https://source.unsplash.com/random/200/300

@@ -19,7 +19,7 @@ class TypeSepultureRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeSepulture::class);
     }
 
-    public function getForSearch()
+    public function getForSearch(): array
     {
         $qb = $this->createQueryBuilder('t');
 

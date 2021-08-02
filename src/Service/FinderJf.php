@@ -17,17 +17,14 @@ use Symfony\Component\Finder\Finder;
 
 class FinderJf
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
         $this->parameterBag = $parameterBag;
     }
 
-    function find_all_files(string $path, string $slugname)
+    function find_all_files(string $path, string $slugname): array
     {
         $files = [];
         $finder = new Finder();
@@ -49,14 +46,14 @@ class FinderJf
         return $files;
     }
 
-    public function findDirectories(string $path)
+    public function findDirectories(string $path): Finder
     {
         $finder = new Finder();
 
         return $directories = $finder->directories()->in($path);
     }
 
-    public function cleanFolder(Cimetiere $cimetiere)
+    public function cleanFolder(Cimetiere $cimetiere): void
     {
         $filesystem = new Filesystem();
         $path = $this->getOuputPath($cimetiere);
@@ -81,7 +78,7 @@ class FinderJf
         return $this->getExportDirectory().DIRECTORY_SEPARATOR.$cimetiere->getSlug().DIRECTORY_SEPARATOR;
     }
 
-    public function getCacheDirectory() {
+    public function getCacheDirectory(): string {
          return $this->parameterBag->get(
                 'kernel.project_dir'
             ).DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR;

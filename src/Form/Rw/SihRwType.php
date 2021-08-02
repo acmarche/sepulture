@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SihRwType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $status = Rw::sihl();
 

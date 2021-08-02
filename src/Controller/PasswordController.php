@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
 use AcMarche\Sepulture\Entity\User;
 use AcMarche\Sepulture\Form\User\UserPasswordType;
 use AcMarche\Sepulture\Repository\UserRepository;
@@ -20,14 +21,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class PasswordController extends AbstractController
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private UserRepository $userRepository;
 
     public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, UserRepository $userRepository)
     {
@@ -40,7 +35,7 @@ class PasswordController extends AbstractController
      *
      * @Route("/{id}", name="user_change_password", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user)
+    public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserPasswordType::class, $user)
             ->add('Update', SubmitType::class);

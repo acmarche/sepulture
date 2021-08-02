@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+
 use AcMarche\Sepulture\Entity\Visuel;
 use AcMarche\Sepulture\Form\VisuelType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +26,7 @@ class VisuelController extends AbstractController
      *
      * @Route("/", name="visuel", methods={"GET"})
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -41,9 +45,9 @@ class VisuelController extends AbstractController
      *
      * @param Visuel $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createCreateForm(Visuel $entity)
+    private function createCreateForm(Visuel $entity): FormInterface
     {
         $form = $this->createForm(
             VisuelType::class,
@@ -65,7 +69,7 @@ class VisuelController extends AbstractController
      * @Route("/new", name="visuel_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $entity = new Visuel();
         $form = $this->createCreateForm($entity);
@@ -94,7 +98,7 @@ class VisuelController extends AbstractController
      *
      * @Route("/{id}", name="visuel_show", methods={"GET"})
      */
-    public function show(Visuel $visuel)
+    public function show(Visuel $visuel): Response
     {
         $deleteForm = $this->createDeleteForm($visuel->getId());
 
@@ -113,7 +117,7 @@ class VisuelController extends AbstractController
      * @Route("/{id}/edit", name="visuel_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Visuel $visuel)
+    public function edit(Request $request, Visuel $visuel): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -142,9 +146,9 @@ class VisuelController extends AbstractController
      *
      * @param Visuel $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createEditForm(Visuel $entity)
+    private function createEditForm(Visuel $entity): FormInterface
     {
         $form = $this->createForm(
             VisuelType::class,
@@ -166,7 +170,7 @@ class VisuelController extends AbstractController
      * @Route("/{id}", name="visuel_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -175,7 +179,7 @@ class VisuelController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Visuel::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Visuel entity.');
             }
 
@@ -192,9 +196,9 @@ class VisuelController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('visuel_delete', ['id' => $id]))

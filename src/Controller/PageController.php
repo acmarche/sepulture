@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use AcMarche\Sepulture\Entity\Page;
 use AcMarche\Sepulture\Form\PageType;
 use AcMarche\Sepulture\Service\FileHelper;
@@ -21,10 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PageController extends AbstractController
 {
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
+    private FileHelper $fileHelper;
 
     public function __construct(FileHelper $fileHelper)
     {
@@ -36,7 +35,7 @@ class PageController extends AbstractController
      *
      * @Route("/{slug}", name="page_show", methods={"GET"})
      */
-    public function show(Page $page)
+    public function show(Page $page): Response
     {
         $deleteForm = $this->createDeleteForm($page->getId());
 
@@ -55,7 +54,7 @@ class PageController extends AbstractController
      * @Route("/{id}/edit", name="page_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Page $page)
+    public function edit(Request $request, Page $page): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -89,7 +88,7 @@ class PageController extends AbstractController
      * @Route("/{id}", name="page_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -98,7 +97,7 @@ class PageController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Page::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Page entity.');
             }
 
@@ -118,9 +117,9 @@ class PageController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('page_delete', ['id' => $id]))
@@ -129,7 +128,7 @@ class PageController extends AbstractController
             ->getForm();
     }
 
-    private function traitfiles(FormInterface $form, Page $page)
+    private function traitfiles(FormInterface $form, Page $page): void
     {
         $image = $form->get('imageFile')->getData();
 

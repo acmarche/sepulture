@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+
 use AcMarche\Sepulture\Entity\Sihl;
 use AcMarche\Sepulture\Form\SihlType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -22,7 +26,7 @@ class SihlController extends AbstractController
      *
      * @Route("/", name="sihl", methods={"GET"})
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -39,9 +43,9 @@ class SihlController extends AbstractController
      *
      * @param Sihl $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createCreateForm(Sihl $entity)
+    private function createCreateForm(Sihl $entity): FormInterface
     {
         $form = $this->createForm(
             SihlType::class,
@@ -63,7 +67,7 @@ class SihlController extends AbstractController
      * @Route("/new", name="sihl_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $entity = new Sihl();
         $form = $this->createCreateForm($entity);
@@ -90,7 +94,7 @@ class SihlController extends AbstractController
      *
      * @Route("/{id}", name="sihl_show", methods={"GET"})
      */
-    public function show(Sihl $sihl)
+    public function show(Sihl $sihl): Response
     {
         $deleteForm = $this->createDeleteForm($sihl->getId());
 
@@ -107,7 +111,7 @@ class SihlController extends AbstractController
      * @Route("/{id}/edit", name="sihl_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Sihl $sihl)
+    public function edit(Request $request, Sihl $sihl): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -134,9 +138,9 @@ class SihlController extends AbstractController
      *
      * @param Sihl $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createEditForm(Sihl $entity)
+    private function createEditForm(Sihl $entity): FormInterface
     {
         $form = $this->createForm(
             SihlType::class,
@@ -158,7 +162,7 @@ class SihlController extends AbstractController
      * @Route("/{id}", name="sihl_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -167,7 +171,7 @@ class SihlController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Sihl::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Sihl entity.');
             }
 
@@ -184,9 +188,9 @@ class SihlController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sihl_delete', ['id' => $id]))

@@ -19,7 +19,7 @@ class SihlRepository extends ServiceEntityRepository
         parent::__construct($registry, Sihl::class);
     }
 
-    public function getForSearch()
+    public function getForSearch(): array
     {
         $qb = $this->createQueryBuilder('s');
 

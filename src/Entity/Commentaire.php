@@ -18,47 +18,39 @@ class Commentaire implements TimestampableInterface
     use TimestampableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", length=150, nullable=false)
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", length=150, nullable=false)
      * @Assert\Email()
      */
-    private $email;
+    private ?string $email = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="text", nullable=false)
      */
-    protected $remarques;
+    protected ?string $remarques = null;
 
     /**
-     * @var Sepulture|null
      * @ORM\ManyToOne(targetEntity="AcMarche\Sepulture\Entity\Sepulture", inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
      */
-    protected $sepulture;
+    protected ?Sepulture $sepulture = null;
 
-    /**
-     * @var string|null
-     */
-    private $captcha;
+    private ?string $captcha = null;
 
     public function __toString()
     {

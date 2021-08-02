@@ -14,45 +14,40 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Preference
 {
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank()
      */
-    private $clef;
+    private ?string $clef = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotBlank()
      */
-    private $valeur;
+    private ?string $valeur = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotBlank()
      */
-    private $username;
+    private ?string $username = null;
 
     public function __toString()
     {

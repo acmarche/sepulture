@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,37 +15,37 @@ class ContactRw
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $gestionnaire;
+    private ?string $gestionnaire = null;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $adresse;
+    private ?string $adresse = null;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $codeIns;
+    private ?string $codeIns = null;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $telephone;
+    private ?string $telephone = null;
 
     /**
      * @ORM\Column(type="date")
@@ -61,7 +62,7 @@ class ContactRw
         return $this->id;
     }
 
-    public function getGestionnaire(): ?string
+    public function getGestionnaire(): string
     {
         return $this->gestionnaire;
     }
@@ -73,7 +74,7 @@ class ContactRw
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getAdresse(): string
     {
         return $this->adresse;
     }
@@ -85,7 +86,7 @@ class ContactRw
         return $this;
     }
 
-    public function getCodeIns(): ?string
+    public function getCodeIns(): string
     {
         return $this->codeIns;
     }
@@ -97,7 +98,7 @@ class ContactRw
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
@@ -133,24 +134,24 @@ class ContactRw
         return $this;
     }
 
-    public function getDateRapport(): ?\DateTimeInterface
+    public function getDateRapport(): ?DateTimeInterface
     {
         return $this->dateRapport;
     }
 
-    public function setDateRapport(\DateTimeInterface $dateRapport): self
+    public function setDateRapport(DateTimeInterface $dateRapport): self
     {
         $this->dateRapport = $dateRapport;
 
         return $this;
     }
 
-    public function getDateExpiration(): ?\DateTimeInterface
+    public function getDateExpiration(): ?DateTimeInterface
     {
         return $this->dateExpiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $dateExpiration): self
+    public function setDateExpiration(DateTimeInterface $dateExpiration): self
     {
         $this->dateExpiration = $dateExpiration;
 

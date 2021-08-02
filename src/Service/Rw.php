@@ -12,7 +12,7 @@ namespace AcMarche\Sepulture\Service;
 
 class Rw
 {
-    public static function a1945()
+    public static function a1945(): array
     {
         return [
             'Monument à préserver dans son emplacement à revendre ou réaffectation communale',
@@ -22,7 +22,7 @@ class Rw
         ];
     }
 
-    public static function sihl()
+    public static function sihl(): array
     {
         return [
             'Monument à préserver dans son emplacement',

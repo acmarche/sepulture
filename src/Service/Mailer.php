@@ -14,26 +14,11 @@ use Twig\Environment;
 
 class Mailer
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-    /**
-     * @var FlashBagInterface
-     */
-    private $flashBag;
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private Environment $twig;
+    private FlashBagInterface $flashBag;
+    private MailerInterface $mailer;
+    private ParameterBagInterface $parameterBag;
+    private RouterInterface $router;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -49,7 +34,7 @@ class Mailer
         $this->router = $router;
     }
 
-    public function send($from, $destinataires, $sujet, $body)
+    public function send($from, $destinataires, $sujet, $body): void
     {
         $mail = (new Email())
             ->subject($sujet)
@@ -64,7 +49,7 @@ class Mailer
         }
     }
 
-    public function sendCommentaire(Commentaire $commentaire, string $error)
+    public function sendCommentaire(Commentaire $commentaire, string $error): void
     {
         $sujet = 'Commentaire sur une sépulture';
         $from = $this->parameterBag->get('acmarche_sepulture_email');
@@ -78,7 +63,7 @@ class Mailer
         $this->send($from, $to, $sujet, $body);
     }
 
-    public function sendRequestNewPassword(User $user)
+    public function sendRequestNewPassword(User $user): void
     {
         $from = $this->parameterBag->get('acmarche_sepulture_email');
         $url = $this->router->generate('sepulture_password_reset', ['token' => $user->getConfirmationToken()]);
@@ -96,7 +81,7 @@ class Mailer
         $this->send($from, $user->getEmail(), $sujet, $body);
     }
 
-    public function sendCaptchaNotWork(Commentaire $commentaire, string $error)
+    public function sendCaptchaNotWork(Commentaire $commentaire, string $error): void
     {
         $sujet = '!Commentaire échoué sur une sépulture';
         $from = $this->parameterBag->get('acmarche_sepulture_email');
@@ -110,7 +95,7 @@ class Mailer
         $this->send($from, $to, $sujet, $body);
     }
 
-    public function sendError(string $sujet, string $body)
+    public function sendError(string $sujet, string $body): void
     {
         $from = $this->parameterBag->get('acmarche_sepulture_email');
         $to = 'jf@marche.be';

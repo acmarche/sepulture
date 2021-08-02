@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use AcMarche\Sepulture\Entity\Preference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,17 +20,17 @@ class PreferenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Preference::class);
     }
 
-    public function persist(Preference $preference)
+    public function persist(Preference $preference): void
     {
         $this->_em->persist($preference);
     }
 
-    public function save()
+    public function save(): void
     {
         $this->_em->flush();
     }
 
-    public function remove(Preference $preference)
+    public function remove(Preference $preference): void
     {
         $this->_em->remove($preference);
         $this->save();
@@ -40,7 +41,7 @@ class PreferenceRepository extends ServiceEntityRepository
      *
      * @return mixed
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getCimetiereDefault($criteria)
     {
@@ -59,8 +60,6 @@ class PreferenceRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $results = $query->getOneOrNullResult();
-
-        return $results;
+        return $query->getOneOrNullResult();
     }
 }

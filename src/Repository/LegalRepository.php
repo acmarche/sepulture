@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AcMarche\Sepulture\Entity\Legal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,7 +20,7 @@ class LegalRepository extends ServiceEntityRepository
         parent::__construct($registry, Legal::class);
     }
 
-    public function getForList()
+    public function getForList(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
         $qb->orderBy('c.nom', 'ASC');

@@ -2,6 +2,9 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Entity\Defunt;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Form\DefuntType;
@@ -24,7 +27,7 @@ class DefuntController extends AbstractController
      * @Route("/new/{id}", name="defunt_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function new(Request $request, Sepulture $sepulture)
+    public function new(Request $request, Sepulture $sepulture): Response
     {
         $entity = new Defunt();
         $entity->setSepulture($sepulture);
@@ -64,7 +67,7 @@ class DefuntController extends AbstractController
      *
      * @Route("/{id}", name="defunt_show", methods={"GET"})
      */
-    public function show(Defunt $defunt)
+    public function show(Defunt $defunt): Response
     {
         $deleteForm = $this->createDeleteForm($defunt->getId());
 
@@ -83,7 +86,7 @@ class DefuntController extends AbstractController
      * @Route("/{id}/edit", name="defunt_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function edit(Request $request, Defunt $defunt)
+    public function edit(Request $request, Defunt $defunt): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -114,9 +117,9 @@ class DefuntController extends AbstractController
      *
      * @param Defunt $entity The entity
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createEditForm(Defunt $entity)
+    private function createEditForm(Defunt $entity): FormInterface
     {
         $form = $this->createForm(
             DefuntType::class,
@@ -137,7 +140,7 @@ class DefuntController extends AbstractController
      * @Route("/{id}", name="defunt_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -146,7 +149,7 @@ class DefuntController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Defunt::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Defunt entity.');
             }
 
@@ -168,9 +171,9 @@ class DefuntController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('defunt_delete', ['id' => $id]))

@@ -17,27 +17,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Legal
 {
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(name="nom", type="string", length=100, nullable=false, options={"comment" = "nom"})
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @var Sepulture|null
+     * @var Sepulture[]|null
      * @ORM\OneToMany(targetEntity="Sepulture", mappedBy="legal")
      */
-    private $sepultures;
+    private iterable $sepultures;
 
     public function __construct()
     {
@@ -69,7 +67,7 @@ class Legal
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): Collection
+    public function getSepultures(): ?iterable
     {
         return $this->sepultures;
     }

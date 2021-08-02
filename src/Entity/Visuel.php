@@ -16,27 +16,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Visuel
 {
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(name="nom", type="string", length=100, nullable=false, options={"comment" = "nom"})
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
      * @var Sepulture[]|iterable
      * @ORM\OneToMany(targetEntity="Sepulture", mappedBy="visuel")
      */
-    private $sepultures;
+    private Collection $sepultures;
 
     public function __toString()
     {
@@ -71,7 +69,7 @@ class Visuel
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): Collection
+    public function getSepultures(): iterable
     {
         return $this->sepultures;
     }

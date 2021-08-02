@@ -19,17 +19,17 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         return $this->findBy([], ['createdAt' => 'DESC']);
     }
 
-    public function persist(Commentaire $commentaire)
+    public function persist(Commentaire $commentaire): void
     {
         $this->_em->persist($commentaire);
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->_em->flush();
     }

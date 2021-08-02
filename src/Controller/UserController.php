@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
 use AcMarche\Sepulture\Entity\User;
 use AcMarche\Sepulture\Form\User\UserType;
 use AcMarche\Sepulture\Form\User\UtilisateurEditType;
@@ -19,10 +20,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordEncoderInterface $userPasswordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
     {

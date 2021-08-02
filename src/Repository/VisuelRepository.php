@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AcMarche\Sepulture\Entity\Visuel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,7 +20,7 @@ class VisuelRepository extends ServiceEntityRepository
         parent::__construct($registry, Visuel::class);
     }
 
-    public function getForSearch()
+    public function getForSearch(): array
     {
         $qb = $this->createQueryBuilder('v');
 
@@ -36,7 +37,7 @@ class VisuelRepository extends ServiceEntityRepository
         return $types;
     }
 
-    public function getForList()
+    public function getForList(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
         $qb->orderBy('c.nom', 'ASC');

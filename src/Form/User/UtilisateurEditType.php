@@ -7,13 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class UtilisateurEditType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->remove('plainPassword');
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return UserType::class;
     }

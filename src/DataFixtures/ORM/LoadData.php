@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\DataFixtures\ORM;
 
+use AcMarche\Sepulture\Entity\Visuel;
 use AcMarche\Sepulture\Entity\Legal;
 use AcMarche\Sepulture\Entity\Materiaux;
 use AcMarche\Sepulture\Entity\Page;
@@ -17,7 +18,7 @@ class LoadData extends Fixture
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $admin = new User();
         $admin->setNom('admin');
@@ -44,7 +45,7 @@ class LoadData extends Fixture
             'Defaut' => 'Défaut d\'entretient',
         ];
         foreach ($choice_visuel as $visuel) {
-            $t = new \AcMarche\Sepulture\Entity\Visuel();
+            $t = new Visuel();
             $t->setNom($visuel);
             $manager->persist($t);
         }

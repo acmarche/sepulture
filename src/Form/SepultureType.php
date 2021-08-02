@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SepultureType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $statuts = CimetiereUtil::getStatuts();
 
@@ -92,9 +92,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Visuel::class,
-                    'query_builder' => function (VisuelRepository $cr) {
-                        return $cr->getForList();
-                    },
+                    'query_builder' => fn(VisuelRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
@@ -103,9 +101,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Legal::class,
-                    'query_builder' => function (LegalRepository $cr) {
-                        return $cr->getForList();
-                    },
+                    'query_builder' => fn(LegalRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
@@ -218,7 +214,7 @@ class SepultureType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -227,7 +223,7 @@ class SepultureType extends AbstractType
         );
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return SepultureAddType::class;
     }

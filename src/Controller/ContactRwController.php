@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
+use DateTime;
 use AcMarche\Sepulture\Entity\ContactRw;
 use AcMarche\Sepulture\Form\ContactRwType;
 use AcMarche\Sepulture\Repository\ContactRwRepository;
@@ -34,8 +36,8 @@ class ContactRwController extends AbstractController
     public function new(Request $request): Response
     {
         $contactRw = new ContactRw();
-        $contactRw->setDateExpiration(new \DateTime());
-        $contactRw->setDateRapport(new \DateTime());
+        $contactRw->setDateExpiration(new DateTime());
+        $contactRw->setDateRapport(new DateTime());
 
         $form = $this->createForm(ContactRwType::class, $contactRw);
         $form->handleRequest($request);

@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\DoctrineExtensions;
 
+use Doctrine\ORM\Query\AST\Node;
 /*
  * Created by PhpStorm.
  * User: jfsenechal
@@ -15,9 +16,9 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class AnyValue extends FunctionNode
 {
-    public $value; // la valeur  passée en paramètre de la fction ANY_VALUE()
+    public ?Node $value = null; // la valeur  passée en paramètre de la fction ANY_VALUE()
 
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $parser->match(Lexer::T_IDENTIFIER); //identifie la fonction ANY_VALUE() de mysql
         $parser->match(Lexer::T_OPEN_PARENTHESIS); //parenthèse ouvrante
@@ -25,7 +26,7 @@ class AnyValue extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS); ////parenthèse fermante
     }
 
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
         return 'ANY_VALUE('.$this->value->dispatch($sqlWalker).')';
     }

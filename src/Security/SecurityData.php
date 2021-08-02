@@ -10,19 +10,19 @@ namespace AcMarche\Sepulture\Security;
 
 class SecurityData
 {
-    public static function getRoles()
+    public static function getRoles(): array
     {
         $roles = [self::getRoleAdmin(), self::getRoleEditeur()];
 
         return array_combine($roles, $roles);
     }
 
-    public static function getRoleAdmin()
+    public static function getRoleAdmin(): string
     {
         return 'ROLE_SEPULTURE_ADMIN';
     }
 
-    public static function getRoleEditeur()
+    public static function getRoleEditeur(): string
     {
         return 'ROLE_SEPULTURE_EDITEUR';
     }

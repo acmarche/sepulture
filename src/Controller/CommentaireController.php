@@ -2,6 +2,9 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\Sepulture;
@@ -23,26 +26,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommentaireController extends AbstractController
 {
-    /**
-     * @var CimetiereUtil
-     */
-    private $cimetiereUtil;
-    /**
-     * @var Mailer
-     */
-    private $mailer;
-    /**
-     * @var CommentaireRepository
-     */
-    private $commentaireRepository;
-    /**
-     * @var Captcha
-     */
-    private $captcha;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private CimetiereUtil $cimetiereUtil;
+    private Mailer $mailer;
+    private CommentaireRepository $commentaireRepository;
+    private Captcha $captcha;
+    private SessionInterface $session;
 
     public function __construct(
         CommentaireRepository $commentaireRepository,
@@ -64,7 +52,7 @@ class CommentaireController extends AbstractController
      * @Route("/", name="commentaire", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function index()
+    public function index(): Response
     {
         $entities = $this->commentaireRepository->findAll();
 
@@ -81,7 +69,7 @@ class CommentaireController extends AbstractController
      *
      * @Route("/new/{id}", name="commentaire_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Sepulture $sepulture)
+    public function new(Request $request, Sepulture $sepulture): Response
     {
         $commentaire = new Commentaire();
         $commentaire->setSepulture($sepulture);
@@ -131,7 +119,7 @@ class CommentaireController extends AbstractController
      * @Route("/{id}", name="commentaire_show", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function show(Commentaire $commentaire)
+    public function show(Commentaire $commentaire): Response
     {
         $deleteForm = $this->createDeleteForm($commentaire->getId());
 
@@ -150,7 +138,7 @@ class CommentaireController extends AbstractController
      * @Route("/{id}", name="commentaire_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -159,7 +147,7 @@ class CommentaireController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Commentaire::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Commentaire entity.');
             }
 
@@ -175,9 +163,9 @@ class CommentaireController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('commentaire_delete', ['id' => $id]))

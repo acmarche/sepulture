@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Rw1945Type extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $status = Rw::a1945();
 

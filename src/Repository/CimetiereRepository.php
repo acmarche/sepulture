@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,7 +20,7 @@ class CimetiereRepository extends ServiceEntityRepository
         parent::__construct($registry, Cimetiere::class);
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         return $this->findBy([], ['nom' => 'ASC']);
     }
@@ -29,7 +30,7 @@ class CimetiereRepository extends ServiceEntityRepository
      *
      * @return Cimetiere[]
      */
-    public function search($criteria)
+    public function search($criteria): array
     {
         $nom = isset($criteria['nom']) ? $criteria['nom'] : null;
 
@@ -53,7 +54,7 @@ class CimetiereRepository extends ServiceEntityRepository
         return $results;
     }
 
-    public function getForSearch()
+    public function getForSearch(): array
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -70,7 +71,7 @@ class CimetiereRepository extends ServiceEntityRepository
         return $cimetieres;
     }
 
-    public function getForList()
+    public function getForList(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
         $qb->orderBy('c.id', 'DESC');
@@ -78,13 +79,13 @@ class CimetiereRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function insert(Cimetiere $cimetiere)
+    public function insert(Cimetiere $cimetiere): void
     {
         $this->_em->persist($cimetiere);
         $this->save();
     }
 
-    private function save()
+    private function save(): void
     {
         $this->_em->flush();
     }

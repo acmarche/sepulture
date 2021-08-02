@@ -10,14 +10,8 @@ use Twig\TwigFilter;
 
 class FileDownload extends AbstractExtension
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
+    private ParameterBagInterface $parameterBag;
+    private FileHelper $fileHelper;
 
     public function __construct(FileHelper $fileHelper, ParameterBagInterface $parameterBag)
     {
@@ -27,26 +21,23 @@ class FileDownload extends AbstractExtension
 
     /**
      * @Override
-     *
-     * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('acmarche_sepulture_download_sepulture', [$this, 'downloadSepulture']),
-            new TwigFilter('acmarche_sepulture_getimage', [$this, 'getimage']),
-            new TwigFilter('acmarche_sepulture_download_cimetiere', [$this, 'downloadCimetiere']),
+            new TwigFilter('acmarche_sepulture_download_sepulture', fn(Sepulture $sepulture, $fileName) => $this->downloadSepulture($sepulture, $fileName)),
+            new TwigFilter('acmarche_sepulture_getimage', fn(string $idsepulture) => $this->getImage($idsepulture)),
+            new TwigFilter('acmarche_sepulture_download_cimetiere', fn($fileName) => $this->downloadCimetiere($fileName)),
         ];
     }
 
-    public function downloadSepulture(Sepulture $sepulture, $fileName)
+    public function downloadSepulture(Sepulture $sepulture, $fileName): string
     {
         $directory = $this->parameterBag->get(
                 'acmarche_sepulture_download_sepulture_directory'
             ).DIRECTORY_SEPARATOR.$sepulture->getId();
-        $file = $directory.DIRECTORY_SEPARATOR.$fileName;
 
-        return $file;
+        return $directory.DIRECTORY_SEPARATOR.$fileName;
     }
 
     public function getImage(string $idsepulture)
@@ -59,11 +50,10 @@ class FileDownload extends AbstractExtension
         return false;
     }
 
-    public function downloadCimetiere($fileName)
+    public function downloadCimetiere($fileName): string
     {
         $directory = $this->parameterBag->get('acmarche_sepulture_download_cimetiere_directory');
-        $file = $directory.DIRECTORY_SEPARATOR.$fileName;
 
-        return $file;
+        return $directory.DIRECTORY_SEPARATOR.$fileName;
     }
 }

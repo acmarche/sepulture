@@ -26,241 +26,190 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     use SluggableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(name="parcelle", type="string", length=100, unique=true)
      * @Assert\NotBlank()
      */
-    private $parcelle;
+    private ?string $parcelle = null;
 
     /**
-     * @var Cimetiere|null
      * @ORM\ManyToOne(targetEntity="Cimetiere", inversedBy="sepultures")
      * @ORM\JoinColumn(name="cimetiere_id", referencedColumnName="id")
      * */
-    private $cimetiere;
+    private ?Cimetiere $cimetiere = null;
 
     /**
      * @var TypeSepulture[]|iterable
      * @ORM\ManyToMany(targetEntity="TypeSepulture", inversedBy="sepultures", cascade={"persist"})
      * @ORM\JoinTable(name="sepultures_types")
      */
-    private $types;
+    private Collection $types;
 
     /**
      * @var Sihl[]|iterable
      * @ORM\ManyToMany(targetEntity="AcMarche\Sepulture\Entity\Sihl", inversedBy="sepultures", cascade={"persist"})
      * @ORM\JoinTable(name="sepultures_sihls")
      */
-    private $sihls;
+    private Collection $sihls;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="statut", type="string", length=255, nullable=true, options={"comment" = "finis, a relire, erreurs.."})
      */
-    private $statut;
+    private ?string $statut = null;
 
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $statutSih;
+    private ?int $statutSih = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="type_autre", type="string", length=255, nullable=true, options={"comment" = "autre type"})
      */
-    private $type_autre;
+    private ?string $type_autre = null;
 
     /**
      * @var Materiaux[]|iterable
      * @ORM\ManyToMany(targetEntity="Materiaux", inversedBy="sepultures")
      */
-    private $materiaux;
+    private Collection $materiaux;
 
     /**
-     * @var Visuel|null
      * @ORM\ManyToOne(targetEntity="Visuel", inversedBy="sepultures")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $visuel;
+    private ?Visuel $visuel = null;
 
     /**
-     * @var Legal|null
      * @ORM\ManyToOne(targetEntity="Legal", inversedBy="sepultures")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $legal;
+    private ?Legal $legal = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="materiaux_autre", type="string", length=255, nullable=true, options={"comment" = "autre materiaux"})
      */
-    private $materiaux_autre;
+    private ?string $materiaux_autre = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description_autre", type="text", nullable=true)
      */
-    private $description_autre;
+    private ?string $description_autre = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="aspect_visuel", type="string", length=200, nullable=true, options={"comment" = "bon,moyen,ruine..."})
      */
-    private $aspect_visuel;
+    private ?string $aspect_visuel = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="aspect_legal", type="string", length=200, nullable=true, options={"comment" = "bon,moyen,ruine..."})
      */
-    private $aspect_legal;
+    private ?string $aspect_legal = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="symbole", type="text", nullable=true, options={"comment" = "epis,fleur,franc-macon..."})
      */
-    private $symbole;
+    private ?string $symbole = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="epitaphe", type="text", nullable=true, options={"comment" = "et devises"})
      */
-    private $epitaphe;
+    private ?string $epitaphe = null;
 
     /**
      * @var Defunt[]|iterable
      * @ORM\OneToMany(targetEntity="Defunt", mappedBy="sepulture", cascade={"remove"})
      * @ORM\OrderBy({"nom" = "ASC"})
      * */
-    private $defunts;
+    private Collection $defunts;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="architectural", type="text", nullable=true, options={"comment" = "interet historique"})
      */
-    private $architectural;
+    private ?string $architectural = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="sociale", type="text", nullable=true, options={"comment" = "fonction sociale"})
      */
-    private $sociale;
+    private ?string $sociale = null;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(name="sociale_check", type="boolean", nullable=true, options={"comment" = "inscription mise ou pas"})
      */
-    private $sociale_check;
+    private ?bool $sociale_check;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(name="combattant14", type="boolean", nullable=true, options={"comment" = "ancien combattant 14-18"})
      */
-    private $combattant14;
+    private ?bool $combattant14;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(name="combattant40", type="boolean", nullable=true, options={"comment" = "ancien combattant 40-45"})
      */
-    private $combattant40;
+    private ?bool $combattant40;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="contact", type="text", nullable=true)
      */
-    private $contact;
+    private ?string $contact = null;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(name="annee_releve", type="integer", length=4, nullable=true)
      */
-    private $annee_releve;
+    private ?int $annee_releve = null;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(name="guerre", type="boolean", nullable=true, options={"comment" = "1er immu avant 45"})
      */
-    private $guerre;
+    private ?bool $guerre;
 
     /**
      * PARTIE REGION WALLONNE.
      */
-
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="rw_statut", type="text", nullable=true)
      */
-    private $rw_statut;
+    private ?string $rw_statut = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="rw_commentaire", type="text", nullable=true)
      */
-    private $rw_commentaire;
+    private ?string $rw_commentaire = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="url", type="string", nullable=true, options={"comment" = "genealogie"})
      */
-    private $url;
+    private ?string $url = null;
 
     /**
      * @var Commentaire[]|iterable
      * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="sepulture", cascade={"persist", "remove"})
      *
      * */
-    private $commentaires;
+    private Collection $commentaires;
 
     /**
-     * @var User|null
      * @ORM\ManyToOne(targetEntity="AcMarche\Sepulture\Entity\User")
      * @ORM\JoinColumn(name="user_add", nullable=false)
      */
-    protected $user_add;
+    protected ?User $user_add = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $user;
+    private ?string $user = null;
 
     public function __toString()
     {
@@ -569,7 +518,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     /**
      * @return Collection|TypeSepulture[]
      */
-    public function getTypes(): Collection
+    public function getTypes(): iterable
     {
         return $this->types;
     }
@@ -595,7 +544,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     /**
      * @return Collection|Sihl[]
      */
-    public function getSihls(): Collection
+    public function getSihls(): iterable
     {
         return $this->sihls;
     }
@@ -621,7 +570,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     /**
      * @return Collection|Materiaux[]
      */
-    public function getMateriaux(): Collection
+    public function getMateriaux(): iterable
     {
         return $this->materiaux;
     }
@@ -671,7 +620,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     /**
      * @return Collection|Defunt[]
      */
-    public function getDefunts(): Collection
+    public function getDefunts(): iterable
     {
         return $this->defunts;
     }
@@ -702,7 +651,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
     /**
      * @return Collection|Commentaire[]
      */
-    public function getCommentaires(): Collection
+    public function getCommentaires(): iterable
     {
         return $this->commentaires;
     }
@@ -742,7 +691,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface
         return $this;
     }
 
-    public function getStatutSih(): ?int
+    public function getStatutSih(): int
     {
         return $this->statutSih;
     }

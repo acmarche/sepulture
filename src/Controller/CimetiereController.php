@@ -2,6 +2,9 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Form\CimetiereType;
@@ -23,22 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CimetiereController extends AbstractController
 {
-    /**
-     * @var CimetiereUtil
-     */
-    private $cimetiereUtil;
-    /**
-     * @var CimetiereFileService
-     */
-    private $cimetiereFileService;
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
-    /**
-     * @var SepultureRepository
-     */
-    private $sepultureRepository;
+    private CimetiereUtil $cimetiereUtil;
+    private CimetiereFileService $cimetiereFileService;
+    private FileHelper $fileHelper;
+    private SepultureRepository $sepultureRepository;
 
     public function __construct(
         CimetiereUtil $cimetiereUtil,
@@ -57,7 +48,7 @@ class CimetiereController extends AbstractController
      *
      * @Route("/", name="cimetiere", methods={"GET"})
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -83,7 +74,7 @@ class CimetiereController extends AbstractController
      * @Route("/new", name="cimetiere_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $entity = new Cimetiere();
 
@@ -98,7 +89,7 @@ class CimetiereController extends AbstractController
 
             $cimetiere = $em->getRepository(Cimetiere::class)->findoneBy(['nom' => $entity->getNom()]);
 
-            if ($cimetiere) {
+            if ($cimetiere !== null) {
                 $this->addFlash('error', 'Il ne peut y avoir deux cimetière avec le même nom');
 
                 return $this->redirectToRoute('cimetiere_new');
@@ -128,7 +119,7 @@ class CimetiereController extends AbstractController
      *
      * @Route("/{slug}", name="cimetiere_show", methods={"GET"})
      */
-    public function show(Cimetiere $cimetiere)
+    public function show(Cimetiere $cimetiere): Response
     {
         $em = $this->getDoctrine()->getManager();
         $sepultures = $em->getRepository(Sepulture::class)->search(['cimetiere' => $cimetiere]);
@@ -153,7 +144,7 @@ class CimetiereController extends AbstractController
      * @Route("/{slug}/edit", name="cimetiere_edit", methods={"GET","PUT"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Cimetiere $cimetiere)
+    public function edit(Request $request, Cimetiere $cimetiere): Response
     {
         $em = $this->getDoctrine()->getManager();
         $editForm = $this->createEditForm($cimetiere);
@@ -182,9 +173,9 @@ class CimetiereController extends AbstractController
      *
      * @param Cimetiere $entity The entity
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createEditForm(Cimetiere $entity)
+    private function createEditForm(Cimetiere $entity): FormInterface
     {
         $form = $this->createForm(
             CimetiereType::class,
@@ -206,7 +197,7 @@ class CimetiereController extends AbstractController
      * @Route("/{id}", name="cimetiere_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -215,7 +206,7 @@ class CimetiereController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Cimetiere::class)->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Cimetiere entity.');
             }
 
@@ -233,9 +224,9 @@ class CimetiereController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('cimetiere_delete', ['id' => $id]))
@@ -250,7 +241,7 @@ class CimetiereController extends AbstractController
      * @Route("/delete/file/{id}", name="cimetiere_file_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function deleteFile(Request $request, Cimetiere $cimetiere)
+    public function deleteFile(Request $request, Cimetiere $cimetiere): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -297,7 +288,7 @@ class CimetiereController extends AbstractController
         return $this->redirectToRoute('cimetiere_show', ['slug' => $cimetiere->getSlug()]);
     }
 
-    private function createFileDeleteForm($id)
+    private function createFileDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('cimetiere_file_delete', ['id' => $id]))
@@ -314,7 +305,7 @@ class CimetiereController extends AbstractController
      * @Route("/setdefault/{id}", name="cimetiere_set_default", methods={"GET"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      * */
-    public function setDefaultCimetiere(Request $request, Cimetiere $cimetiere)
+    public function setDefaultCimetiere(Request $request, Cimetiere $cimetiere): Response
     {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
@@ -322,7 +313,7 @@ class CimetiereController extends AbstractController
         $cimetiereId = $request->get('cimetiere');
         $cimetiere = $em->getRepository(Cimetiere::class)->find($cimetiereId);
 
-        if (!$cimetiere) {
+        if ($cimetiere === null) {
             $this->addFlash('error', 'Cimetière non trouvé');
 
             return $this->redirectToRoute('cimetiere');

@@ -20,17 +20,14 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class XlsFactory
 {
-    /**
-     * @var SepultureRepository
-     */
-    private $sepultureRepository;
+    private SepultureRepository $sepultureRepository;
 
     public function __construct(SepultureRepository $sepultureRepository)
     {
         $this->sepultureRepository = $sepultureRepository;
     }
 
-    public function create()
+    public function create(): BinaryFileResponse
     {
         $phpExcelObject = new Spreadsheet();
 
@@ -67,10 +64,9 @@ class XlsFactory
     /**
      * @param Spreadsheet $phpExcelObject
      *
-     * @return array
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function createXlsObject(Spreadsheet $phpExcelObject)
+    private function createXlsObject(Spreadsheet $phpExcelObject): array
     {
         $sepultures = $this->sepultureRepository->getIndigents();
 
@@ -145,7 +141,7 @@ class XlsFactory
      * @return mixed
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function defuntsXlsObject(Spreadsheet $phpExcelObject, $defunts)
+    private function defuntsXlsObject(Spreadsheet $phpExcelObject, $defunts): Spreadsheet
     {
         $phpExcelObject->createSheet();
         $active = $phpExcelObject->setActiveSheetIndex(1);

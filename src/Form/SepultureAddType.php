@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SepultureAddType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -30,9 +30,7 @@ class SepultureAddType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Cimetiere::class,
-                    'query_builder' => function (CimetiereRepository $cr) {
-                        return $cr->getForList();
-                    },
+                    'query_builder' => fn(CimetiereRepository $cr) => $cr->getForList(),
                     'placeholder' => 'Sélectionnez un cimetière',
                     'label' => 'Cimetière',
                 ]
@@ -47,7 +45,7 @@ class SepultureAddType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

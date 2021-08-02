@@ -11,29 +11,27 @@
 namespace AcMarche\Sepulture\Service;
 
 
+use ZipArchive;
 use AcMarche\Sepulture\Entity\Cimetiere;
 
 class ZipFactory
 {
-    /**
-     * @var FinderJf
-     */
-    private $finderJf;
+    private FinderJf $finderJf;
 
     public function __construct(FinderJf $finderJf)
     {
         $this->finderJf = $finderJf;
     }
 
-    public function create(Cimetiere $cimetiere): \ZipArchive
+    public function create(Cimetiere $cimetiere): ZipArchive
     {
         $fullpath = $this->finderJf->getOuputPath($cimetiere);
         $files = $this->finderJf->find_all_files($fullpath, $cimetiere->getSlug());
 
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
         $zipName = $this->finderJf->getCacheDirectory().$cimetiere->getSlug().'.zip';
 
-        $zip->open($zipName, \ZipArchive::CREATE);
+        $zip->open($zipName, ZipArchive::CREATE);
 
         foreach ($files as $file) {
             $zip->addFile($file['pathname']);

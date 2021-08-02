@@ -39,7 +39,7 @@ class DefuntRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    private function t()
+    private function t(): void
     {
         $sql = "select ANY_VALUE(d.id) as id, d.nom, count(d.nom) as lignes from AcMarche\Sepulture\Entity\Defunt d group by d.nom";
 

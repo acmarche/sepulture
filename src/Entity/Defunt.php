@@ -21,89 +21,71 @@ class Defunt implements SluggableInterface, TimestampableInterface
     use SluggableTrait;
 
     /**
-     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @ORM\Column(name="nom", type="string", length=150, nullable=false, options={"comment" = "patronyme"})
      * @Assert\NotBlank()
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="prenom", type="string", length=150, nullable=true, options={"comment" = "prenom du mort"})
      */
-    private $prenom;
+    private ?string $prenom = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="fonction", type="string", length=255, nullable=true, options={"comment" = "fonction social"})
      */
-    private $fonction;
+    private ?string $fonction = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", length=120, nullable=true, options={"comment" = "date anniversaire"})
      */
-    protected $birthday;
+    protected ?string $birthday = null;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", length=120, nullable=true, options={"comment" = "date de mort"})
      */
-    protected $date_deces;
+    protected ?string $date_deces = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="lieu_naissance", type="string", length=255, nullable=true, options={"comment" = "ne ou"})
      */
-    private $lieu_naissance;
+    private ?string $lieu_naissance = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="lieu_deces", type="string", length=255, nullable=true, options={"comment" = "mort ou"})
      */
-    private $lieu_deces;
+    private ?string $lieu_deces = null;
 
     /**
-     * @var Sepulture|null
      * @ORM\ManyToOne(targetEntity="Sepulture", inversedBy="defunts")
      * @ORM\JoinColumn(name="sepulture_id", referencedColumnName="id")
      * */
-    private $sepulture;
+    private ?Sepulture $sepulture = null;
 
     /**
-     * @var User|null
      * @ORM\ManyToOne(targetEntity="AcMarche\Sepulture\Entity\User")
      * @ORM\JoinColumn(name="user_add", nullable=false)
      */
-    protected $user_add;
+    protected ?User $user_add = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $user;
+    private ?string $user = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     public function __toString()
     {

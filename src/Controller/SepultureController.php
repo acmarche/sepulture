@@ -2,6 +2,10 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+
+use DateTime;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Commentaire;
@@ -29,34 +33,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SepultureController extends AbstractController
 {
-    /**
-     * @var FileHelper
-     */
-    private $fileHelper;
-    /**
-     * @var Mailer
-     */
-    private $mailer;
-    /**
-     * @var CimetiereUtil
-     */
-    private $cimetiereUtil;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
-    /**
-     * @var SepultureRepository
-     */
-    private $sepultureRepository;
-    /**
-     * @var Captcha
-     */
-    private $captcha;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private FileHelper $fileHelper;
+    private Mailer $mailer;
+    private CimetiereUtil $cimetiereUtil;
+    private ParameterBagInterface $parameterBag;
+    private SepultureRepository $sepultureRepository;
+    private Captcha $captcha;
+    private SessionInterface $session;
 
     public function __construct(
         SepultureRepository $sepultureRepository,
@@ -81,7 +64,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/", name="sepulture", methods={"GET"})
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $session = $request->getSession();
         $search = false;
@@ -137,12 +120,12 @@ class SepultureController extends AbstractController
      * @Route("/new", name="sepulture_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function new(Request $request)
+    public function new(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
 
         $sepulture = new Sepulture();
-        $date = new \DateTime();
+        $date = new DateTime();
         $year = $date->format('Y');
         $sepulture->setAnneeReleve($year);
 
@@ -151,7 +134,7 @@ class SepultureController extends AbstractController
         $cimetiereId = $this->cimetiereUtil->getCimetiereByDefault($user->getUsername());
         if ($cimetiereId) {
             $cimetiere = $em->getRepository(Cimetiere::class)->find($cimetiereId);
-            if ($cimetiere) {
+            if ($cimetiere !== null) {
                 $sepulture->setCimetiere($cimetiere);
             }
         }
@@ -187,7 +170,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/{slug}", name="sepulture_show", methods={"GET"})
      */
-    public function show(Sepulture $sepulture)
+    public function show(Sepulture $sepulture): Response
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
 
@@ -233,7 +216,7 @@ class SepultureController extends AbstractController
      * @Route("/{slug}/edit", name="sepulture_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function edit(Request $request, Sepulture $sepulture)
+    public function edit(Request $request, Sepulture $sepulture): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -270,7 +253,7 @@ class SepultureController extends AbstractController
      * @Route("/{id}", name="sepulture_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id): Response
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -279,7 +262,7 @@ class SepultureController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $entity = $this->sepultureRepository->find($id);
 
-            if (!$entity) {
+            if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Sepulture entity.');
             }
 
@@ -297,9 +280,9 @@ class SepultureController extends AbstractController
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\FormInterface The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sepulture_delete', ['id' => $id]))
@@ -313,7 +296,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/interet/sihl/{id}", name="sepulture_sihl", methods={"GET"})
      */
-    public function sihl(Cimetiere $cimetiere)
+    public function sihl(Cimetiere $cimetiere): Response
     {
         $sepultures = $this->sepultureRepository->getImportanceHistorique($cimetiere);
 
@@ -331,7 +314,7 @@ class SepultureController extends AbstractController
      *
      * @Route("/interet/a1945/{id}", name="sepulture_a1945", methods={"GET"})
      */
-    public function a1945(Cimetiere $cimetiere)
+    public function a1945(Cimetiere $cimetiere): Response
     {
         $sepultures = $this->sepultureRepository->getAvant1945($cimetiere);
 

@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use AcMarche\Sepulture\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +15,12 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index()
+    public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
         $page = $em->getRepository(Page::class)->findOneBy(['slug' => 'home']);
-        if (!$page) {
+        if ($page === null) {
             $page = $this->createHomePage();
         }
 
@@ -35,7 +36,7 @@ class DefaultController extends AbstractController
      * @Route("/plantage", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function plantage()
+    public function plantage(): Response
     {
         $this->propo->findAll();
 
@@ -45,7 +46,7 @@ class DefaultController extends AbstractController
         );
     }
 
-    protected function createHomePage()
+    protected function createHomePage(): Page
     {
         $em = $this->getDoctrine()->getManager();
         $page = new Page();
