@@ -41,10 +41,10 @@ class Cimetiere implements SluggableInterface
     private ?string $description = null;
 
     /**
-     * @var Sepulture|null
+     * @var Sepulture[]|array
      * @ORM\OneToMany(targetEntity="Sepulture", mappedBy="cimetiere", cascade={"remove"})
      */
-    protected Collection $sepultures;
+    protected iterable $sepultures;
 
     /**
      * @Assert\File(
@@ -197,7 +197,7 @@ class Cimetiere implements SluggableInterface
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): ?Sepulture
+    public function getSepultures(): iterable
     {
         return $this->sepultures;
     }
