@@ -19,7 +19,7 @@ class DefaultController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $page = $em->getRepository(Page::class)->findOneBy(['slug' => 'home']);
+        $page = $em->getRepository(Page::class)->find(1);
         if ($page === null) {
             $page = $this->createHomePage();
         }
