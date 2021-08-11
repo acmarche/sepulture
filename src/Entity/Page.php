@@ -62,6 +62,11 @@ class Page implements SluggableInterface
         return ['titre'];
     }
 
+    private function shouldRegenerateSlugOnUpdate(): bool
+    {
+        return false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
