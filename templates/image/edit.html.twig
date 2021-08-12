@@ -6,33 +6,29 @@
 
 {% block body %}
 
-    <div class="card"><h3 class="card-header">Gestion des images pour la sépulture {{ sepulture.parcelle }}</h3>
+    <div class="card">
+        <h3 class="card-header">Gestion des images pour la sépulture {{ sepulture.parcelle }}</h3>
         <div class="card-body">
-
-    <div class="btn-toolbar" role="toolbar" style="margin: 10px;">
-        <div class="btn-group">
             <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}" class="btn btn-primary"
                role="button"><i class="fas fa-list"></i> Retour à la sépulture</a>
-        </div>
-        <div class="btn-group">
+
             <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" class="btn btn-primary"
                role="button"><i class="fas fa-pencil-alt"></i> Editer la sépulture</a>
+
+            {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone'}}) }}
+            {{ form_errors(form) }}
+            {{ form_end(form) }}
+
+            {% if images | length > 0 %}
+                {% include "@Sepulture/image/images.html.twig" %}
+            {% else %}
+                <p class="text-warning">Aucune image actuellement</p>
+            {% endif %}
+
+            <br/>
+
         </div>
     </div>
-
-    {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'well dropzone'}}) }}
-    {{ form_errors(form) }}
-    {{ form_end(form) }}
-
-    {% if images | length > 0 %}
-        {% include "@Sepulture/image/images.html.twig" %}
-    {% else %}
-        <p class="text-warning">Aucune image actuellement</p>
-    {% endif %}
-
-    <br/>
-
-</div></div>
 {% endblock %}
 
 {% block javascripts %}

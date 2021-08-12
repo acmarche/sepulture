@@ -34,9 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SepultureController extends AbstractController
 {
     private FileHelper $fileHelper;
-    private Mailer $mailer;
     private CimetiereUtil $cimetiereUtil;
-    private ParameterBagInterface $parameterBag;
     private SepultureRepository $sepultureRepository;
     private Captcha $captcha;
     private SessionInterface $session;
@@ -51,9 +49,7 @@ class SepultureController extends AbstractController
         SessionInterface $session
     ) {
         $this->fileHelper = $fileHelper;
-        $this->mailer = $mailer;
         $this->cimetiereUtil = $cimetiereUtil;
-        $this->parameterBag = $parameterBag;
         $this->sepultureRepository = $sepultureRepository;
         $this->captcha = $captcha;
         $this->session = $session;
@@ -279,7 +275,7 @@ class SepultureController extends AbstractController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sepulture_delete', ['id' => $id]))
             ->setMethod('DELETE')
-              ->getForm();
+            ->getForm();
     }
 
     /**

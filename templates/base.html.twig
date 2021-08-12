@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="h-100">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     {{ encore_entry_script_tags('app') }}
 
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 {% set action = app.request.attributes.get("_route") %}
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -24,7 +24,7 @@
     </header>
 </div>
 
-<main role="main" class="container pt-3 d-flex flex-column h-100">
+<main role="main" class="container pt-3">
 
     {% include '@AcMarcheSepulture/_flash_messages.html.twig' %}
 
