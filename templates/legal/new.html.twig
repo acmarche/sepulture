@@ -2,19 +2,20 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>Nouvel aspect légal</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Nouvel aspect légal</h3>
+        <div class="card-body">
 
-    <div class="row">
-        <div class="col-lg-8">
-            {{ form(form) }}
+            <div class="row">
+                <div class="col-lg-8">
+                    {{ form(form) }}
+                </div>
+            </div>
+
+            <a href="{{ path('legal') }}">
+                <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
+            </a>
+
         </div>
     </div>
-
-    <a href="{{ path('legal') }}">
-        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
-    </a>
-
 {% endblock %}
 

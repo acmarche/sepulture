@@ -1,9 +1,8 @@
 {% extends '@Sepulture/base.html.twig' %}
 
 {% block body -%}
-    <div class="page-header">
-        <h3>Liste des sépultures</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Liste des sépultures</h3>
+        <div class="card-body">
 
     {% include '@Sepulture/search/form.html.twig' with {'form': search_form } %}
 
@@ -72,4 +71,5 @@
             <p class="text-warning">Aucune sépulture trouvée suivant vos critères de recherche</p>
         {% endif %}
     {% endif %}
+</div></div>
 {% endblock %}

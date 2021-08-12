@@ -1,9 +1,8 @@
 {% extends '@Sepulture/base.html.twig' %}
 
 {% block body %}
-    <div class="page-header">
-        <h3>Contact pour la Région Wallonne</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Contact pour la Région Wallonne</h3>
+        <div class="card-body">
 
     {% if is_granted('ROLE_SEPULTURE_ADMIN') and contacts|length == 0 %}
         <a href="{{ path('contact_rw_new') }}" class="btn btn-primary">
@@ -40,4 +39,5 @@
         </tbody>
     </table>
 
+</div></div>
 {% endblock %}

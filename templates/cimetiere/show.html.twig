@@ -4,9 +4,8 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3><strong>{{ cimetiere }}</strong></h3>
-    </div>
+    <div class="card"><h3 class="card-header"><strong>{{ cimetiere }}</strong></h3>
+        <div class="card-body">
 
     {% include '@Sepulture/cimetiere/actions.html.twig' %}
     <br/>
@@ -56,4 +55,5 @@
     <br/>
     {% include '@Sepulture/cimetiere/delete.html.twig' %}
 
+</div></div>
 {% endblock %}

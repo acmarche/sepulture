@@ -4,11 +4,11 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>{{ user }}</h3>
-    </div>
+    <div class="card"><h3 class="card-header">{{ user }}</h3>
+        <div class="card-body">
 
     {% include '@Sepulture/user/actions.html.twig' %}
 
     {{ include('@Sepulture/user/_delete_form.html.twig') }}
+</div></div>
 {% endblock %}

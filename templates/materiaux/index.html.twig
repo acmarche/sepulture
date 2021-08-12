@@ -2,9 +2,8 @@
 
 {% block body -%}
 
-    <div class="page-header">
-        <h3>Liste des matériaux</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Liste des matériaux</h3>
+        <div class="card-body">
 
     {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
                 <a href="{{ path('materiaux_new') }}" class="btn btn-primary">
@@ -29,4 +28,5 @@
         </tbody>
     </table>
 
+</div></div>
 {% endblock %}

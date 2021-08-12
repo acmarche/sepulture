@@ -1,9 +1,9 @@
 {% extends '@Sepulture/base.html.twig' %}
 
 {% block body -%}
-    <div class="page-header">
-        <h3>Liste des types</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Liste des types</h3>
+
+        <div class="card-body">
 
     {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
         <a href="{{ path('typesepulture_new') }}" class="btn btn-primary">
@@ -29,5 +29,6 @@
         {% endfor %}
         </tbody>
     </table>
+</div></div>
 
 {% endblock %}

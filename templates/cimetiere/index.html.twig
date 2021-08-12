@@ -2,9 +2,8 @@
 
 {% block body -%}
 
-    <div class="page-header">
-        <h3>Liste des cimetières</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Liste des cimetières</h3>
+        <div class="card-body">
 
     {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
         <a href="{{ path('cimetiere_new') }}">
@@ -71,4 +70,5 @@
         </tbody>
     </table>
 
+</div></div>
 {% endblock %}

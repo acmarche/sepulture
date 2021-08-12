@@ -1,40 +1,41 @@
 {% extends '@Sepulture/base.html.twig' %}
 
 {% block body %}
-    <div class="page-header">
-        <h3>Cimetières exportés</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Cimetières exportés</h3>
+        <div class="card-body">
 
-    <ul class="list-group">
-        {% for directory in directories %}
-            <li class="list-group-item">
-                <a href="{{ path('export_rw_cimetiere',{'slug':  directory.basename }) }}">
-                    {{ directory.basename }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-
-    {% if cimetiere is not null %}
-        <h4>{{ cimetiere.nom }}</h4>
-        {% if files | length > 0 %}
-            <p>
-                <a href="{{ path('export_rw_cimetiere_zip', {'id': cimetiere.id}) }}">Télécharger tout</a>
-            </p>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Nom</th>
-                    <th>Taille</th>
-                </tr>
-                {% for file in files %}
-                    <tr>
-                        <td><a href="{{ file.url }}">{{ file.name }}</a></td>
-                        <td>{{ file.size|number_format(2,',','.') }} Kbyte</td>
-                    </tr>
+            <ul class="list-group">
+                {% for directory in directories %}
+                    <li class="list-group-item">
+                        <a href="{{ path('export_rw_cimetiere',{'slug':  directory.basename }) }}">
+                            {{ directory.basename }}
+                        </a>
+                    </li>
                 {% endfor %}
-            </table>
-        {% else %}
-            <p>Aucun fichier trouvé</p>
-        {% endif %}
-    {% endif %}
+            </ul>
+
+            {% if cimetiere is not null %}
+                <h4>{{ cimetiere.nom }}</h4>
+                {% if files | length > 0 %}
+                    <p>
+                        <a href="{{ path('export_rw_cimetiere_zip', {'id': cimetiere.id}) }}">Télécharger tout</a>
+                    </p>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Taille</th>
+                        </tr>
+                        {% for file in files %}
+                            <tr>
+                                <td><a href="{{ file.url }}">{{ file.name }}</a></td>
+                                <td>{{ file.size|number_format(2,',','.') }} Kbyte</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <p>Aucun fichier trouvé</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

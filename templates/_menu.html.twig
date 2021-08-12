@@ -1,30 +1,17 @@
 {% set action = app.request.attributes.get("_route") %}
 
-<li {% if action == 'sepulture' %} class="active" {% endif %}>
-    <a href="{{ path('sepulture') }}"><span class="glyphicon glyphicon-search"></span> Rechercher
-    </a>
-</li>
-<li {% if action == 'patronymes' %} class="active" {% endif %}>
-    <a href="{{ path('patronymes') }}">
-        Patronymes
-    </a>
-</li>
-<li {% if action == 'cimetiere' %} class="active" {% endif %}>
-    <a href="{{ path('cimetiere') }}">Cimetières
-    </a>
-</li>
-<li {% if action == 'page_show' %} class="active" {% endif %}>
-    <a href="{{ path('page_show', {'slug':'contact'}) }}">Contact
-    </a>
-</li>
-{% if app.user %}
-
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a href="{{ path('sepulture') }}" class="nav-link" aria-current="page">
+            Rechercher
+        </a>
+    </li>
+    <li class="nav-item"><a href="{{ path('patronymes') }}" class="nav-link">Patronymes</a></li>
+    <li class="nav-item"><a href="{{ path('cimetiere') }}" class="nav-link">Cimetières</a></li>
+    <li class="nav-item"><a href="{{ path('page_show', {'slug':'contact'}) }}" class="nav-link">Contact</a></li>
     {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
-        <li {% if action == 'sepulture_new' %} class="active" {% endif %}>
-            <a href="{{ path('sepulture_new') }}">
-                <span class="glyphicon glyphicon-plus"></span> Nouvelle sépulture
-            </a>
-        </li>
+        <li class="nav-item"><a href="{{ path('sepulture_new') }}" class="nav-link">Nouvelle sépulture</a></li>
+        <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
     {% endif %}
 
     {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
@@ -42,9 +29,13 @@
             </ul>
         </li>
     {% endif %}
-{% else %}
-    <li>
-        <a href="{{ path('app_login') }}">
-            <span class="glyphicon glyphicon-log-in"></span> Connexion</a>
-    </li>
-{% endif %}
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Se connecter</a></li>
+    {% endif %}
+
+
+</ul>
+
+

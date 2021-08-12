@@ -1,15 +1,16 @@
- {% extends '@Sepulture/base.html.twig' %}
+{% extends '@Sepulture/base.html.twig' %}
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>{{ entity }}</h3>
+    <div class="card"><h3 class="card-header">{{ entity }}</h3>
+        <div class="card-body">
+
+            {% include '@Sepulture/legal/actions.html.twig' %}
+
+            {% include '@Sepulture/cimetiere/sepultures.html.twig' with {'sepultures': entity.sepultures } %}
+
+            {% include '@Sepulture/legal/delete.html.twig' %}
+
+        </div>
     </div>
-
-{% include '@Sepulture/legal/actions.html.twig'  %}
-
-{% include '@Sepulture/cimetiere/sepultures.html.twig' with {'sepultures': entity.sepultures } %}
-
-{% include '@Sepulture/legal/delete.html.twig' %}
-
 {% endblock %}

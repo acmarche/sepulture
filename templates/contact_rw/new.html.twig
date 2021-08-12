@@ -3,13 +3,14 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>Nouveau contact</h3>
+    <div class="card"><h3 class="card-header">Nouveau contact</h3>
+        <div class="card-body">
+
+            {{ include('@Sepulture/contact_rw/_form.html.twig') }}
+
+            <a href="{{ path('contact_rw_index') }}">
+                <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
+            </a>
+        </div>
     </div>
-
-    {{ include('@Sepulture/contact_rw/_form.html.twig') }}
-
-    <a href="{{ path('contact_rw_index') }}">
-        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
-    </a>
 {% endblock %}

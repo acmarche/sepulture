@@ -2,9 +2,8 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>{{ entity.nom }}</h3>
-    </div>
+    <div class="card"><h3 class="card-header">{{ entity.nom }}</h3>
+        <div class="card-body">
 
 {% include '@Sepulture/type_sepulture/actions.html.twig' %}
 <br />
@@ -14,4 +13,5 @@
 <br />
 {% include '@Sepulture/type_sepulture/delete.html.twig' %}
 
+</div></div>
 {% endblock %}

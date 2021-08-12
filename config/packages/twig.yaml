@@ -1,5 +1,5 @@
 twig:
-  form_themes: ['bootstrap_3_layout.html.twig','@FOSCKEditor/Form/ckeditor_widget.html.twig']
+  form_themes: ['bootstrap_5_layout.html.twig']
   paths:
     '%kernel.project_dir%/src/AcMarche/Sepulture/templates': AcMarcheSepulture
   globals:

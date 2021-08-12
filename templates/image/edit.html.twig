@@ -6,9 +6,8 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>Gestion des images pour la sépulture {{ sepulture.parcelle }}</h3>
-    </div>
+    <div class="card"><h3 class="card-header">Gestion des images pour la sépulture {{ sepulture.parcelle }}</h3>
+        <div class="card-body">
 
     <div class="btn-toolbar" role="toolbar" style="margin: 10px;">
         <div class="btn-group">
@@ -33,6 +32,7 @@
 
     <br/>
 
+</div></div>
 {% endblock %}
 
 {% block javascripts %}

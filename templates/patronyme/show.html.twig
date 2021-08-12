@@ -4,40 +4,41 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3>Liste des défunts avec le nom <strong>{{ defunt.nom }}</strong></h3>
-    </div>
+    <div class="card"><h3 class="card-header">Liste des défunts avec le nom <strong>{{ defunt.nom }}</strong></h3>
+        <div class="card-body">
 
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Nom du défunt</th>
-            <th>Né(e) le</th>
-            <th>Mort(e) le</th>
-            <th>Cimetière</th>
-            <th>Parcelle</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for defunt in defunts %}
-            <tr>
-                <td>
-                    <a href="{{ path('defunt_show', { 'id': defunt.id }) }}" title="Détail du défunt">
-                        {{ defunt.nom }} {{ defunt.prenom }}
-                    </a>
-                </td>
-                <td>{{ defunt.birthday }}</td>
-                <td>{{ defunt.datedeces }}</td>
-                <td>{{ defunt.sepulture.cimetiere }}</td>
-                <td>
-                    {% if defunt.sepulture %}
-                        <a href="{{ path('sepulture_show', { 'slug': defunt.sepulture.slug }) }}">
-                            {{ defunt.sepulture.parcelle }}
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Nom du défunt</th>
+                    <th>Né(e) le</th>
+                    <th>Mort(e) le</th>
+                    <th>Cimetière</th>
+                    <th>Parcelle</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for defunt in defunts %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('defunt_show', { 'id': defunt.id }) }}" title="Détail du défunt">
+                                {{ defunt.nom }} {{ defunt.prenom }}
+                            </a>
+                        </td>
+                        <td>{{ defunt.birthday }}</td>
+                        <td>{{ defunt.datedeces }}</td>
+                        <td>{{ defunt.sepulture.cimetiere }}</td>
+                        <td>
+                            {% if defunt.sepulture %}
+                                <a href="{{ path('sepulture_show', { 'slug': defunt.sepulture.slug }) }}">
+                                    {{ defunt.sepulture.parcelle }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -2,9 +2,8 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <h3><strong>{{ entity }}</strong></h3>
-    </div>
+    <div class="card"><h3 class="card-header"><strong>{{ entity }}</strong></h3>
+        <div class="card-body">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -14,4 +13,5 @@
             {{ entity.remarques | nl2br }}
         </div>
     </div>
+</div></div>
 {% endblock %}
