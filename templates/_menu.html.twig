@@ -17,7 +17,7 @@
     {% endif %}
 
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Se connecter</a></li>
+        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Se connecter</a></li>
     {% endif %}
 </ul>
 
