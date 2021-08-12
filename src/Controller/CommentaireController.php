@@ -86,7 +86,7 @@ class CommentaireController extends AbstractController
                 ),
             ]
         )
-            ->add('submit', SubmitType::class, ['label' => 'Create']);
+            ;
 
         $form->handleRequest($request);
 

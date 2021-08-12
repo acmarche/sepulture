@@ -32,8 +32,7 @@ class DefuntController extends AbstractController
         $entity = new Defunt();
         $entity->setSepulture($sepulture);
 
-        $form = $form = $this->createForm(DefuntType::class, $entity)
-            ->add('submit', SubmitType::class, ['label' => 'Create']);
+        $form = $this->createForm(DefuntType::class, $entity)            ;
 
         $form->handleRequest($request);
 
@@ -128,8 +127,6 @@ class DefuntController extends AbstractController
                 'method' => 'PUT',
             ]
         );
-
-        $form->add('submit', SubmitType::class, ['label' => 'Update']);
 
         return $form;
     }

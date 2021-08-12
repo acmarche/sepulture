@@ -2,21 +2,17 @@
 
 {% block body -%}
 
-    <div class="card"><h3 class="card-header">{{ entity }}</h3>
+    <div class="card">
+        <h3 class="card-header">{{ entity }}</h3>
         <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" name="search" value="Sauvegarder" class="btn btn-primary my-1 mr-sm-2">
+            {{ form_end(form) }}
 
-    <div class="row">
-        <div class="col-lg-8">
-            {{ form(edit_form) }}
         </div>
     </div>
-    <br/>
-
-    <a href="{{ path('typesepulture') }}">
-        <span class="glyphicon glyphicon-list"></span> Annuler et retour à la liste
-    </a>
-
-</div></div>
 {% endblock %}
 
 

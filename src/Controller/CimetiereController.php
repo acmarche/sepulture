@@ -80,7 +80,7 @@ class CimetiereController extends AbstractController
 
         $form = $this->createForm(CimetiereType::class, $entity);
 
-        $form->add('submit', SubmitType::class, ['label' => 'Create']);
+        $form;
 
         $form->handleRequest($request);
 
@@ -186,7 +186,7 @@ class CimetiereController extends AbstractController
             ]
         );
 
-        $form->add('submit', SubmitType::class, ['label' => 'Update']);
+        
 
         return $form;
     }

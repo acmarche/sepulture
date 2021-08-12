@@ -58,7 +58,7 @@ class MateriauxController extends AbstractController
             ]
         );
 
-        $form->add('submit', SubmitType::class, ['label' => 'Create']);
+        $form;
 
         return $form;
     }
@@ -159,7 +159,7 @@ class MateriauxController extends AbstractController
             ]
         );
 
-        $form->add('submit', SubmitType::class, ['label' => 'Update']);
+        
 
         return $form;
     }
