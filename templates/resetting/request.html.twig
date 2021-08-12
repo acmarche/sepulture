@@ -5,15 +5,17 @@
     <div class="card"><h3 class="card-header">Demander un nouveau mot de passe</h3>
         <div class="card-body">
 
-    <div class="row">
-        <div class="col-lg-6">
-            {{ form(form) }}
+            <div class="row">
+                <div class="col-lg-6">
+                    {{ form(form) }}
+                </div>
+            </div>
         </div>
+        <div class="card-footer">
+            <a href="{{ path('app_login') }}">
+                <span class="fas fa-list" aria-hidden="true"></span> Annuler
+            </a>
+        </div>
+
     </div>
-
-    <a href="{{ path('app_login') }}">
-        <span class="fas fa-list" aria-hidden="true"></span> Annuler
-    </a>
-
-</div></div>
 {% endblock %}

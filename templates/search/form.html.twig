@@ -1,83 +1,27 @@
-{{ form_start(form, { 'attr': {'class': 'form-inline'}}) }}
+{{ form_start(form, { 'attr': {'class': 'row row-cols-lg-auto g-3 align-items-center hidden-print'}}) }}
 {{ form_errors(form) }}
 
-<div class="hidden-print">
+{{ form_row(form.clef, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.cimetiere, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.visuel, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.parcelle, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
 
-    <div class="form-group">
+<div class="col-12"></div>
+{{ form_row(form.types, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.sihls, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.combattant14, {label_attr: {class: 'sr2-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.combattant40, {label_attr: {class: 'sr-2only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.social, {label_attr: {class: 'sr-o2nly'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.guerre, {label_attr: {class: 'sr-on2ly'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
+{{ form_row(form.annee, {label_attr: {class: 'sr-only'}, attr:{'class': 'my-1 mr-sm-2'} }) }}
 
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.clef) }}
-        </div>
+<input type="submit" name="search" value="Rechercher" class="btn btn-primary my-1 mr-sm-2">
 
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.cimetiere) }}
-        </div>
-
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.visuel) }}
-        </div>
-
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.parcelle) }}
-        </div>
-
-    </div>
-</div>
-<br/>
-<div class="hidden-print">
-    <div class="form-group">
-
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.types) }}
-        </div>
-
-        <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-            {{ form_widget(form.sihls) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.combattant14) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.combattant40) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.social) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.guerre) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.annee) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.submit) }}
-        </div>
-
-        <div class="input-group">
-            {{ form_row(form.raz) }}
-        </div>
-        {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
-            <div class="input-group">
-                <a role="button" href="{{ path('export_sepulture_search_pdf') }}" title="Exporter"
-                   class="btn btn-sm btn-success">
-                    <span class="glyphicon glyphicon-export"></span>
-                </a>
-            </div>
-        {% endif %}
-    </div>
-</div>
+{% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+    <a role="button" href="{{ path('export_sepulture_search_pdf') }}" title="Exporter"
+       class="btn btn-sm btn-success my-1 mr-sm-2 my-2"> <i class="fas fa-file-pdf"></i>
+    </a>
+{% endif %}
 
 {{ form_end(form) }}
 <br/>

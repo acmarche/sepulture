@@ -1,26 +1,18 @@
 <div class="hidden-print">
-    <div class="btn-toolbar" role="toolbar" style="margin: 0;">
-        <div class="btn-group">
-            <a href="{{ path('sepulture') }}" role="button" class="btn btn-primary">
-                <i class="glyphicon glyphicon-list"></i> Retour à la Liste</a>
-        </div>
-        {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
-            <div class="btn-group">
-                <a href="{{ path('export_sepulture_pdf', { 'slug': sepulture.slug }) }}" role="button"
-                   class="btn btn-success" rel="nofollow"><i class="glyphicon glyphicon-export"></i> Exporter</a>
-            </div>
-            <div class="btn-group">
-                <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" role="button"
-                   class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Editer</a>
-            </div>
-            <div class="btn-group">
-                <a href="{{ path('image_edit', { 'id': sepulture.id }) }}" role="button"
-                   class="btn btn-primary"><i class="glyphicon glyphicon-camera"></i> Images</a>
-            </div>
-            <div class="btn-group">
-                <a href="{{ path('defunt_new', { 'id': sepulture.id }) }}" role="button"
-                   class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Ajouter un défunt</a>
-            </div>
-        {% endif %}
-    </div>
+    <a href="{{ path('sepulture') }}" role="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-list"></i> Retour à la Liste</a>
+    {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
+        <a href="{{ path('export_sepulture_pdf', { 'slug': sepulture.slug }) }}" role="button"
+           class="btn btn-success" rel="nofollow"><i class="glyphicon glyphicon-export"></i> Exporter</a>
+        <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" role="button"
+           class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Editer</a>
+        <a href="{{ path('image_edit', { 'id': sepulture.id }) }}" role="button"
+           class="btn btn-primary"><i class="glyphicon glyphicon-camera"></i> Images</a>
+        <a href="{{ path('defunt_new', { 'id': sepulture.id }) }}" role="button"
+           class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Ajouter un défunt</a>
+
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <i class="fas fa-trash"></i> Supprimer
+    </button>
+    {% endif %}
 </div>

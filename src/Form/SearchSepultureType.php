@@ -139,21 +139,6 @@ class SearchSepultureType extends AbstractType
                     'required' => false,
                     'label'=>false
                 ]
-            )
-            ->add(
-                'submit',
-                SubmitType::class,
-                [
-                    'label' => 'Rechercher',
-                ]
-            )
-            ->add(
-                'raz',
-                SubmitType::class,
-                [
-                    'label' => 'Raz',
-                    'attr' => ['class' => 'btn-sm btn-info'],
-                ]
             );
     }
 

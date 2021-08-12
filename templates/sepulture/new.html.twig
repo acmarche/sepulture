@@ -5,26 +5,19 @@
     <div class="card"><h3 class="card-header">Nouvelle sépulture</h3>
         <div class="card-body">
 
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Les étapes</h3>
-                </div>
-                <div class="panel-body">
-                    <ol>
-                        <li>Ajout du nom de la parcelle</li>
-                        <li>Ajout des images</li>
-                        <li>Ajout des informations</li>
-                    </ol>
-                </div>
-            </div>
+            <h4 class="panel-title">Les étapes</h4>
 
-            <div class="row">
-                <div class="col-lg-8">
-                    {{ form(form) }}
-                </div>
-            </div>
+            <ol>
+                <li>Ajout du nom de la parcelle</li>
+                <li>Ajout des images</li>
+                <li>Ajout des informations</li>
+            </ol>
 
-            <br/>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" name="search" value="Ajouter" class="btn btn-primary my-1 mr-sm-2">
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

@@ -3,9 +3,6 @@
 namespace AcMarche\Sepulture\Controller;
 
 
-use DateTime;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Commentaire;
@@ -18,11 +15,14 @@ use AcMarche\Sepulture\Repository\SepultureRepository;
 use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\FileHelper;
 use AcMarche\Sepulture\Service\Mailer;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -85,12 +85,6 @@ class SepultureController extends AbstractController
         $search_form->handleRequest($request);
 
         if ($search_form->isSubmitted() && $search_form->isValid()) {
-            if ($search_form->get('raz')->isClicked()) {
-                $session->remove('sepulture_search');
-                $this->addFlash('info', 'La recherche a bien été réinitialisée.');
-
-                return $this->redirectToRoute('sepulture');
-            }
 
             $data = $search_form->getData();
             $search = true;
@@ -139,8 +133,7 @@ class SepultureController extends AbstractController
             }
         }
 
-        $form = $this->createForm(SepultureAddType::class, $sepulture)
-            ->add('submit', SubmitType::class, ['label' => 'Create']);
+        $form = $this->createForm(SepultureAddType::class, $sepulture);
 
         $form->handleRequest($request);
 
@@ -220,8 +213,7 @@ class SepultureController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(SepultureType::class, $sepulture)
-            ->add('submit', SubmitType::class, ['label' => 'Update']);
+        $form = $this->createForm(SepultureType::class, $sepulture);
 
         $deleteForm = $this->createDeleteForm($sepulture->getId());
         $images = $this->fileHelper->getImages($sepulture->getId(), 5);
@@ -287,8 +279,7 @@ class SepultureController extends AbstractController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sepulture_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
-            ->getForm();
+              ->getForm();
     }
 
     /**

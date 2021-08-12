@@ -1,54 +1,45 @@
 {% extends '@Sepulture/base.html.twig' %}
 
+{% block title %}Me connecter{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/sepulture/css/signin.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
-    <div class="row">
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="panel-title">Authentification</div>
+
+    <div class="text-center">
+
+        <main class="form-signin">
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+            {% endif %}
 
-                <div style="padding-top:30px" class="panel-body">
-                    {% if error %}
-                        <div id="login-alert" class="alert alert-danger col-sm-12">
-                            {{ error.messageKey|trans(error.messageData, 'security') }}
-                        </div>
-                    {% endif %}
-                    <form method="post" class="form-horizontal" role="form">
+            <form method="post" action="{{ path('app_login') }}">
+                <img class="mb-4" src="{{ asset('bundles/sepulture/images/Marche_logo.png') }}" alt="Adl" width="90"
+                >
+                <h1 class="h3 mb-3 fw-normal">Authentifiez vous</h1>
 
-                        <div style="margin-bottom: 25px" class="input-group">
-                            <span class="input-group-addon"><i class="far fa-user"></i></span>
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                                   class="form-control" placeholder="Votre email" required autofocus>
-                        </div>
-
-                        <div style="margin-bottom: 25px" class="input-group">
-                            <span class="input-group-addon"><i class="fas fa-user-lock"></i></span>
-                            <input type="password" name="password" id="inputPassword" class="form-control"
-                                   placeholder="mot de passe" required>
-                        </div>
-
-                        <input id="login-remember" type="hidden" name="remember" value="1">
-
-                        <div style="margin-top:10px" class="form-group">
-                            <!-- Button -->
-
-                            <div class="col-sm-12 controls">
-
-                                <input type="submit" class="btn btn-success btn-block" id="_submit" name="_submit"
-                                       value="Me connecter"/>
-
-                            </div>
-                        </div>
-                        <input type="hidden" name="_csrf_token"
-                               value="{{ csrf_token('authenticate') }}"
-                        >
-                    </form>
-
-                    <br/><a href="{{ path('sepulture_password_lost') }}">Mot de passe perdu ?</a>
-
+                <div class="form-floating">
+                    <input type="text" value="{{ last_username }}" name="email" class="form-control"
+                           id="floatingInput" placeholder="jdupont">
+                    <label for="floatingInput">Nom d'utilisateur</label>
                 </div>
-            </div>
-        </div>
+                <div class="form-floating mt-3">
+                    <input type="password" name="password" class="form-control" id="floatingPassword"
+                           placeholder="Mot de passe">
+                    <label for="floatingPassword">Mot de passe</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Me connecter</button>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </form>
+
+            <br/><a href="{{ path('sepulture_password_lost') }}">Mot de passe perdu ?</a>
+        </main>
     </div>
 {% endblock %}
+
