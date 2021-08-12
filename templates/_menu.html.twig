@@ -14,25 +14,26 @@
         <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
     {% endif %}
 
-    {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Paramètres... <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-                <li><a href="{{ path('commentaire') }}">Commentaires</a></li>
-                <li><a href="{{ path('typesepulture') }}">Types sépulture</a></li>
-                <li><a href="{{ path('materiaux') }}">Matériaux</a></li>
-                <li><a href="{{ path('visuel') }}">Aspect visuel</a></li>
-                <li><a href="{{ path('legal') }}">Aspect légal</a></li>
-                <li><a href="{{ path('sihl') }}">Sihl</a></li>
-                <li><a href="{{ path('contact_rw_index') }}">Contact Rw</a></li>
-                <li><a href="{{ path('user_index') }}">Les utilisateurs</a></li>
-            </ul>
-        </li>
-    {% endif %}
-
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Se connecter</a></li>
     {% endif %}
 </ul>
 
-
+{% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+    <div class="dropdown text-end">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            Paramètres
+        </a>
+        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="{{ path('commentaire') }}">Commentaires</a></li>
+            <li><a class="dropdown-item" href="{{ path('typesepulture') }}">Types sépulture</a></li>
+            <li><a class="dropdown-item" href="{{ path('materiaux') }}">Matériaux</a></li>
+            <li><a class="dropdown-item" href="{{ path('visuel') }}">Aspect visuel</a></li>
+            <li><a class="dropdown-item" href="{{ path('legal') }}">Aspect légal</a></li>
+            <li><a class="dropdown-item" href="{{ path('sihl') }}">Sihl</a></li>
+            <li><a class="dropdown-item" href="{{ path('contact_rw_index') }}">Contact Rw</a></li>
+            <li><a class="dropdown-item" href="{{ path('user_index') }}">Les utilisateurs</a></li>
+        </ul>
+    </div>
+{% endif %}

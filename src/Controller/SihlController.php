@@ -129,7 +129,7 @@ class SihlController extends AbstractController
         return $this->render(
             '@Sepulture/sihl/edit.html.twig', [
             'entity' => $sihl,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
         ]);
     }
 

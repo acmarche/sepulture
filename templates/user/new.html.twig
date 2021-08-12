@@ -2,11 +2,12 @@
 
 {% block body %}
 
-     <div class="card"><h3 class="card-header">Nouvel utilisateur</h3>
-         <div class="card-body">
+    <div class="card">
+        <h3 class="card-header">Nouvel utilisateur</h3>
+        <div class="card-body">
 
-    {{ include('@Sepulture/user/_form.html.twig') }}
+            {{ include('@Sepulture/user/_form.html.twig') }}
 
-    <a href="{{ path('user_index') }}">Annuler</a>
-</div></div>
+        </div>
+    </div>
 {% endblock %}

@@ -114,7 +114,7 @@ class MateriauxController extends AbstractController
     /**
      * Displays a form to edit an existing Materiaux entity.
      *
-     * @Route("/{id}/edit", name="materiaux_edit", methods={"GET","PUT"})
+     * @Route("/{id}/edit", name="materiaux_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function edit(Request $request, Materiaux $materiaux): Response
@@ -136,7 +136,7 @@ class MateriauxController extends AbstractController
             '@Sepulture/materiaux/edit.html.twig',
             [
                 'entity' => $materiaux,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -155,7 +155,7 @@ class MateriauxController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('materiaux_edit', ['id' => $entity->getId()]),
-                'method' => 'PUT',
+                
             ]
         );
 

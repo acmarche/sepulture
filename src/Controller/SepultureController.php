@@ -233,7 +233,7 @@ class SepultureController extends AbstractController
             [
                 'entity' => $sepulture,
                 'images' => $images,
-                'edit_form' => $form->createView(),
+                'form' => $form->createView(),
                 'delete_form' => $deleteForm->createView(),
             ]
         );

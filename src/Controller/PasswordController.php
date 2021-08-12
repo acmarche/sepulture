@@ -8,10 +8,10 @@ use AcMarche\Sepulture\Form\User\UserPasswordType;
 use AcMarche\Sepulture\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Password controller.
@@ -21,10 +21,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class PasswordController extends AbstractController
 {
-    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordEncoder;
     private UserRepository $userRepository;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, UserRepository $userRepository)
+    public function __construct(UserPasswordHasherInterface $userPasswordEncoder, UserRepository $userRepository)
     {
         $this->userPasswordEncoder = $userPasswordEncoder;
         $this->userRepository = $userRepository;
@@ -37,15 +37,14 @@ class PasswordController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserPasswordType::class, $user)
-            ->add('Update', SubmitType::class);
+        $form = $this->createForm(UserPasswordType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('password')->getData();
 
-            $passwordCrypted = $this->userPasswordEncoder->encodePassword($user, $plainPassword);
+            $passwordCrypted = $this->userPasswordEncoder->hashPassword($user, $plainPassword);
             $user->setPassword($passwordCrypted);
 
             $this->userRepository->save();

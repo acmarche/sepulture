@@ -2,16 +2,15 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormInterface;
-
 use AcMarche\Sepulture\Entity\TypeSepulture;
 use AcMarche\Sepulture\Form\TypeSepultureType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -114,7 +113,7 @@ class TypeSepultureController extends AbstractController
     /**
      * Displays a form to edit an existing TypeSepulture entity.
      *
-     * @Route("/{id}/edit", name="typesepulture_edit", methods={"GET","PUT"})
+     * @Route("/{id}/edit", name="typesepulture_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function edit(Request $request, TypeSepulture $type): Response
@@ -135,7 +134,7 @@ class TypeSepultureController extends AbstractController
             '@Sepulture/type_sepulture/edit.html.twig',
             [
                 'entity' => $type,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -154,11 +153,9 @@ class TypeSepultureController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('typesepulture_edit', ['id' => $entity->getId()]),
-                'method' => 'PUT',
+
             ]
         );
-
-        
 
         return $form;
     }

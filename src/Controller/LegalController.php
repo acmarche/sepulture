@@ -114,7 +114,7 @@ class LegalController extends AbstractController
     /**
      * Displays a form to edit an existing Legal entity.
      *
-     * @Route("/{id}/edit", name="legal_edit", methods={"GET","PUT"})
+     * @Route("/{id}/edit", name="legal_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function edit(Request $request, Legal $legal): Response
@@ -136,7 +136,7 @@ class LegalController extends AbstractController
             '@Sepulture/legal/edit.html.twig',
             [
                 'entity' => $legal,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -155,7 +155,7 @@ class LegalController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('legal_edit', ['id' => $entity->getId()]),
-                'method' => 'PUT',
+                
             ]
         );
 

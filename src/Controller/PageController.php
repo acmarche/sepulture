@@ -2,8 +2,6 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use AcMarche\Sepulture\Entity\Page;
 use AcMarche\Sepulture\Form\PageType;
 use AcMarche\Sepulture\Service\FileHelper;
@@ -14,6 +12,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -58,8 +57,7 @@ class PageController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $editForm = $this->createForm(PageType::class, $page)
-            ->add('submit', SubmitType::class, ['label' => 'Update']);
+        $editForm = $this->createForm(PageType::class, $page);
 
         $editForm->handleRequest($request);
 
@@ -77,7 +75,7 @@ class PageController extends AbstractController
             '@Sepulture/page/edit.html.twig',
             [
                 'entity' => $page,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }

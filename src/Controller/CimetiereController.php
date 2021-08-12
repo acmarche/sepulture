@@ -141,7 +141,7 @@ class CimetiereController extends AbstractController
     /**
      * Displays a form to edit an existing Cimetiere entity.
      *
-     * @Route("/{slug}/edit", name="cimetiere_edit", methods={"GET","PUT"})
+     * @Route("/{slug}/edit", name="cimetiere_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function edit(Request $request, Cimetiere $cimetiere): Response
@@ -163,7 +163,7 @@ class CimetiereController extends AbstractController
             '@Sepulture/cimetiere/edit.html.twig',
             [
                 'entity' => $cimetiere,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -182,7 +182,7 @@ class CimetiereController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('cimetiere_edit', ['slug' => $entity->getSlug()]),
-                'method' => 'PUT',
+                
             ]
         );
 

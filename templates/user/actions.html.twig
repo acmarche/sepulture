@@ -1,14 +1,10 @@
-<div class="btn-toolbar" role="toolbar" style="margin: 0;">
-    <div class="btn-group">
-        <a href="{{ path('user_edit', { 'id': user.id }) }}" role="button" class="btn btn-primary"><i
-                    class="fas fa-pencil-alt"></i> Editer</a>
-    </div>
-    <div class="btn-group">
-        <a href="{{ path('user_change_password', { 'id': user.id }) }}" role="button" class="btn btn-primary"><i
-                    class="glyphicon glyphicon-lock"></i> Mot de passe</a>
-    </div>
-    <div class="btn-group">
-        <a href="{{ path('user_index') }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-list"></i> Retour à la Liste</a>
-    </div>
-</div>
+<a href="{{ path('user_edit', { 'id': user.id }) }}" role="button" class="btn btn-primary"><i
+            class="fas fa-pencil-alt"></i> Editer</a>
+<a href="{{ path('user_change_password', { 'id': user.id }) }}" role="button" class="btn btn-primary"><i
+            class="fas fa-user-lock"></i> Mot de passe</a>
+<a href="{{ path('user_index') }}" class="btn btn-primary" role='button'><i
+            class="fas fa-list"></i> Retour à la Liste</a>
+
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <i class="fas fa-trash"></i> Supprimer
+    </button>

@@ -3,32 +3,33 @@
 
 {% block body %}
 
-    <div class="card"><h3 class="card-header">Liste des utilisateurs</h3>
+    <div class="card">
+        <h3 class="card-header">Liste des utilisateurs</h3>
         <div class="card-body">
+            <a href="{{ path('user_new') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Create new</a>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Roles</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.prenom }} {{ user.nom }}</td>
-                <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
-                <td>{{ user.roles|join(',') }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('user_new') }}">Create new</a>
-</div></div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.prenom }} {{ user.nom }}</td>
+                        <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
+                        <td>{{ user.roles|join(',') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

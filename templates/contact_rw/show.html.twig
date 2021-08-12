@@ -2,45 +2,47 @@
 
 {% block body %}
 
-    <div class="card"><h3 class="card-header">{{ contact.gestionnaire }}</h3>
+    <div class="card">
+        <h3 class="card-header">{{ contact.gestionnaire }}</h3>
         <div class="card-body">
 
-    {% include '@Sepulture/contact_rw/_actions.html.twig' %}
-    <br/>
+            {% include '@Sepulture/contact_rw/_actions.html.twig' %}
+            <br/>
 
-    <table class="table table-bordered">
-        <tbody>
-        <tr>
-            <th>Adresse</th>
-            <td>{{ contact.adresse }}</td>
-        </tr>
-        <tr>
-            <th>Code Ins</th>
-            <td>{{ contact.codeIns }}</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>{{ contact.nom }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ contact.email }}</td>
-        </tr>
-        <tr>
-            <th>Téléphone</th>
-            <td>{{ contact.telephone }}</td>
-        </tr>
-        <tr>
-            <th>Date de rapport</th>
-            <td>{{ contact.dateRapport ? contact.dateRapport|date('d-m-Y') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Date d'expiration</th>
-            <td>{{ contact.dateExpiration ? contact.dateExpiration|date('d-m-Y') : '' }}</td>
-        </tr>
-        </tbody>
-    </table>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Adresse</th>
+                    <td>{{ contact.adresse }}</td>
+                </tr>
+                <tr>
+                    <th>Code Ins</th>
+                    <td>{{ contact.codeIns }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ contact.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ contact.email }}</td>
+                </tr>
+                <tr>
+                    <th>Téléphone</th>
+                    <td>{{ contact.telephone }}</td>
+                </tr>
+                <tr>
+                    <th>Date de rapport</th>
+                    <td>{{ contact.dateRapport ? contact.dateRapport|date('d-m-Y') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Date d'expiration</th>
+                    <td>{{ contact.dateExpiration ? contact.dateExpiration|date('d-m-Y') : '' }}</td>
+                </tr>
+                </tbody>
+            </table>
 
-    {{ include('@Sepulture/contact_rw/_delete_form.html.twig') }}
-</div></div>
+            {{ include('@Sepulture/contact_rw/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

@@ -82,7 +82,7 @@ class DefuntController extends AbstractController
     /**
      * Displays a form to edit an existing Defunt entity.
      *
-     * @Route("/{id}/edit", name="defunt_edit", methods={"GET","PUT"})
+     * @Route("/{id}/edit", name="defunt_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
     public function edit(Request $request, Defunt $defunt): Response
@@ -106,7 +106,7 @@ class DefuntController extends AbstractController
             '@Sepulture/defunt/edit.html.twig',
             [
                 'entity' => $defunt,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -124,7 +124,7 @@ class DefuntController extends AbstractController
             DefuntType::class,
             $entity,
             [
-                'method' => 'PUT',
+                
             ]
         );
 

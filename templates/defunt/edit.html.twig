@@ -6,7 +6,7 @@
         <h3 class="card-header">Edition du défunt <b>{{ entity }}</b></h3>
         <div class="card-body">
 
-            {% include '@Sepulture/defunt/form.html.twig' with {'form' : edit_form} %}
+            {% include '@Sepulture/defunt/form.html.twig' with {'form' : form} %}
 
             <a href="{{ path('sepulture_show', { 'slug': entity.sepulture.slug }) }}">
                 <span class="fas fa-list"></span> Annuler et retour à la sépulture

@@ -114,7 +114,7 @@ class VisuelController extends AbstractController
     /**
      * Displays a form to edit an existing Visuel entity.
      *
-     * @Route("/{id}/edit", name="visuel_edit", methods={"GET","PUT"})
+     * @Route("/{id}/edit", name="visuel_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function edit(Request $request, Visuel $visuel): Response
@@ -136,7 +136,7 @@ class VisuelController extends AbstractController
             '@Sepulture/visuel/edit.html.twig',
             [
                 'entity' => $visuel,
-                'edit_form' => $editForm->createView(),
+                'form' => $editForm->createView(),
             ]
         );
     }
@@ -155,7 +155,7 @@ class VisuelController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('visuel_edit', ['id' => $entity->getId()]),
-                'method' => 'PUT',
+                
             ]
         );
 
