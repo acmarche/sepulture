@@ -5,7 +5,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail'
 import lgZoom from 'lightgallery/plugins/zoom'
 
 /*
- * This is an example Stimulus controller!
+ * Gallery controller!
  *
  * Any element with a data-controller="hello" attribute will cause
  * this controller to be executed. The name "hello" comes from the filename:
@@ -15,7 +15,6 @@ import lgZoom from 'lightgallery/plugins/zoom'
  */
 export default class extends Controller {
     connect() {
-        console.log('zeze');
         lightGallery(document.getElementById('lightgallery'), {
             plugins: [lgZoom, lgThumbnail],
             speed: 500,
