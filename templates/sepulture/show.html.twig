@@ -16,7 +16,6 @@
         </h3>
         <div class="card-body">
 
-            {% include '@Sepulture/sepulture/gallery_controls.html.twig' %}
 
             {% include '@Sepulture/sepulture/actions.html.twig' %}
             <br/>
@@ -175,19 +174,8 @@
             {% endif %}
         </div>
     </div>
-    {% include '@Sepulture/sepulture/delete.html.twig' %}
-{% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('bundles/sepulture/blueimp/js/blueimp-gallery.min.js') }}"></script>
-    <script src="{{ asset('bundles/sepulture/js/gallery.js') }}"></script>
-    <script>
-        $('.animal').click(function () {
-            $('.animal').removeClass('animalselected'); // removes the previous selected class
-            $(this).addClass('animalselected'); // adds the class to the clicked image
-            var url = $(this).data('url');
-            console.log(url);
-            $('#commentaire_captcha').val(url);
-        });
-    </script>
+    <div {{ stimulus_controller('gallery') }}></div>
+
+    {% include '@Sepulture/sepulture/delete.html.twig' %}
 {% endblock %}
