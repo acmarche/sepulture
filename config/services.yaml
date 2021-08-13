@@ -24,3 +24,10 @@ services:
   AcMarche\Sepulture\:
     resource: '../src/*'
     exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+  AcMarche\Sepulture\Security\SecurityRoles:
+    tags: ['marchebe.roles']
+
+  AcMarche\Sepulture\Security\LocatorRoles:
+    arguments:
+      - !tagged_iterator { tag: marchebe.roles}
