@@ -1,7 +1,7 @@
 {% extends '@Sepulture/base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/sepulture/dropzone/dropzone.css') }}">
+  {#   <link rel="stylesheet" href="{{ asset('bundles/sepulture/dropzone/dropzone.css') }}"> #}
 {% endblock %}
 
 {% block body %}
@@ -17,6 +17,7 @@
 
             {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone'}}) }}
             {{ form_errors(form) }}
+            {{ form_widget(form) }}
             {{ form_end(form) }}
 
             {% if images | length > 0 %}
@@ -32,9 +33,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/sepulture/dropzone/dropzone.js') }}"></script>
+  {#   <script src="{{ asset('bundles/sepulture/dropzone/dropzone.js') }}"></script>
     <script type="text/javascript">
-        Dropzone.options.formdrop = {
+       Dropzone.options.formdrop = {
             dictDefaultMessage: "Glissez ici vos images ou cliquez sur cette zone pour ajouter des photos",
             init: function () {
                 this.on("addedfile", function (file) {
@@ -43,5 +44,6 @@
             }
         };
     </script>
+    #}
 {% endblock %}
 

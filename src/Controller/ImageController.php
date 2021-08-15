@@ -3,13 +3,14 @@
 namespace AcMarche\Sepulture\Controller;
 
 
-use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Entity\Sepulture;
+use AcMarche\Sepulture\Form\ImageType;
 use AcMarche\Sepulture\Service\FileHelper;
 use AcMarche\Sepulture\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,10 +41,9 @@ class ImageController extends AbstractController
      */
     public function edit(Sepulture $sepulture): Response
     {
-        $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('image_upload', ['id' => $sepulture->getId()]))
-            ->setMethod('POST')
-            ->getForm();
+        $form = $this->createForm(ImageType::class, $sepulture, [
+            'action' => $this->generateUrl('image_upload', ['id' => $sepulture->getId()]),
+        ]);
 
         $images = $this->fileHelper->getImages($sepulture->getId());
         $deleteForm = $this->createDeleteForm($sepulture->getId());
@@ -52,9 +52,9 @@ class ImageController extends AbstractController
             '@Sepulture/image/edit.html.twig',
             [
                 'images' => $images,
+                'form' => $form->createView(),
                 'form_delete' => $deleteForm->createView(),
                 'sepulture' => $sepulture,
-                'form' => $form->createView(),
             ]
         );
     }

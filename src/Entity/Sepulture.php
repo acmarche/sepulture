@@ -211,6 +211,8 @@ class Sepulture implements SluggableInterface, TimestampableInterface
      */
     private ?string $user = null;
 
+    public array $images;
+
     public function __toString()
     {
         return $this->parcelle;
