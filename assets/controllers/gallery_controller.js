@@ -6,6 +6,7 @@ import lgZoom from 'lightgallery/plugins/zoom'
 
 /*
  * Gallery controller!
+ * https://github.com/sachinchoolur/lightGallery
  *
  * Any element with a data-controller="hello" attribute will cause
  * this controller to be executed. The name "hello" comes from the filename:
@@ -18,6 +19,7 @@ export default class extends Controller {
         lightGallery(document.getElementById('lightgallery'), {
             plugins: [lgZoom, lgThumbnail],
             speed: 500,
+            //'selector': '.card-jf'
         });
     }
 }
