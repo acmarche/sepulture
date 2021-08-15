@@ -1,17 +1,25 @@
+<br /><br />
 {{ form_start(form_delete) }}
 {{ form_errors(form_delete) }}
 {{ form_row(form_delete.submit) }}
 
-{% for image in images %}
-    <div class="pull-left center-block" style="margin: 10px; outline: 1px #28ff3d solid;">
-        <p class="text-center">
-            <label>
-                <input type="checkbox" name="img[]" value="{{ image.name }}"/>
-            </label>
-        </p>
-        <a href="{{ image.url }}" title="{{ image.name }}" data-gallery>
-            <img src="{{ image.url | imagine_filter('acmarche_sepulture_edit_thumb') }}" alt="img" class="img-thumbnail"/>
-        </a>
-    </div>
-{% endfor %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {% for image in images %}
+        <div class="col text-center">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p class="text-center">
+                        <label>
+                            <input type="checkbox" name="img[]" value="{{ image.name }}"/>
+                        </label>
+                    </p>
+                    <a href="{{ image.url }}" title="{{ image.name }}" data-gallery>
+                        <img src="{{ image.url | imagine_filter('acmarche_sepulture_edit_thumb') }}" alt="img"
+                             class="img-thumbnail"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {{ form_end(form_delete) }}

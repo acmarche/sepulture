@@ -1,9 +1,5 @@
 {% extends '@Sepulture/base.html.twig' %}
 
-{% block stylesheets %}
-  {#   <link rel="stylesheet" href="{{ asset('bundles/sepulture/dropzone/dropzone.css') }}"> #}
-{% endblock %}
-
 {% block body %}
 
     <div class="card">
@@ -15,7 +11,7 @@
             <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" class="btn btn-primary"
                role="button"><i class="fas fa-pencil-alt"></i> Editer la sépulture</a>
 
-            {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone'}}) }}
+            {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone', 'data-controller': 'dropzone'}}) }}
             {{ form_errors(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
@@ -23,7 +19,7 @@
             {% if images | length > 0 %}
                 {% include "@Sepulture/image/images.html.twig" %}
             {% else %}
-                <p class="text-warning">Aucune image actuellement</p>
+                <p class="text-warning mt-3">Aucune image actuellement</p>
             {% endif %}
 
             <br/>
@@ -31,19 +27,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block javascripts %}
-  {#   <script src="{{ asset('bundles/sepulture/dropzone/dropzone.js') }}"></script>
-    <script type="text/javascript">
-       Dropzone.options.formdrop = {
-            dictDefaultMessage: "Glissez ici vos images ou cliquez sur cette zone pour ajouter des photos",
-            init: function () {
-                this.on("addedfile", function (file) {
-                    console.log("finished");
-                });
-            }
-        };
-    </script>
-    #}
-{% endblock %}
-
