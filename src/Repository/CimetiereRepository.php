@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
 use Doctrine\ORM\QueryBuilder;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -15,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CimetiereRepository extends ServiceEntityRepository
 {
+    use OrmCrudTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cimetiere::class);
@@ -77,16 +80,5 @@ class CimetiereRepository extends ServiceEntityRepository
         $qb->orderBy('c.id', 'DESC');
 
         return $qb;
-    }
-
-    public function insert(Cimetiere $cimetiere): void
-    {
-        $this->_em->persist($cimetiere);
-        $this->save();
-    }
-
-    private function save(): void
-    {
-        $this->_em->flush();
     }
 }

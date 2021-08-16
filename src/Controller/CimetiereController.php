@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use AcMarche\Sepulture\Repository\CimetiereRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Form\FormInterface;
@@ -30,8 +31,10 @@ class CimetiereController extends AbstractController
     private CimetiereFileService $cimetiereFileService;
     private FileHelper $fileHelper;
     private SepultureRepository $sepultureRepository;
+    private CimetiereRepository $cimetiereRepository;
 
     public function __construct(
+        CimetiereRepository $cimetiereRepository,
         CimetiereUtil $cimetiereUtil,
         CimetiereFileService $cimetiereFileService,
         FileHelper $fileHelper,
@@ -41,6 +44,7 @@ class CimetiereController extends AbstractController
         $this->cimetiereFileService = $cimetiereFileService;
         $this->fileHelper = $fileHelper;
         $this->sepultureRepository = $sepultureRepository;
+        $this->cimetiereRepository = $cimetiereRepository;
     }
 
     /**
@@ -50,9 +54,7 @@ class CimetiereController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository(Cimetiere::class)->search([]);
+        $entities = $this->cimetiereRepository->search([]);
         foreach ($entities as $cimetiere) {
             $ihs = $this->sepultureRepository->getImportanceHistorique($cimetiere);
             $cimetiere->setIhsCount(count($ihs));
@@ -79,15 +81,11 @@ class CimetiereController extends AbstractController
         $entity = new Cimetiere();
 
         $form = $this->createForm(CimetiereType::class, $entity);
-
-        $form;
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
-            $cimetiere = $em->getRepository(Cimetiere::class)->findoneBy(['nom' => $entity->getNom()]);
+            $cimetiere = $$this->cimetiereRepository->findoneBy(['nom' => $entity->getNom()]);
 
             if ($cimetiere !== null) {
                 $this->addFlash('error', 'Il ne peut y avoir deux cimetière avec le même nom');
@@ -95,8 +93,8 @@ class CimetiereController extends AbstractController
                 return $this->redirectToRoute('cimetiere_new');
             }
 
-            $em->persist($entity);
-            $em->flush();
+            $this->cimetiereRepository->persist($entity);
+            $this->cimetiereRepository->flush();
 
             $this->cimetiereFileService->traitfiles($form, $entity);
 
@@ -121,8 +119,7 @@ class CimetiereController extends AbstractController
      */
     public function show(Cimetiere $cimetiere): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $sepultures = $em->getRepository(Sepulture::class)->search(['cimetiere' => $cimetiere]);
+        $sepultures = $this->sepultureRepository->search(['cimetiere' => $cimetiere]);
 
         $deleteForm = $this->createDeleteForm($cimetiere->getId());
         $deleteFileForm = $this->createFileDeleteForm($cimetiere->getId());
@@ -146,12 +143,11 @@ class CimetiereController extends AbstractController
      */
     public function edit(Request $request, Cimetiere $cimetiere): Response
     {
-        $em = $this->getDoctrine()->getManager();
         $editForm = $this->createEditForm($cimetiere);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em->flush();
+            $this->cimetiereRepository->flush();
             $this->cimetiereFileService->traitfiles($editForm, $cimetiere);
 
             $this->addFlash('success', 'Le cimetière a bien été modifié');
@@ -182,11 +178,11 @@ class CimetiereController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('cimetiere_edit', ['slug' => $entity->getSlug()]),
-                
+
             ]
         );
 
-        
+
 
         return $form;
     }
@@ -203,15 +199,15 @@ class CimetiereController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository(Cimetiere::class)->find($id);
+
+            $entity = $this->cimetiereRepository->find($id);
 
             if ($entity === null) {
                 throw $this->createNotFoundException('Unable to find Cimetiere entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            $this->cimetiereRepository->remove($entity);
+            $this->cimetiereRepository->flush();
 
             $this->addFlash('success', 'Le cimetière a bien été supprimé');
         }
@@ -230,15 +226,13 @@ class CimetiereController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('cimetiere_delete', ['id' => $id]))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }
 
     /**
      * Deletes a Image entity.
      *
-     * @Route("/delete/file/{id}", name="cimetiere_file_delete", methods={"DELETE"})
+     * @Route("/delete/file/{id}", name="cimetiere_file_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function deleteFile(Request $request, Cimetiere $cimetiere): Response
