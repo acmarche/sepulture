@@ -31,8 +31,6 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * Displays a form to create a new Defunt entity.
-     *
      * @Route("/plantage", methods={"GET","POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
