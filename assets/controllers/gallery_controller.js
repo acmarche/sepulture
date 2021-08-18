@@ -17,7 +17,7 @@ import lgZoom from 'lightgallery/plugins/zoom'
 export default class extends Controller {
     connect() {
         lightGallery(document.getElementById('lightgallery'), {
-            plugins: [lgZoom, lgThumbnail],
+            plugins: [lgZoom],
             speed: 500,
         });
     }
