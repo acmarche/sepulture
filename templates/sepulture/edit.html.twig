@@ -1,9 +1,5 @@
 {% extends '@Sepulture/base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/sepulture/blueimp/css/blueimp-gallery.min.css') }}">
-{% endblock %}
-
 {% block body %}
 
     {% include '@Sepulture/sepulture/fixe.html.twig' %}
@@ -20,9 +16,4 @@
     </div>
 
 
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('bundles/sepulture/blueimp/js/jquery.blueimp-gallery.min.js') }}"></script>
-    <script src="{{ asset('bundles/sepulture/js/gallery.js') }}"></script>
 {% endblock %}
