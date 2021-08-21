@@ -2,41 +2,43 @@
 
 {% block body %}
 
-    <div class="card"><h3 class="card-header">Liste des patronymes</h3>
+    <div class="card">
+        <h3 class="card-header">Liste des patronymes</h3>
         <div class="card-body">
 
-    <ul class="list-group list-group-horizontal">
-        {% for letter in 'A'..'Z' %}
-            <li class="list-group-item">
-                <a href="#{{ letter }}">{{ letter }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+            <ul class="list-group list-group-horizontal">
+                {% for letter in 'A'..'Z' %}
+                    <li class="list-group-item">
+                        <a href="#{{ letter }}">{{ letter }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
 
-    <table class="table table-bordered table-hover table-condensed table-responsive">
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <td>Nbre de parcelles</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for letter in 'A'..'Z' %}
-            <tr id="{{ letter }}" class="info">
-                <td colspan="2">{{ letter }}</td>
-            </tr>
-            {% for defunt in defunts %}
-                {% if defunt.nom|first|upper == letter %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('patronyme_show', { 'id': defunt.id }) }}">{{ defunt.nom }}</a>
-                        </td>
-                        <td>{{ defunt.lignes }}</td>
+            <table class="table table-bordered table-hover table-condensed table-responsive">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <td>Nbre de parcelles</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for letter in 'A'..'Z' %}
+                    <tr id="{{ letter }}" class="info">
+                        <td colspan="2">{{ letter }}</td>
                     </tr>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-        </tbody>
-    </table>
-</div></div>
+                    {% for defunt in defunts %}
+                        {% if defunt.nom|first|upper == letter %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('patronyme_show', { 'id': defunt.id }) }}">{{ defunt.nom }}</a>
+                                </td>
+                                <td>{{ defunt.lignes }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -95,7 +95,7 @@ class ImageController extends AbstractController
     /**
      * Deletes a Image entity.
      *
-     * @Route("/delete/{sepultureId}", name="image_delete", methods={"DELETE"})
+     * @Route("/delete/{sepultureId}", name="image_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
     public function delete(Request $request, $sepultureId): Response
@@ -146,7 +146,6 @@ class ImageController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('image_delete', ['sepultureId' => $id]))
-            ->setMethod('DELETE')
             ->add(
                 'submit',
                 SubmitType::class,
