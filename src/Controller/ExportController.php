@@ -10,6 +10,7 @@ use AcMarche\Sepulture\Service\FinderJf;
 use AcMarche\Sepulture\Service\PdfFactory;
 use AcMarche\Sepulture\Service\XlsFactory;
 use AcMarche\Sepulture\Service\ZipFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -21,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class ExportController.
  *
  * @Route("/export")
+ * @IsGranted("ROLE_SEPULTURE_EDITEUR")
  */
 class ExportController extends AbstractController
 {
@@ -28,7 +30,6 @@ class ExportController extends AbstractController
     private SessionInterface $session;
     private XlsFactory $xlsFactory;
     private FinderJf $finderJf;
-    private CimetiereUtil $cimetiereUtil;
     private ZipFactory $zipFactory;
 
     public function __construct(
@@ -36,14 +37,12 @@ class ExportController extends AbstractController
         PdfFactory $pdfFactory,
         XlsFactory $xlsFactory,
         FinderJf $finderJf,
-        CimetiereUtil $cimetiereUtil,
         ZipFactory $zipFactory
     ) {
         $this->pdfFactory = $pdfFactory;
         $this->session = $session;
         $this->xlsFactory = $xlsFactory;
         $this->finderJf = $finderJf;
-        $this->cimetiereUtil = $cimetiereUtil;
         $this->zipFactory = $zipFactory;
     }
 
