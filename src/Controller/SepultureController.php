@@ -25,6 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Sepulture controller.
@@ -171,7 +175,11 @@ class SepultureController extends AbstractController
         }
 
         $deleteForm = $this->createDeleteForm($sepulture->getId());
-        $animals = $this->captcha->getAnimals();
+        try {
+            $animals = $this->captcha->getAnimals();
+        } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface$e) {
+            $animals = [];
+        }
 
         $form = $this->createForm(
             CommentaireType::class,

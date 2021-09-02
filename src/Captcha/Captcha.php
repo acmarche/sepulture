@@ -25,6 +25,13 @@ class Captcha
         return (bool) preg_match('#kitten#', $value);
     }
 
+    /**
+     * @return string
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getDog(): string
     {
         $url = "https://dog.ceo/api/breeds/image/random";
@@ -42,6 +49,13 @@ class Captcha
         return 'https://placekitten.com/150/150?image='.$number;
     }
 
+    /**
+     * @return string[]
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getAnimals(): array
     {
         $animals = [$this->getDog(), $this->getCat()];
