@@ -171,3 +171,19 @@
 
     {% include '@Sepulture/sepulture/delete.html.twig' %}
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var btns = document.querySelectorAll('.animal');
+            Array.prototype.forEach.call(btns, function (el, i) {
+                el.addEventListener('click', () => {
+                    el.classList.remove('animalselected'); // removes the previous selected class
+                    el.classList.add('animalselected'); // adds the class to the clicked image
+                    var url = el.dataset.url;
+                    document.querySelector('#commentaire_captcha').value = url;
+                });
+            });
+        });
+    </script>
+{% endblock %}

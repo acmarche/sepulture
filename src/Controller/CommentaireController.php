@@ -74,19 +74,7 @@ class CommentaireController extends AbstractController
         $commentaire = new Commentaire();
         $commentaire->setSepulture($sepulture);
 
-        $form = $this->createForm(
-            CommentaireType::class,
-            $commentaire,
-            [
-                'action' => $this->generateUrl(
-                    'commentaire_new',
-                    [
-                        'id' => $sepulture->getId(),
-                    ]
-                ),
-            ]
-        )
-            ;
+        $form = $this->createForm(CommentaireType::class, $commentaire);
 
         $form->handleRequest($request);
 

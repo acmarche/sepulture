@@ -17,9 +17,8 @@
         <p><strong>Sélectionnez l'image représentant un chat</strong></p>
 
       {% include '@Sepulture/commentaire/_animals.html.twig' %}
-
     </div>
 </div>
 {{ form_row(form.captcha) }}
-{{ form_rest(form) }}
+<button type="submit" class="btn btn-primary mb-3">Envoyer</button>
 {{ form_end(form) }}

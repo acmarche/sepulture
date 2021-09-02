@@ -50,7 +50,7 @@ class Commentaire implements TimestampableInterface
      */
     protected ?Sepulture $sepulture = null;
 
-    private ?string $captcha = null;
+    public ?string $captcha = null;
 
     public function __toString()
     {

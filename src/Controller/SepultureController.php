@@ -181,10 +181,7 @@ class SepultureController extends AbstractController
             $animals = [];
         }
 
-        $form = $this->createForm(
-            CommentaireType::class,
-            $commentaire,
-            [
+        $form = $this->createForm(CommentaireType::class, $commentaire, [
                 'action' => $this->generateUrl(
                     'commentaire_new',
                     [
@@ -192,8 +189,7 @@ class SepultureController extends AbstractController
                     ]
                 ),
             ]
-        )
-            ->add('submit', SubmitType::class, ['label' => 'Envoyer']);
+        );
 
         return $this->render(
             '@Sepulture/sepulture/show.html.twig',
