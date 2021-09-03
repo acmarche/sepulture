@@ -151,7 +151,7 @@ class SihlController extends AbstractController
             ]
         );
 
-        
+
 
         return $form;
     }
@@ -159,7 +159,7 @@ class SihlController extends AbstractController
     /**
      * Deletes a Sihl entity.
      *
-     * @Route("/{id}", name="sihl_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="sihl_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -194,7 +194,7 @@ class SihlController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sihl_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }

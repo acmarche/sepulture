@@ -190,7 +190,7 @@ class CimetiereController extends AbstractController
     /**
      * Deletes a Cimetiere entity.
      *
-     * @Route("/{id}", name="cimetiere_delete", methods={"DELETE"})
+     * @Route("/{id}", name="cimetiere_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -286,7 +286,7 @@ class CimetiereController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('cimetiere_file_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+            
             ->add(
                 'submit',
                 SubmitType::class,

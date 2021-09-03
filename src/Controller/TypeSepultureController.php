@@ -163,7 +163,7 @@ class TypeSepultureController extends AbstractController
     /**
      * Deletes a TypeSepulture entity.
      *
-     * @Route("/{id}", name="typesepulture_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="typesepulture_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -198,7 +198,7 @@ class TypeSepultureController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('typesepulture_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }

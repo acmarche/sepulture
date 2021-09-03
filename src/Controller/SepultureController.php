@@ -242,7 +242,7 @@ class SepultureController extends AbstractController
     /**
      * Deletes a Sepulture entity.
      *
-     * @Route("/{id}", name="sepulture_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="sepulture_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
     public function delete(Request $request, $id): Response
@@ -278,7 +278,7 @@ class SepultureController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sepulture_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->getForm();
     }
 

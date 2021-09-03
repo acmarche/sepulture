@@ -155,11 +155,11 @@ class VisuelController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('visuel_edit', ['id' => $entity->getId()]),
-                
+
             ]
         );
 
-        
+
 
         return $form;
     }
@@ -167,7 +167,7 @@ class VisuelController extends AbstractController
     /**
      * Deletes a Visuel entity.
      *
-     * @Route("/{id}", name="visuel_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="visuel_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -202,7 +202,7 @@ class VisuelController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('visuel_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }

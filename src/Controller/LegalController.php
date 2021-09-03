@@ -155,11 +155,11 @@ class LegalController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('legal_edit', ['id' => $entity->getId()]),
-                
+
             ]
         );
 
-        
+
 
         return $form;
     }
@@ -167,7 +167,7 @@ class LegalController extends AbstractController
     /**
      * Deletes a Legal entity.
      *
-     * @Route("/{id}", name="legal_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="legal_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -202,7 +202,7 @@ class LegalController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('legal_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }

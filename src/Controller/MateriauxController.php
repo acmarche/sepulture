@@ -155,11 +155,11 @@ class MateriauxController extends AbstractController
             $entity,
             [
                 'action' => $this->generateUrl('materiaux_edit', ['id' => $entity->getId()]),
-                
+
             ]
         );
 
-        
+
 
         return $form;
     }
@@ -167,7 +167,7 @@ class MateriauxController extends AbstractController
     /**
      * Deletes a Materiaux entity.
      *
-     * @Route("/{id}", name="materiaux_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="materiaux_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -202,7 +202,7 @@ class MateriauxController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('materiaux_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }

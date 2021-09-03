@@ -83,7 +83,7 @@ class PageController extends AbstractController
     /**
      * Deletes a Page entity.
      *
-     * @Route("/{id}", name="page_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="page_delete", methods={"POST"})
      * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
     public function delete(Request $request, $id): Response
@@ -121,7 +121,7 @@ class PageController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('page_delete', ['id' => $id]))
-            ->setMethod('DELETE')
+
             ->add('submit', SubmitType::class, ['label' => 'Delete'])
             ->getForm();
     }

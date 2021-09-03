@@ -99,7 +99,7 @@ class ContactRwController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="contact_rw_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="contact_rw_delete", methods={"POST"})
      */
     public function delete(Request $request, ContactRw $contactRw): Response
     {
