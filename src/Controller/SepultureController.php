@@ -261,7 +261,7 @@ class SepultureController extends AbstractController
             $em->remove($entity);
             $em->flush();
 
-            $this->addFlash('success', 'La sépulture a bien été modifiée');
+            $this->addFlash('success', 'La sépulture a bien été supprimée');
         }
 
         return $this->redirectToRoute('sepulture');
