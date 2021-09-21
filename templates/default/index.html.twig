@@ -6,7 +6,7 @@
         <div class="card-body">
             {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
                 <a href="{{ path('page_edit', {'id':page.id}) }}" class="btn btn-primary"><span
-                            class="glyphicon glyphicon-edit"></span> Editer </a>
+                            class="fas fa-edit"></span> Editer </a>
             {% endif %}
 
             <div class="row">
