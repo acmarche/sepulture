@@ -118,11 +118,18 @@
                     </table>
                 </div>
             </div>
-            <h4 class="text-success">Symbole</h4>
-            {{ sepulture.symbole | nl2br }}
 
-            <h4 class="text-success">Epitaphe</h4>
-            {{ sepulture.epitaphe | nl2br }}
+            {% if sepulture.symbole %}
+                <h4 class="text-success">Symbole</h4>
+                {{ sepulture.symbole | nl2br }}
+                <br/>
+            {% endif %}
+
+            {% if sepulture.epitaphe %}
+                <h4 class="text-success">Epitaphe</h4>
+                {{ sepulture.epitaphe | nl2br }}
+                <br/>
+            {% endif %}
 
             <br/>
             <h4 class="text-success">Liste des noms indiqués sur cette sépulture</h4>
