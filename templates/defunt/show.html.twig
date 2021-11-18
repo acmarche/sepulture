@@ -49,11 +49,11 @@
                     <td>{{ entity.lieudeces }}</td>
                 </tr>
             </table>
-
+eee{{ defunt.description | nl2br }}
             {% if defunt.description != '' %}
                 <p>{{ defunt.description | nl2br }}</p>
             {% endif %}
-
+zzz
             {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
                 <p class="text-muted">
                     {{ 'Created' | trans }} {{ entity.createdAt|date('d-m-Y H:i:s') }} par {{ entity.useradd }}
