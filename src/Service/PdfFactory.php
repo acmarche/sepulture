@@ -1,11 +1,11 @@
 <?php
 /**
- * This file is part of sepulture application
+ * This file is part of sepulture application.
+ *
  * @author jfsenechal <jfsenechal@gmail.com>
  * @date 6/11/19
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace AcMarche\Sepulture\Service;
@@ -30,17 +30,16 @@ class PdfFactory
     private SessionInterface $session;
 
     public function __construct(
-        private FileHelper            $fileHelper,
-        private Environment           $environment,
-        private Pdf                   $pdf,
-        private SepultureRepository   $sepultureRepository,
-        private CimetiereUtil         $cimetiereUtil,
+        private FileHelper $fileHelper,
+        private Environment $environment,
+        private Pdf $pdf,
+        private SepultureRepository $sepultureRepository,
+        private CimetiereUtil $cimetiereUtil,
         private ParameterBagInterface $parameterBag,
-        private FormFactoryInterface  $formFactory,
-        private FinderJf              $finderJf,
-        RequestStack          $requestStack
-    )
-    {
+        private FormFactoryInterface $formFactory,
+        private FinderJf $finderJf,
+        RequestStack $requestStack
+    ) {
         $this->session = $requestStack->getSession();
     }
 
@@ -57,16 +56,17 @@ class PdfFactory
             ]
         );
 
-        $name = 'sepulture-' . $sepulture->getSlug();
+        $name = 'sepulture-'.$sepulture->getSlug();
 
         return new Response(
-            $this->pdf->getOutputFromHtml($html), 200, [
+            $this->pdf->getOutputFromHtml($html),
+            200,
+            [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="' . $name . '.pdf"',
+                'Content-Disposition' => 'attachment; filename="'.$name.'.pdf"',
             ]
         );
     }
-
 
     public function search(): PdfResponse
     {
@@ -98,18 +98,19 @@ class PdfFactory
 
         $html .= $this->environment->render('@Sepulture/export/foot.html.twig', []);
 
-        $name = 'Export-' . date('d-m-Y');
+        $name = 'Export-'.date('d-m-Y');
 
         return new PdfResponse(
             $this->pdf->getOutputFromHtml($html),
-            $name . '.pdf'
+            $name.'.pdf'
         );
     }
 
-
     public function cimetiere(Cimetiere $cimetiere): PdfResponse
     {
-        $sepultures = $this->sepultureRepository->search(['cimetiere' => $cimetiere]);
+        $sepultures = $this->sepultureRepository->search([
+            'cimetiere' => $cimetiere,
+        ]);
 
         $html = $this->environment->render(
             '@Sepulture/export/head.html.twig',
@@ -140,7 +141,7 @@ class PdfFactory
         //  return new Response($html);
         return new PdfResponse(
             $this->pdf->getOutputFromHtml($html),
-            $name . '.pdf'
+            $name.'.pdf'
         );
     }
 
@@ -180,7 +181,7 @@ class PdfFactory
             $images = $this->fileHelper->getImages($sepulture->getId());
             $form = $this->formFactory->create(SihStatutType::class, $sepulture);
             $formRw = $this->formFactory->create(SihRwType::class);
-            $fileName = $sepulture->getSlug() . '_ihl.pdf';
+            $fileName = $sepulture->getSlug().'_ihl.pdf';
 
             if ($rw) {
                 $encare = $this->environment->render(
@@ -202,25 +203,24 @@ class PdfFactory
             );
 
             if ($rw) {
-                $html = $head . $encare . $content . $foot;
-                $this->pdf->generateFromHtml($html, $this->finderJf->getOuputPath($cimetiere) . $fileName);
+                $html = $head.$encare.$content.$foot;
+                $this->pdf->generateFromHtml($html, $this->finderJf->getOuputPath($cimetiere).$fileName);
             }
         }
 
-        if (!$rw) {
-            $html = $head . $shil . $content . $foot;
+        if (! $rw) {
+            $html = $head.$shil.$content.$foot;
             $name = 'sihl';
 
             //  return new Response($html);
             return new PdfResponse(
                 $this->pdf->getOutputFromHtml($html),
-                $name . '.pdf'
+                $name.'.pdf'
             );
         }
 
         return null;
     }
-
 
     public function a1945(Cimetiere $cimetiere, bool $rw = false): ?PdfResponse
     {
@@ -258,7 +258,7 @@ class PdfFactory
         foreach ($sepultures as $sepulture) {
             $images = $this->fileHelper->getImages($sepulture->getId());
             $formRw = $this->formFactory->create(Rw1945Type::class);
-            $fileName = $sepulture->getSlug() . '_a1945.pdf';
+            $fileName = $sepulture->getSlug().'_a1945.pdf';
 
             if ($rw) {
                 $encare = $this->environment->render(
@@ -279,20 +279,19 @@ class PdfFactory
             );
 
             if ($rw) {
-                $html = $head . $encare . $content . $foot;
-                $this->pdf->generateFromHtml($html, $this->finderJf->getOuputPath($cimetiere) . $fileName);
+                $html = $head.$encare.$content.$foot;
+                $this->pdf->generateFromHtml($html, $this->finderJf->getOuputPath($cimetiere).$fileName);
             }
-
         }
 
-        if (!$rw) {
-            $html = $head . $entete . $content . $foot;
+        if (! $rw) {
+            $html = $head.$entete.$content.$foot;
             $name = 'a1945';
 
             //  return new Response($html);
             return new PdfResponse(
                 $this->pdf->getOutputFromHtml($html),
-                $name . '.pdf'
+                $name.'.pdf'
             );
         }
 

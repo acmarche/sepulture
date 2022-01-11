@@ -19,12 +19,11 @@ class Mailer
 
     public function __construct(
         private ParameterBagInterface $parameterBag,
-        private Environment           $twig,
-        private RouterInterface       $router,
-        private MailerInterface       $mailer,
-        RequestStack          $requestStack
-    )
-    {
+        private Environment $twig,
+        private RouterInterface $router,
+        private MailerInterface $mailer,
+        RequestStack $requestStack
+    ) {
         $this->flashBag = $requestStack->getSession()->getFlashBag();
     }
 
@@ -51,7 +50,10 @@ class Mailer
 
         $body = $this->twig->render(
             '@Sepulture/commentaire/email.txt.twig',
-            ['commentaire' => $commentaire, 'error' => $error]
+            [
+                'commentaire' => $commentaire,
+                'error' => $error,
+            ]
         );
 
         $this->send($from, $to, $sujet, $body);
@@ -60,7 +62,9 @@ class Mailer
     public function sendRequestNewPassword(User $user): void
     {
         $from = $this->parameterBag->get('acmarche_sepulture_email');
-        $url = $this->router->generate('sepulture_password_reset', ['token' => $user->getConfirmationToken()]);
+        $url = $this->router->generate('sepulture_password_reset', [
+            'token' => $user->getConfirmationToken(),
+        ]);
 
         $body = $this->twig->render(
             '@Sepulture/security/_request_password.txt.twig',
@@ -83,7 +87,10 @@ class Mailer
 
         $body = $this->twig->render(
             '@Sepulture/commentaire/email.txt.twig',
-            ['commentaire' => $commentaire, 'error' => $error]
+            [
+                'commentaire' => $commentaire,
+                'error' => $error,
+            ]
         );
 
         $this->send($from, $to, $sujet, $body);

@@ -2,18 +2,17 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormInterface;
-
 use AcMarche\Sepulture\Entity\Sihl;
 use AcMarche\Sepulture\Form\SihlType;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,22 +21,28 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/sihl')]
 class SihlController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private ManagerRegistry $managerRegistry
+    ) {
     }
+
     /**
      * Lists all Sihl entities.
      */
     #[Route(path: '/', name: 'sihl', methods: ['GET'])]
-    public function index() : Response
+    public function index(): Response
     {
         $em = $this->managerRegistry->getManager();
         $entities = $em->getRepository(Sihl::class)->findAll();
+
         return $this->render(
-            '@Sepulture/sihl/index.html.twig', [
-            'entities' => $entities,
-        ]);
+            '@Sepulture/sihl/index.html.twig',
+            [
+                'entities' => $entities,
+            ]
+        );
     }
+
     /**
      * Creates a form to create a Sihl entity.
      *
@@ -47,7 +52,7 @@ class SihlController extends AbstractController
      */
     private function createCreateForm(Sihl $entity): FormInterface
     {
-   return      $this->createForm(
+        return      $this->createForm(
             SihlType::class,
             $entity,
             [
@@ -56,12 +61,13 @@ class SihlController extends AbstractController
             ]
         );
     }
+
     /**
      * Displays a form to create a new Sihl entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'sihl_new', methods: ['GET', 'POST'])]
-    public function new(Request $request) : Response
+    public function new(Request $request): Response
     {
         $entity = new Sihl();
         $form = $this->createCreateForm($entity);
@@ -74,31 +80,39 @@ class SihlController extends AbstractController
 
             return $this->redirectToRoute('sihl');
         }
+
         return $this->render(
-            '@Sepulture/sihl/new.html.twig', [
-            'entity' => $entity,
-            'form' => $form->createView(),
-        ]);
+            '@Sepulture/sihl/new.html.twig',
+            [
+                'entity' => $entity,
+                'form' => $form->createView(),
+            ]
+        );
     }
+
     /**
      * Finds and displays a Sihl entity.
      */
     #[Route(path: '/{id}', name: 'sihl_show', methods: ['GET'])]
-    public function show(Sihl $sihl) : Response
+    public function show(Sihl $sihl): Response
     {
         $deleteForm = $this->createDeleteForm($sihl->getId());
+
         return $this->render(
-            '@Sepulture/sihl/show.html.twig', [
-            'entity' => $sihl,
-            'delete_form' => $deleteForm->createView(),
-        ]);
+            '@Sepulture/sihl/show.html.twig',
+            [
+                'entity' => $sihl,
+                'delete_form' => $deleteForm->createView(),
+            ]
+        );
     }
+
     /**
      * Displays a form to edit an existing Sihl entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'sihl_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sihl $sihl) : Response
+    public function edit(Request $request, Sihl $sihl): Response
     {
         $em = $this->managerRegistry->getManager();
         $editForm = $this->createEditForm($sihl);
@@ -109,12 +123,16 @@ class SihlController extends AbstractController
 
             return $this->redirectToRoute('sihl');
         }
+
         return $this->render(
-            '@Sepulture/sihl/edit.html.twig', [
-            'entity' => $sihl,
-            'form' => $editForm->createView(),
-        ]);
+            '@Sepulture/sihl/edit.html.twig',
+            [
+                'entity' => $sihl,
+                'form' => $editForm->createView(),
+            ]
+        );
     }
+
     /**
      * Creates a form to edit a Sihl entity.
      *
@@ -128,17 +146,20 @@ class SihlController extends AbstractController
             SihlType::class,
             $entity,
             [
-                'action' => $this->generateUrl('sihl_edit', ['id' => $entity->getId()]),
+                'action' => $this->generateUrl('sihl_edit', [
+                    'id' => $entity->getId(),
+                ]),
                 'method' => 'POST',
             ]
         );
     }
+
     /**
      * Deletes a Sihl entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'sihl_delete', methods: ['POST'])]
-    public function delete(Request $request, $id) : RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -146,7 +167,7 @@ class SihlController extends AbstractController
             $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Sihl::class)->find($id);
 
-            if ($entity === null) {
+            if (null === $entity) {
                 throw $this->createNotFoundException('Unable to find Sihl entity.');
             }
 
@@ -154,8 +175,10 @@ class SihlController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Le sihl a bien été supprimé');
         }
+
         return $this->redirectToRoute('sihl');
     }
+
     /**
      * Creates a form to delete a Sihl entity by id.
      *
@@ -166,9 +189,16 @@ class SihlController extends AbstractController
     private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('sihl_delete', ['id' => $id]))
+            ->setAction($this->generateUrl('sihl_delete', [
+                'id' => $id,
+            ]))
 
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Delete',
+                'attr' => [
+                    'class' => 'btn-danger',
+                    
+                ], ])
             ->getForm();
     }
 }

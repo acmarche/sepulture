@@ -14,12 +14,13 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class SecurityController extends AbstractController
 {
-    public function __construct(private CsrfTokenManagerInterface $tokenManager)
-    {
+    public function __construct(
+        private CsrfTokenManagerInterface $tokenManager
+    ) {
     }
 
     #[Route(path: '/login', name: 'app_login')]
-    public function login(Request $request) : Response
+    public function login(Request $request): Response
     {
         /** @var $session Session */
         $session = $request->getSession();
@@ -34,7 +35,7 @@ class SecurityController extends AbstractController
         } else {
             $error = null;
         }
-        if (!$error instanceof AuthenticationException) {
+        if (! $error instanceof AuthenticationException) {
             $error = null; // The value does not come from the security component.
         }
         // last username entered by the user
@@ -42,6 +43,7 @@ class SecurityController extends AbstractController
         $csrfToken = $this->tokenManager
             ? $this->tokenManager->getToken('authenticate')->getValue()
             : null;
+
         return $this->renderLogin(
             [
                 'last_username' => $lastUsername,
@@ -52,13 +54,13 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/login_check', name: 'app_login_check')]
-    public function check() : void
+    public function check(): void
     {
         throw new RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout() : void
+    public function logout(): void
     {
         throw new RuntimeException('You must activate the logout in your security firewall configuration.');
     }

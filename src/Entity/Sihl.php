@@ -3,12 +3,12 @@
 namespace AcMarche\Sepulture\Entity;
 
 use AcMarche\Sepulture\Repository\SihlRepository;
-use Stringable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
 use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,32 +31,39 @@ class Sihl implements SluggableInterface, Stringable
      * */
     #[ORM\ManyToMany(targetEntity: 'Sepulture', mappedBy: 'sihls')]
     private Collection $sepultures;
+
     public function __construct()
     {
         $this->sepultures = new ArrayCollection();
     }
+
     public function getSluggableFields(): array
     {
         return ['nom'];
     }
+
     public function __toString(): string
     {
         return (string) $this->nom;
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
+
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
+
     /**
      * @return Collection|Sepulture[]
      */
@@ -64,15 +71,17 @@ class Sihl implements SluggableInterface, Stringable
     {
         return $this->sepultures;
     }
+
     public function addSepulture(Sepulture $sepulture): self
     {
-        if (!$this->sepultures->contains($sepulture)) {
+        if (! $this->sepultures->contains($sepulture)) {
             $this->sepultures[] = $sepulture;
             $sepulture->addSihl($this);
         }
 
         return $this;
     }
+
     public function removeSepulture(Sepulture $sepulture): self
     {
         if ($this->sepultures->contains($sepulture)) {

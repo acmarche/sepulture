@@ -1,15 +1,13 @@
 <?php
 
-
 namespace AcMarche\Sepulture\Captcha;
 
-
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\HttpClient\HttpClient;
 
 class Captcha
 {
@@ -23,9 +21,10 @@ class Captcha
 
     public function check(?string $value): bool
     {
-        if (!$value) {
+        if (! $value) {
             return false;
         }
+
         return (bool) preg_match('#kitten#', $value);
     }
 
@@ -37,7 +36,7 @@ class Captcha
      */
     public function getDog(): string
     {
-        $url = "https://dog.ceo/api/breeds/image/random";
+        $url = 'https://dog.ceo/api/breeds/image/random';
         $response = $this->client->request('GET', $url);
 
         $content = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -54,6 +53,7 @@ class Captcha
 
     /**
      * @return string[]
+     *
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -72,5 +72,4 @@ class Captcha
         // https://picsum.photos/seed/picsum/200/300
         // https://source.unsplash.com/random/200/300
     }
-
 }

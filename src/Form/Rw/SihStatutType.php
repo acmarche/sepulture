@@ -12,7 +12,10 @@ class SihStatutType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $status = [1 => 'Privée', 2 => 'Revenue en propriété communale'];
+        $status = [
+            1 => 'Privée',
+            2 => 'Revenue en propriété communale',
+        ];
 
         $builder
             ->add(
@@ -22,7 +25,9 @@ class SihStatutType extends AbstractType
                     'choices' => array_flip($status),
                     'multiple' => false,
                     'expanded' => true,
-                    'choice_attr' => ['class' => 'radio-inline'],
+                    'choice_attr' => [
+                        'class' => 'radio-inline',
+                    ],
                 ]
             );
     }

@@ -35,7 +35,9 @@ class CommentaireType extends AbstractType
                 TextareaType::class,
                 [
                     'required' => true,
-                    'attr' => ['rows' => 8],
+                    'attr' => [
+                        'rows' => 8,
+                    ],
                 ]
             )
             ->add(

@@ -2,18 +2,17 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormInterface;
-
 use AcMarche\Sepulture\Entity\Legal;
 use AcMarche\Sepulture\Form\LegalType;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,17 +21,20 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/legal')]
 class LegalController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private ManagerRegistry $managerRegistry
+    ) {
     }
+
     /**
      * Lists all Legal entities.
      */
     #[Route(path: '/', name: 'legal', methods: ['GET'])]
-    public function index() : Response
+    public function index(): Response
     {
         $em = $this->managerRegistry->getManager();
         $entities = $em->getRepository(Legal::class)->findAll();
+
         return $this->render(
             '@Sepulture/legal/index.html.twig',
             [
@@ -40,6 +42,7 @@ class LegalController extends AbstractController
             ]
         );
     }
+
     /**
      * Creates a form to create a Legal entity.
      *
@@ -49,7 +52,7 @@ class LegalController extends AbstractController
      */
     private function createCreateForm(Legal $entity): FormInterface
     {
-     return    $this->createForm(
+        return    $this->createForm(
             LegalType::class,
             $entity,
             [
@@ -58,12 +61,13 @@ class LegalController extends AbstractController
             ]
         );
     }
+
     /**
      * Displays a form to create a new Legal entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'legal_new', methods: ['GET', 'POST'])]
-    public function new(Request $request) : Response
+    public function new(Request $request): Response
     {
         $entity = new Legal();
         $form = $this->createCreateForm($entity);
@@ -76,6 +80,7 @@ class LegalController extends AbstractController
 
             return $this->redirectToRoute('legal');
         }
+
         return $this->render(
             '@Sepulture/legal/new.html.twig',
             [
@@ -84,13 +89,15 @@ class LegalController extends AbstractController
             ]
         );
     }
+
     /**
      * Finds and displays a Legal entity.
      */
     #[Route(path: '/{id}', name: 'legal_show', methods: ['GET'])]
-    public function show(Legal $legal) : Response
+    public function show(Legal $legal): Response
     {
         $deleteForm = $this->createDeleteForm($legal->getId());
+
         return $this->render(
             '@Sepulture/legal/show.html.twig',
             [
@@ -99,12 +106,13 @@ class LegalController extends AbstractController
             ]
         );
     }
+
     /**
      * Displays a form to edit an existing Legal entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'legal_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Legal $legal) : Response
+    public function edit(Request $request, Legal $legal): Response
     {
         $em = $this->managerRegistry->getManager();
         $editForm = $this->createEditForm($legal);
@@ -115,6 +123,7 @@ class LegalController extends AbstractController
 
             return $this->redirectToRoute('legal');
         }
+
         return $this->render(
             '@Sepulture/legal/edit.html.twig',
             [
@@ -123,6 +132,7 @@ class LegalController extends AbstractController
             ]
         );
     }
+
     /**
      * Creates a form to edit a Legal entity.
      *
@@ -136,17 +146,19 @@ class LegalController extends AbstractController
             LegalType::class,
             $entity,
             [
-                'action' => $this->generateUrl('legal_edit', ['id' => $entity->getId()]),
-
+                'action' => $this->generateUrl('legal_edit', [
+                    'id' => $entity->getId(),
+                ]),
             ]
         );
     }
+
     /**
      * Deletes a Legal entity.
      */
     #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'legal_delete', methods: ['POST'])]
-    public function delete(Request $request, $id) : RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
@@ -154,7 +166,7 @@ class LegalController extends AbstractController
             $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Legal::class)->find($id);
 
-            if ($entity === null) {
+            if (null === $entity) {
                 throw $this->createNotFoundException('Unable to find Legal entity.');
             }
 
@@ -162,8 +174,10 @@ class LegalController extends AbstractController
             $em->flush();
             $this->addFlash('success', "L'aspect légal a bien été supprimé");
         }
+
         return $this->redirectToRoute('legal');
     }
+
     /**
      * Creates a form to delete a Legal entity by id.
      *
@@ -174,9 +188,16 @@ class LegalController extends AbstractController
     private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('legal_delete', ['id' => $id]))
+            ->setAction($this->generateUrl('legal_delete', [
+                'id' => $id,
+            ]))
 
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Delete',
+                'attr' => [
+                    'class' => 'btn-danger',
+                    
+                ], ])
             ->getForm();
     }
 }

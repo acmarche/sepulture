@@ -121,7 +121,9 @@ class SepultureRepository extends ServiceEntityRepository
 
     public function getAllOrderByIdDesc(): array
     {
-        return $this->findBy([], ['id' => 'desc']);
+        return $this->findBy([], [
+            'id' => 'desc',
+        ]);
     }
 
     /**

@@ -1,11 +1,11 @@
 <?php
 /**
- * This file is part of sepulture application
+ * This file is part of sepulture application.
+ *
  * @author jfsenechal <jfsenechal@gmail.com>
  * @date 6/11/19
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace AcMarche\Sepulture\Service;
@@ -20,8 +20,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class XlsFactory
 {
-    public function __construct(private SepultureRepository $sepultureRepository)
-    {
+    public function __construct(
+        private SepultureRepository $sepultureRepository
+    ) {
     }
 
     public function create(): BinaryFileResponse
@@ -133,6 +134,7 @@ class XlsFactory
      * @param Defunt[] $defunts
      *
      * @return mixed
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     private function defuntsXlsObject(Spreadsheet $phpExcelObject, $defunts): Spreadsheet

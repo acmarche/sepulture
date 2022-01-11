@@ -2,14 +2,14 @@
 
 namespace AcMarche\Sepulture\DoctrineExtensions;
 
-use Doctrine\ORM\Query\AST\Node;
+use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 /*
  * Created by PhpStorm.
  * User: jfsenechal
  * Date: 9/01/17
  * Time: 11:11
  */
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;

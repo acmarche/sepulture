@@ -23,11 +23,10 @@ class CimetiereFileService
 
     public function __construct(
         private ParameterBagInterface $parameterBag,
-        private FileHelper            $fileHelper,
-        private CimetiereRepository   $cimetiereRepository,
-        RequestStack          $requestStack
-    )
-    {
+        private FileHelper $fileHelper,
+        private CimetiereRepository $cimetiereRepository,
+        RequestStack $requestStack
+    ) {
         $this->session = $requestStack->getSession();
     }
 
@@ -41,7 +40,7 @@ class CimetiereFileService
         $fileName = false;
 
         if ($image instanceof UploadedFile) {
-            $fileName = md5(uniqid()) . '.' . $image->guessClientExtension();
+            $fileName = md5(uniqid()).'.'.$image->guessClientExtension();
 
             try {
                 $this->fileHelper->uploadFile($directory, $image, $fileName);
@@ -52,7 +51,7 @@ class CimetiereFileService
         }
 
         if ($plan instanceof UploadedFile) {
-            $fileName = md5(uniqid()) . '.' . $plan->guessClientExtension();
+            $fileName = md5(uniqid()).'.'.$plan->guessClientExtension();
 
             try {
                 $this->fileHelper->uploadFile($directory, $plan, $fileName);

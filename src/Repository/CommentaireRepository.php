@@ -21,7 +21,9 @@ class CommentaireRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
-        return $this->findBy([], ['createdAt' => 'DESC']);
+        return $this->findBy([], [
+            'createdAt' => 'DESC',
+        ]);
     }
 
     public function persist(Commentaire $commentaire): void

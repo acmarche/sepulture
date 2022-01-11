@@ -8,16 +8,17 @@
 
 namespace AcMarche\Sepulture\Service;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHelper
 {
-    public function __construct(private ParameterBagInterface $parameterBag)
-    {
+    public function __construct(
+        private ParameterBagInterface $parameterBag
+    ) {
     }
 
     public function uploadFile($directory, UploadedFile $file, $fileName): File
@@ -27,7 +28,7 @@ class FileHelper
 
     public function deleteOneDoc($directory, $filename): void
     {
-        $file = $directory.DIRECTORY_SEPARATOR.$filename;
+        $file = $directory.\DIRECTORY_SEPARATOR.$filename;
 
         $fs = new Filesystem();
         $fs->remove($file);
@@ -41,7 +42,7 @@ class FileHelper
 
     public function getImages($idsepulture, $max = 60): array
     {
-        $separator = DIRECTORY_SEPARATOR;
+        $separator = \DIRECTORY_SEPARATOR;
         $finder = new Finder();
         $files = [];
         $directory = $this->parameterBag->get('acmarche_sepulture_upload_sepulture_directory').$separator.$idsepulture.$separator;

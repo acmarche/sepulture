@@ -3,8 +3,8 @@
 namespace AcMarche\Sepulture\Entity;
 
 use AcMarche\Sepulture\Repository\PreferenceRepository;
-use Stringable;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,48 +30,58 @@ class Preference implements Stringable
     #[ORM\Column(type: 'text', nullable: false)]
     #[Assert\NotBlank]
     private ?string $username = null;
+
     public function __toString(): string
     {
         return (string) $this->nom;
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
+
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
+
     public function getClef(): ?string
     {
         return $this->clef;
     }
+
     public function setClef(string $clef): self
     {
         $this->clef = $clef;
 
         return $this;
     }
+
     public function getValeur(): ?string
     {
         return $this->valeur;
     }
+
     public function setValeur(string $valeur): self
     {
         $this->valeur = $valeur;
 
         return $this;
     }
+
     public function getUsername(): ?string
     {
         return $this->username;
     }
+
     public function setUsername(string $username): self
     {
         $this->username = $username;

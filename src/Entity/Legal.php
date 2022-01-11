@@ -3,11 +3,10 @@
 namespace AcMarche\Sepulture\Entity;
 
 use AcMarche\Sepulture\Repository\LegalRepository;
-use Stringable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,7 +20,9 @@ class Legal implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
-    #[ORM\Column(name: 'nom', type: 'string', length: 100, nullable: false, options: ['comment' => 'nom'])]
+    #[ORM\Column(name: 'nom', type: 'string', length: 100, nullable: false, options: [
+        'comment' => 'nom',
+    ])]
     #[Assert\NotBlank]
     private ?string $nom = null;
     /**
@@ -29,28 +30,34 @@ class Legal implements Stringable
      */
     #[ORM\OneToMany(targetEntity: 'Sepulture', mappedBy: 'legal')]
     private iterable $sepultures;
+
     public function __construct()
     {
         $this->sepultures = new ArrayCollection();
     }
+
     public function __toString(): string
     {
         return (string) $this->nom;
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
+
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
+
     /**
      * @return Collection|Sepulture[]
      */
@@ -58,15 +65,17 @@ class Legal implements Stringable
     {
         return $this->sepultures;
     }
+
     public function addSepulture(Sepulture $sepulture): self
     {
-        if (!$this->sepultures->contains($sepulture)) {
+        if (! $this->sepultures->contains($sepulture)) {
             $this->sepultures[] = $sepulture;
             $sepulture->setLegal($this);
         }
 
         return $this;
     }
+
     public function removeSepulture(Sepulture $sepulture): self
     {
         if ($this->sepultures->contains($sepulture)) {

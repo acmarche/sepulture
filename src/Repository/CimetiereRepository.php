@@ -3,9 +3,9 @@
 namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
-use Doctrine\ORM\QueryBuilder;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,7 +25,9 @@ class CimetiereRepository extends ServiceEntityRepository
 
     public function findAll(): array
     {
-        return $this->findBy([], ['nom' => 'ASC']);
+        return $this->findBy([], [
+            'nom' => 'ASC',
+        ]);
     }
 
     /**
@@ -43,7 +45,7 @@ class CimetiereRepository extends ServiceEntityRepository
 
         if ($nom) {
             $qb->andwhere('s.parcelle LIKE :parcelle')
-                ->setParameter('parcelle', '%' . $nom . '%');
+                ->setParameter('parcelle', '%'.$nom.'%');
         }
 
         $qb->orderBy('c.nom');

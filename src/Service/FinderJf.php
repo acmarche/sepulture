@@ -1,11 +1,11 @@
 <?php
 /**
- * This file is part of sepulture application
+ * This file is part of sepulture application.
+ *
  * @author jfsenechal <jfsenechal@gmail.com>
  * @date 6/11/19
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace AcMarche\Sepulture\Service;
@@ -17,11 +17,12 @@ use Symfony\Component\Finder\Finder;
 
 class FinderJf
 {
-    public function __construct(private ParameterBagInterface $parameterBag)
-    {
+    public function __construct(
+        private ParameterBagInterface $parameterBag
+    ) {
     }
 
-    function find_all_files(string $path, string $slugname): array
+    public function find_all_files(string $path, string $slugname): array
     {
         $files = [];
         $finder = new Finder();
@@ -29,15 +30,15 @@ class FinderJf
         $finder->sortByName();
         $i = 0;
 
-        $url = DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.$slugname;
+        $url = \DIRECTORY_SEPARATOR.'export'.\DIRECTORY_SEPARATOR.$slugname;
 
         foreach ($finder as $file) {
             $fileName = $file->getRelativePathname();
             $files[$i]['name'] = $fileName;
             $files[$i]['pathname'] = $file->getPathname();
-            $files[$i]['url'] = $url.DIRECTORY_SEPARATOR.$fileName;
+            $files[$i]['url'] = $url.\DIRECTORY_SEPARATOR.$fileName;
             $files[$i]['size'] = $file->getSize() / 1000;
-            $i++;
+            ++$i;
         }
 
         return $files;
@@ -66,19 +67,19 @@ class FinderJf
     public function getExportDirectory(): string
     {
         return $this->parameterBag->get(
-                'kernel.project_dir'
-            ).DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'export';
+            'kernel.project_dir'
+        ).\DIRECTORY_SEPARATOR.'public'.\DIRECTORY_SEPARATOR.'export';
     }
 
     public function getOuputPath(Cimetiere $cimetiere): string
     {
-        return $this->getExportDirectory().DIRECTORY_SEPARATOR.$cimetiere->getSlug().DIRECTORY_SEPARATOR;
+        return $this->getExportDirectory().\DIRECTORY_SEPARATOR.$cimetiere->getSlug().\DIRECTORY_SEPARATOR;
     }
 
-    public function getCacheDirectory(): string {
-         return $this->parameterBag->get(
-                'kernel.project_dir'
-            ).DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR;
+    public function getCacheDirectory(): string
+    {
+        return $this->parameterBag->get(
+            'kernel.project_dir'
+        ).\DIRECTORY_SEPARATOR.'var'.\DIRECTORY_SEPARATOR.'cache'.\DIRECTORY_SEPARATOR;
     }
-
 }

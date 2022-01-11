@@ -30,7 +30,7 @@ class SepultureAddType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Cimetiere::class,
-                    'query_builder' => fn(CimetiereRepository $cr) => $cr->getForList(),
+                    'query_builder' => fn (CimetiereRepository $cr) => $cr->getForList(),
                     'placeholder' => 'Sélectionnez un cimetière',
                     'label' => 'Cimetière',
                 ]

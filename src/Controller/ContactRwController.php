@@ -2,14 +2,13 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Doctrine\Persistence\ManagerRegistry;
-use DateTime;
 use AcMarche\Sepulture\Entity\ContactRw;
 use AcMarche\Sepulture\Form\ContactRwType;
 use AcMarche\Sepulture\Repository\ContactRwRepository;
+use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/contact/rw')]
 class ContactRwController extends AbstractController
 {
-    public function __construct(private ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private ManagerRegistry $managerRegistry
+    ) {
     }
+
     #[Route(path: '/', name: 'contact_rw_index', methods: ['GET'])]
-    public function index(ContactRwRepository $contactRwRepository) : Response
+    public function index(ContactRwRepository $contactRwRepository): Response
     {
         return $this->render(
             '@Sepulture/contact_rw/index.html.twig',
@@ -30,8 +31,9 @@ class ContactRwController extends AbstractController
             ]
         );
     }
+
     #[Route(path: '/new', name: 'contact_rw_new', methods: ['GET', 'POST'])]
-    public function new(Request $request) : Response
+    public function new(Request $request): Response
     {
         $contactRw = new ContactRw();
         $contactRw->setDateExpiration(new DateTime());
@@ -44,8 +46,11 @@ class ContactRwController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Le contact a bien été ajouté');
 
-            return $this->redirectToRoute('contact_rw_show', ['id' => $contactRw->getId()]);
+            return $this->redirectToRoute('contact_rw_show', [
+                'id' => $contactRw->getId(),
+            ]);
         }
+
         return $this->render(
             '@Sepulture/contact_rw/new.html.twig',
             [
@@ -54,8 +59,9 @@ class ContactRwController extends AbstractController
             ]
         );
     }
+
     #[Route(path: '/{id}', name: 'contact_rw_show', methods: ['GET'])]
-    public function show(ContactRw $contactRw) : Response
+    public function show(ContactRw $contactRw): Response
     {
         return $this->render(
             '@Sepulture/contact_rw/show.html.twig',
@@ -64,8 +70,9 @@ class ContactRwController extends AbstractController
             ]
         );
     }
+
     #[Route(path: '/{id}/edit', name: 'contact_rw_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, ContactRw $contactRw) : Response
+    public function edit(Request $request, ContactRw $contactRw): Response
     {
         $form = $this->createForm(ContactRwType::class, $contactRw);
         $form->handleRequest($request);
@@ -74,8 +81,11 @@ class ContactRwController extends AbstractController
 
             $this->addFlash('success', 'Le contact a bien été modifié');
 
-            return $this->redirectToRoute('contact_rw_show', ['id' => $contactRw->getId()]);
+            return $this->redirectToRoute('contact_rw_show', [
+                'id' => $contactRw->getId(),
+            ]);
         }
+
         return $this->render(
             '@Sepulture/contact_rw/edit.html.twig',
             [
@@ -84,8 +94,9 @@ class ContactRwController extends AbstractController
             ]
         );
     }
+
     #[Route(path: '/{id}/delete', name: 'contact_rw_delete', methods: ['POST'])]
-    public function delete(Request $request, ContactRw $contactRw) : RedirectResponse
+    public function delete(Request $request, ContactRw $contactRw): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$contactRw->getId(), $request->request->get('_token'))) {
             $entityManager = $this->managerRegistry->getManager();
@@ -93,6 +104,7 @@ class ContactRwController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Le contact a bien été supprimé');
         }
+
         return $this->redirectToRoute('contact_rw_index');
     }
 }

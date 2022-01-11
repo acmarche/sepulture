@@ -92,7 +92,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Visuel::class,
-                    'query_builder' => fn(VisuelRepository $cr) => $cr->getForList(),
+                    'query_builder' => fn (VisuelRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
@@ -101,7 +101,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Legal::class,
-                    'query_builder' => fn(LegalRepository $cr) => $cr->getForList(),
+                    'query_builder' => fn (LegalRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
@@ -111,7 +111,9 @@ class SepultureType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'Symboles et leur localisation',
-                    'attr' => ['rows' => 8],
+                    'attr' => [
+                        'rows' => 8,
+                    ],
                 ]
             )
             ->add(
@@ -128,7 +130,9 @@ class SepultureType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'Epitaphes et devises',
-                    'attr' => ['rows' => 8],
+                    'attr' => [
+                        'rows' => 8,
+                    ],
                 ]
             )
             ->add(

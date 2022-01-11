@@ -11,14 +11,17 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchSepultureType extends AbstractType
 {
-    public function __construct(private TypeSepultureRepository $typeSepultureRepository, private CimetiereRepository $cimetiereRepository, private VisuelRepository $visuelRepository, private SihlRepository $sihlRepository)
-    {
+    public function __construct(
+        private TypeSepultureRepository $typeSepultureRepository,
+        private CimetiereRepository $cimetiereRepository,
+        private VisuelRepository $visuelRepository,
+        private SihlRepository $sihlRepository
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -90,7 +93,9 @@ class SearchSepultureType extends AbstractType
                 CheckboxType::class,
                 [
                     'required' => false,
-                    'attr' => ['title' => 'Ancien combattant 14-18'],
+                    'attr' => [
+                        'title' => 'Ancien combattant 14-18',
+                    ],
                 ]
             )
             ->add(
@@ -98,7 +103,9 @@ class SearchSepultureType extends AbstractType
                 CheckboxType::class,
                 [
                     'required' => false,
-                    'attr' => ['title' => 'Ancien combattant 40-45'],
+                    'attr' => [
+                        'title' => 'Ancien combattant 40-45',
+                    ],
                 ]
             )
             ->add(
@@ -106,7 +113,9 @@ class SearchSepultureType extends AbstractType
                 CheckboxType::class,
                 [
                     'required' => false,
-                    'attr' => ['title' => 'Fonction sociale'],
+                    'attr' => [
+                        'title' => 'Fonction sociale',
+                    ],
                 ]
             )
             ->add(
@@ -114,9 +123,11 @@ class SearchSepultureType extends AbstractType
                 CheckboxType::class,
                 [
                     'required' => false,
-                    'attr' => ['title' => '1er immu avant 45'],
+                    'attr' => [
+                        'title' => '1er immu avant 45',
+                    ],
                 ]
-            ) ->add(
+            )->add(
                 'annee',
                 IntegerType::class,
                 [
@@ -124,7 +135,7 @@ class SearchSepultureType extends AbstractType
                         'placeholder' => 'Année de décès',
                     ],
                     'required' => false,
-                    'label'=>false
+                    'label' => false,
                 ]
             );
     }

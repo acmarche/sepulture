@@ -2,16 +2,16 @@
 
 namespace AcMarche\Sepulture\Service;
 
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\ContactRw;
 use AcMarche\Sepulture\Entity\Preference;
 use AcMarche\Sepulture\Repository\ContactRwRepository;
 use AcMarche\Sepulture\Repository\PreferenceRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -42,7 +42,6 @@ class CimetiereUtil
     }
 
     /**
-     *
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -50,7 +49,7 @@ class CimetiereUtil
      */
     public function captchaverify(string $token = null): bool
     {
-        if (!$token) {
+        if (! $token) {
             return false;
         }
 
@@ -70,9 +69,9 @@ class CimetiereUtil
         );
 
         $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $success = (bool)$data['success'];
+        $success = (bool) $data['success'];
 
-        if (!$success) {
+        if (! $success) {
             foreach ($data['error-codes'] as $error) {
                 $this->error = $error;
             }
@@ -90,7 +89,7 @@ class CimetiereUtil
             ]
         );
 
-        if ($preference !== null) {
+        if (null !== $preference) {
             return $preference->getValeur();
         }
 
@@ -106,7 +105,7 @@ class CimetiereUtil
             ]
         );
 
-        if ($preference === null) {
+        if (null === $preference) {
             $preference = new Preference();
             $preference->setClef('cimetiere');
             $preference->setNom('Cimetiere par defaut pour encodage');

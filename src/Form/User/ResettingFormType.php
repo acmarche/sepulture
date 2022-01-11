@@ -29,9 +29,13 @@ class ResettingFormType extends AbstractType
                     'autocomplete' => 'new-password',
                 ],
             ],
-            'first_options' => ['label' => 'Mot de passe'],
-            'second_options' => ['label' => 'Répéter le mot de passe'],
-            'invalid_message' => 'Les mots de passe doivent correspondre',
+            'first_options' => [
+                'label' => 'Mot de passe',
+            ],
+            'second_options' => [
+                'label' => 'Répéter le mot de passe',
+            ],
+            'invalid_message' =>  'Les mots de passe doivent correspondre',
         ]);
     }
 

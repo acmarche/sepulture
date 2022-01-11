@@ -13,8 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    public function __construct(private LocatorRoles $locatorRoles)
-    {
+    public function __construct(
+        private LocatorRoles $locatorRoles
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -45,7 +46,9 @@ class UserType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Mot de passe',
-                    'attr' => ['autocomplete' => 'new-password'],
+                    'attr' => [
+                        'autocomplete' => 'new-password',
+                    ],
                 ]
             );
     }

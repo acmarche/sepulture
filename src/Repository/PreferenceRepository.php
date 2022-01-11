@@ -2,9 +2,9 @@
 
 namespace AcMarche\Sepulture\Repository;
 
-use Doctrine\ORM\NonUniqueResultException;
 use AcMarche\Sepulture\Entity\Preference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

@@ -20,7 +20,9 @@ class CimetiereType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
-                'attr' => ['rows' => 8],
+                'attr' => [
+                    'rows' => 8,
+                ],
             ])
             ->add('planFile', FileType::class, [
                 'label' => 'Plan du cimetière',

@@ -3,10 +3,10 @@
 namespace AcMarche\Sepulture\Entity;
 
 use AcMarche\Sepulture\Repository\CommentaireRepository;
-use Stringable;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,48 +33,58 @@ class Commentaire implements TimestampableInterface, Stringable
     #[ORM\JoinColumn(nullable: false)]
     protected ?Sepulture $sepulture = null;
     public ?string $captcha = null;
+
     public function __toString(): string
     {
         return 'Fait le '.$this->createdAt->format('d-m-Y H:i').' par '.$this->nom.' '.$this->email;
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
+
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
+
     public function getRemarques(): ?string
     {
         return $this->remarques;
     }
+
     public function setRemarques(string $remarques): self
     {
         $this->remarques = $remarques;
 
         return $this;
     }
+
     public function getSepulture(): ?Sepulture
     {
         return $this->sepulture;
     }
+
     public function setSepulture(?Sepulture $sepulture): self
     {
         $this->sepulture = $sepulture;
