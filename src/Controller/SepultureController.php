@@ -3,6 +3,8 @@
 namespace AcMarche\Sepulture\Controller;
 
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Commentaire;
@@ -32,43 +34,25 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Sepulture controller.
- *
- * @Route("/sepulture")
  */
+#[Route(path: '/sepulture')]
 class SepultureController extends AbstractController
 {
-    private FileHelper $fileHelper;
-    private CimetiereUtil $cimetiereUtil;
-    private SepultureRepository $sepultureRepository;
-    private Captcha $captcha;
-
-    public function __construct(
-        SepultureRepository $sepultureRepository,
-        FileHelper $fileHelper,
-        CimetiereUtil $cimetiereUtil,
-        Captcha $captcha
-    ) {
-        $this->fileHelper = $fileHelper;
-        $this->cimetiereUtil = $cimetiereUtil;
-        $this->sepultureRepository = $sepultureRepository;
-        $this->captcha = $captcha;
+    public function __construct(private SepultureRepository $sepultureRepository, private FileHelper $fileHelper, private CimetiereUtil $cimetiereUtil, private Captcha $captcha, private ManagerRegistry $managerRegistry)
+    {
     }
-
     /**
      * Lists all Sepulture entities.
-     *
-     * @Route("/", name="sepulture", methods={"GET"})
      */
-    public function index(Request $request): Response
+    #[Route(path: '/', name: 'sepulture', methods: ['GET'])]
+    public function index(Request $request) : Response
     {
         $session = $request->getSession();
         $search = false;
         $data = [];
-
         if ($session->has('sepulture_search')) {
             $data = unserialize($session->get('sepulture_search'));
         }
-
         $search_form = $this->createForm(
             SearchSepultureType::class,
             $data,
@@ -76,23 +60,18 @@ class SepultureController extends AbstractController
                 'method' => 'GET',
             ]
         );
-
         $search_form->handleRequest($request);
-
         if ($search_form->isSubmitted() && $search_form->isValid()) {
 
             $data = $search_form->getData();
             $search = true;
         }
-
         $session->set('sepulture_search', serialize($data));
         $entities = [];
-
-        if (0 != count($data)) {
+        if (0 != (is_countable($data) ? count($data) : 0)) {
             $search = true;
             $entities = $this->sepultureRepository->search($data);
         }
-
         return $this->render(
             '@Sepulture/sepulture/index.html.twig',
             [
@@ -102,36 +81,28 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to create a new Sepulture entity.
-     *
-     * @Route("/new", name="sepulture_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function new(Request $request): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/new', name: 'sepulture_new', methods: ['GET', 'POST'])]
+    public function new(Request $request) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $sepulture = new Sepulture();
         $date = new DateTime();
         $year = $date->format('Y');
         $sepulture->setAnneeReleve($year);
-
         $user = $this->getUser();
-
-        $cimetiereId = $this->cimetiereUtil->getCimetiereByDefault($user->getUsername());
+        $cimetiereId = $this->cimetiereUtil->getCimetiereByDefault($user->getUserIdentifier());
         if ($cimetiereId) {
             $cimetiere = $em->getRepository(Cimetiere::class)->find($cimetiereId);
             if ($cimetiere !== null) {
                 $sepulture->setCimetiere($cimetiere);
             }
         }
-
         $form = $this->createForm(SepultureAddType::class, $sepulture);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $sepulture->setUserAdd($user);
@@ -143,7 +114,6 @@ class SepultureController extends AbstractController
 
             return $this->redirectToRoute('sepulture_show', ['slug' => $sepulture->getSlug()]);
         }
-
         return $this->render(
             '@Sepulture/sepulture/new.html.twig',
             [
@@ -152,32 +122,26 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
     /**
      * Finds and displays a Sepulture entity.
-     *
-     * @Route("/{slug}", name="sepulture_show", methods={"GET"})
      */
-    public function show(Request $request, Sepulture $sepulture): Response
+    #[Route(path: '/{slug}', name: 'sepulture_show', methods: ['GET'])]
+    public function show(Request $request, Sepulture $sepulture) : Response
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
-
         $session = $request->getSession();
-
         if ($session->has(Captcha::SESSION_NAME)) {
             $commentaire = $session->get(Captcha::SESSION_NAME);
         } else {
             $commentaire = new Commentaire();
             $commentaire->setSepulture($sepulture);
         }
-
         $deleteForm = $this->createDeleteForm($sepulture->getId());
         try {
             $animals = $this->captcha->getAnimals();
-        } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface$e) {
+        } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface) {
             $animals = [];
         }
-
         $form = $this->createForm(CommentaireType::class, $commentaire, [
                 'action' => $this->generateUrl(
                     'commentaire_new',
@@ -187,7 +151,6 @@ class SepultureController extends AbstractController
                 ),
             ]
         );
-
         return $this->render(
             '@Sepulture/sepulture/show.html.twig',
             [
@@ -199,24 +162,18 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to edit an existing Sepulture entity.
-     *
-     * @Route("/{slug}/edit", name="sepulture_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function edit(Request $request, Sepulture $sepulture): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/{slug}/edit', name: 'sepulture_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Sepulture $sepulture) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $form = $this->createForm(SepultureType::class, $sepulture);
-
         $deleteForm = $this->createDeleteForm($sepulture->getId());
         $images = $this->fileHelper->getImages($sepulture->getId(), 5);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
@@ -224,7 +181,6 @@ class SepultureController extends AbstractController
 
             return $this->redirectToRoute('sepulture_show', ['slug' => $sepulture->getSlug()]);
         }
-
         return $this->render(
             '@Sepulture/sepulture/edit.html.twig',
             [
@@ -235,23 +191,20 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
     /**
      * Deletes a Sepulture entity.
-     *
-     * @Route("/{id}/delete", name="sepulture_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function delete(Request $request, $id): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/{id}/delete', name: 'sepulture_delete', methods: ['POST'])]
+    public function delete(Request $request, $id) : RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $entity = $this->sepultureRepository->find($id);
 
-            if ($entity === null) {
+            if (!$entity instanceof Sepulture) {
                 throw $this->createNotFoundException('Unable to find Sepulture entity.');
             }
 
@@ -260,10 +213,8 @@ class SepultureController extends AbstractController
 
             $this->addFlash('success', 'La sépulture a bien été supprimée');
         }
-
         return $this->redirectToRoute('sepulture');
     }
-
     /**
      * Creates a form to delete a Sepulture entity by id.
      *
@@ -278,16 +229,13 @@ class SepultureController extends AbstractController
 
             ->getForm();
     }
-
     /**
      * Lists all Sepulture entities.
-     *
-     * @Route("/interet/sihl/{id}", name="sepulture_sihl", methods={"GET"})
      */
-    public function sihl(Cimetiere $cimetiere): Response
+    #[Route(path: '/interet/sihl/{id}', name: 'sepulture_sihl', methods: ['GET'])]
+    public function sihl(Cimetiere $cimetiere) : Response
     {
         $sepultures = $this->sepultureRepository->getImportanceHistorique($cimetiere);
-
         return $this->render(
             '@Sepulture/sepulture/sihl.html.twig',
             [
@@ -296,16 +244,13 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
     /**
      * Lists all Sepulture entities.
-     *
-     * @Route("/interet/a1945/{id}", name="sepulture_a1945", methods={"GET"})
      */
-    public function a1945(Cimetiere $cimetiere): Response
+    #[Route(path: '/interet/a1945/{id}', name: 'sepulture_a1945', methods: ['GET'])]
+    public function a1945(Cimetiere $cimetiere) : Response
     {
         $sepultures = $this->sepultureRepository->getAvant1945($cimetiere);
-
         return $this->render(
             '@Sepulture/sepulture/a1945.html.twig',
             [
@@ -314,6 +259,4 @@ class SepultureController extends AbstractController
             ]
         );
     }
-
-
 }

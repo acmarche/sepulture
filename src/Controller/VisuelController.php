@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
@@ -16,22 +18,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Visuel controller.
- *
- * @Route("/visuel")
  */
+#[Route(path: '/visuel')]
 class VisuelController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $managerRegistry)
+    {
+    }
     /**
      * Lists all Visuel entities.
-     *
-     * @Route("/", name="visuel", methods={"GET"})
      */
-    public function index(): Response
+    #[Route(path: '/', name: 'visuel', methods: ['GET'])]
+    public function index() : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $entities = $em->getRepository(Visuel::class)->findAll();
-
         return $this->render(
             '@Sepulture/visuel/index.html.twig',
             [
@@ -39,7 +40,6 @@ class VisuelController extends AbstractController
             ]
         );
     }
-
     /**
      * Creates a form to create a Visuel entity.
      *
@@ -49,7 +49,7 @@ class VisuelController extends AbstractController
      */
     private function createCreateForm(Visuel $entity): FormInterface
     {
-        $form = $this->createForm(
+     return     $this->createForm(
             VisuelType::class,
             $entity,
             [
@@ -57,33 +57,25 @@ class VisuelController extends AbstractController
                 'method' => 'POST',
             ]
         );
-
-        $form;
-
-        return $form;
     }
-
     /**
      * Displays a form to create a new Visuel entity.
-     *
-     * @Route("/new", name="visuel_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/new', name: 'visuel_new', methods: ['GET', 'POST'])]
+    public function new(Request $request) : Response
     {
         $entity = new Visuel();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $em->persist($entity);
             $em->flush();
             $this->addFlash('success', 'Le visuel a bien été ajouté');
 
             return $this->redirectToRoute('visuel');
         }
-
         return $this->render(
             '@Sepulture/visuel/new.html.twig',
             [
@@ -92,16 +84,13 @@ class VisuelController extends AbstractController
             ]
         );
     }
-
     /**
      * Finds and displays a Visuel entity.
-     *
-     * @Route("/{id}", name="visuel_show", methods={"GET"})
      */
-    public function show(Visuel $visuel): Response
+    #[Route(path: '/{id}', name: 'visuel_show', methods: ['GET'])]
+    public function show(Visuel $visuel) : Response
     {
         $deleteForm = $this->createDeleteForm($visuel->getId());
-
         return $this->render(
             '@Sepulture/visuel/show.html.twig',
             [
@@ -110,28 +99,22 @@ class VisuelController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to edit an existing Visuel entity.
-     *
-     * @Route("/{id}/edit", name="visuel_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Visuel $visuel): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'visuel_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Visuel $visuel) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $editForm = $this->createEditForm($visuel);
-
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em->flush();
             $this->addFlash('success', 'Le visuel a bien été modifié');
 
             return $this->redirectToRoute('visuel');
         }
-
         return $this->render(
             '@Sepulture/visuel/edit.html.twig',
             [
@@ -140,7 +123,6 @@ class VisuelController extends AbstractController
             ]
         );
     }
-
     /**
      * Creates a form to edit a Visuel entity.
      *
@@ -150,7 +132,7 @@ class VisuelController extends AbstractController
      */
     private function createEditForm(Visuel $entity): FormInterface
     {
-        $form = $this->createForm(
+        return $this->createForm(
             VisuelType::class,
             $entity,
             [
@@ -158,25 +140,18 @@ class VisuelController extends AbstractController
 
             ]
         );
-
-
-
-        return $form;
     }
-
     /**
      * Deletes a Visuel entity.
-     *
-     * @Route("/{id}/delete", name="visuel_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/delete', name: 'visuel_delete', methods: ['POST'])]
+    public function delete(Request $request, $id) : RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Visuel::class)->find($id);
 
             if ($entity === null) {
@@ -187,10 +162,8 @@ class VisuelController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Le visuel a bien été supprimé');
         }
-
         return $this->redirectToRoute('visuel');
     }
-
     /**
      * Creates a form to delete a Visuel entity by id.
      *

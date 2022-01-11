@@ -3,6 +3,8 @@
 namespace AcMarche\Sepulture\Controller;
 
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Form\ImageType;
 use AcMarche\Sepulture\Service\FileHelper;
@@ -19,35 +21,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Image controller.
- *
- * @Route("/image")
  */
+#[Route(path: '/image')]
 class ImageController extends AbstractController
 {
-    private FileHelper $fileHelper;
-    private Mailer $mailer;
-
-    public function __construct(FileHelper $fileHelper, Mailer $mailer)
+    public function __construct(private FileHelper $fileHelper, private Mailer $mailer, private ManagerRegistry $managerRegistry)
     {
-        $this->fileHelper = $fileHelper;
-        $this->mailer = $mailer;
     }
-
     /**
      * Displays a form to create a new Image entity.
-     *
-     * @Route("/new/{id}", name="image_edit", methods={"GET"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function edit(Sepulture $sepulture): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/new/{id}', name: 'image_edit', methods: ['GET'])]
+    public function edit(Sepulture $sepulture) : Response
     {
         $form = $this->createForm(ImageType::class, $sepulture, [
             'action' => $this->generateUrl('image_upload', ['id' => $sepulture->getId()]),
         ]);
-
         $images = $this->fileHelper->getImages($sepulture->getId());
         $deleteForm = $this->createDeleteForm($sepulture->getId());
-
         return $this->render(
             '@Sepulture/image/edit.html.twig',
             [
@@ -58,12 +50,9 @@ class ImageController extends AbstractController
             ]
         );
     }
-
-    /**
-     * @Route("/upload/{id}", name="image_upload", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
-     */
-    public function upload(Request $request, Sepulture $sepulture): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/upload/{id}', name: 'image_upload', methods: ['POST'])]
+    public function upload(Request $request, Sepulture $sepulture) : Response
     {
         if ($request->isXmlHttpRequest()) {
             $file = $request->files->get('file');
@@ -88,28 +77,22 @@ class ImageController extends AbstractController
 
             return new Response('okid');
         }
-
         return new Response('ko');
     }
-
     /**
      * Deletes a Image entity.
-     *
-     * @Route("/delete/{sepultureId}", name="image_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
      */
-    public function delete(Request $request, $sepultureId): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/delete/{sepultureId}', name: 'image_delete', methods: ['POST'])]
+    public function delete(Request $request, $sepultureId) : RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->managerRegistry->getManager();
         $sepulture = $em->getRepository(Sepulture::class)->find($sepultureId);
-
         if ($sepulture === null) {
             throw $this->createNotFoundException('Unable to find Sepulture entity.');
         }
-
         $form = $this->createDeleteForm($sepultureId);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $files = $request->get('img', false);
 
@@ -126,15 +109,13 @@ class ImageController extends AbstractController
                 try {
                     $this->fileHelper->deleteOneDoc($directory, $filename);
                     $this->addFlash('success', "L'image $filename a bien été supprimée");
-                } catch (FileException $e) {
+                } catch (FileException) {
                     $this->addFlash('danger', "L'image  $filename n'a pas pu être supprimée. ");
                 }
             }
         }
-
         return $this->redirectToRoute('image_edit', ['id' => $sepulture->getId()]);
     }
-
     /**
      * Creates a form to delete a Image entity by id.
      *

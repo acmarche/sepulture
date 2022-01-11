@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use AcMarche\Sepulture\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -11,33 +12,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     private $propo;
-
-    /**
-     * @Route("/", name="home")
-     */
-    public function index(): Response
+    public function __construct(private ManagerRegistry $managerRegistry)
     {
-        $em = $this->getDoctrine()->getManager();
+    }
 
+    #[Route(path: '/', name: 'home')]
+    public function index() : Response
+    {
+        $em = $this->managerRegistry->getManager();
         $page = $em->getRepository(Page::class)->find(1);
         if ($page === null) {
             $page = $this->createHomePage();
         }
-
         return $this->render(
             '@Sepulture/default/index.html.twig',
             ['page' => $page]
         );
     }
 
-    /**
-     * @Route("/plantage", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_EDITEUR")
-     */
-    public function plantage(): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[Route(path: '/plantage', methods: ['GET', 'POST'])]
+    public function plantage() : Response
     {
         $this->propo->findAll();
-
         return $this->render(
             '@Sepulture/default/index.html.twig',
             []
@@ -46,7 +43,7 @@ class DefaultController extends AbstractController
 
     protected function createHomePage(): Page
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->managerRegistry->getManager();
         $page = new Page();
         $page->setSlug('home');
         $page->setTitre('Bienvenue sur le site des cimetières de la commune');

@@ -13,11 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    private LocatorRoles $locatorRoles;
-
-    public function __construct(LocatorRoles $locatorRoles)
+    public function __construct(private LocatorRoles $locatorRoles)
     {
-        $this->locatorRoles = $locatorRoles;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

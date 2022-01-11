@@ -19,23 +19,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class CimetiereUtil
 {
-    private ParameterBagInterface $parameterBag;
-    private PreferenceRepository $preferenceRepository;
-    private HttpClientInterface $httpClient;
     public string $error;
-    private ContactRwRepository $contactRwRepository;
 
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        PreferenceRepository $preferenceRepository,
-        HttpClientInterface $httpClient,
-        ContactRwRepository $contactRwRepository
+        private ParameterBagInterface $parameterBag,
+        private PreferenceRepository $preferenceRepository,
+        private HttpClientInterface $httpClient,
+        private ContactRwRepository $contactRwRepository
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->preferenceRepository = $preferenceRepository;
-        $this->httpClient = $httpClient;
         $this->error = '';
-        $this->contactRwRepository = $contactRwRepository;
     }
 
     public static function getStatuts(): array
@@ -50,9 +42,7 @@ class CimetiereUtil
     }
 
     /**
-     * @param string $token
      *
-     * @return bool
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
@@ -79,7 +69,7 @@ class CimetiereUtil
             ]
         );
 
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $success = (bool)$data['success'];
 
         if (!$success) {

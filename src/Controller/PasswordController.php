@@ -15,32 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Password controller.
- *
- * @Route("/security/password")
- * @IsGranted("ROLE_SEPULTURE_ADMIN")
  */
+#[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+#[Route(path: '/security/password')]
 class PasswordController extends AbstractController
 {
-    private UserPasswordHasherInterface $userPasswordEncoder;
-    private UserRepository $userRepository;
-
-    public function __construct(UserPasswordHasherInterface $userPasswordEncoder, UserRepository $userRepository)
+    public function __construct(private UserPasswordHasherInterface $userPasswordEncoder, private UserRepository $userRepository)
     {
-        $this->userPasswordEncoder = $userPasswordEncoder;
-        $this->userRepository = $userRepository;
     }
-
     /**
      * Displays a form to edit an existing Abonnement entity.
-     *
-     * @Route("/{id}", name="user_change_password", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    #[Route(path: '/{id}', name: 'user_change_password', methods: ['GET', 'POST'])]
+    public function edit(Request $request, User $user) : Response
     {
         $form = $this->createForm(UserPasswordType::class, $user);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $form->get('password')->getData();
 
@@ -53,7 +43,6 @@ class PasswordController extends AbstractController
 
             return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
         }
-
         return $this->render(
             '@Sepulture/password/edit.html.twig',
             [

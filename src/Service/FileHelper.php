@@ -16,11 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHelper
 {
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(private ParameterBagInterface $parameterBag)
     {
-        $this->parameterBag = $parameterBag;
     }
 
     public function uploadFile($directory, UploadedFile $file, $fileName): File

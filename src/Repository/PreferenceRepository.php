@@ -45,8 +45,8 @@ class PreferenceRepository extends ServiceEntityRepository
      */
     public function getCimetiereDefault($criteria)
     {
-        $username = isset($criteria['username']) ? $criteria['username'] : null;
-        $clef = isset($criteria['clef']) ? $criteria['clef'] : null;
+        $username = $criteria['username'] ?? null;
+        $clef = $criteria['clef'] ?? null;
 
         $qb = $this->createQueryBuilder('preference');
 

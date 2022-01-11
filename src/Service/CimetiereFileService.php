@@ -19,21 +19,15 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CimetiereFileService
 {
-    private ParameterBagInterface $parameterBag;
-    private FileHelper $fileHelper;
-    private CimetiereRepository $cimetiereRepository;
     private SessionInterface $session;
 
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        FileHelper            $fileHelper,
-        CimetiereRepository   $cimetiereRepository,
+        private ParameterBagInterface $parameterBag,
+        private FileHelper            $fileHelper,
+        private CimetiereRepository   $cimetiereRepository,
         RequestStack          $requestStack
     )
     {
-        $this->parameterBag = $parameterBag;
-        $this->fileHelper = $fileHelper;
-        $this->cimetiereRepository = $cimetiereRepository;
         $this->session = $requestStack->getSession();
     }
 

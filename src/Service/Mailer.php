@@ -15,24 +15,16 @@ use Twig\Environment;
 
 class Mailer
 {
-    private Environment $twig;
     private FlashBagInterface $flashBag;
-    private MailerInterface $mailer;
-    private ParameterBagInterface $parameterBag;
-    private RouterInterface $router;
 
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        Environment           $twig,
-        RouterInterface       $router,
-        MailerInterface       $swiftMailer,
+        private ParameterBagInterface $parameterBag,
+        private Environment           $twig,
+        private RouterInterface       $router,
+        private MailerInterface       $mailer,
         RequestStack          $requestStack
     )
     {
-        $this->twig = $twig;
-        $this->mailer = $swiftMailer;
-        $this->parameterBag = $parameterBag;
-        $this->router = $router;
         $this->flashBag = $requestStack->getSession()->getFlashBag();
     }
 

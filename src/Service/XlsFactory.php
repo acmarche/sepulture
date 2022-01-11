@@ -20,11 +20,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class XlsFactory
 {
-    private SepultureRepository $sepultureRepository;
-
-    public function __construct(SepultureRepository $sepultureRepository)
+    public function __construct(private SepultureRepository $sepultureRepository)
     {
-        $this->sepultureRepository = $sepultureRepository;
     }
 
     public function create(): BinaryFileResponse
@@ -48,22 +45,20 @@ class XlsFactory
         // Create the excel file in the tmp directory of the system
         try {
             $writer->save($temp_file);
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
 
         $fileName = 'indigeants.xls';
         $response = new BinaryFileResponse($temp_file);
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
-            null === $fileName ? $response->getFile()->getFilename() : $fileName
+            $fileName ?? $response->getFile()->getFilename()
         );
 
         return $response;
     }
 
     /**
-     * @param Spreadsheet $phpExcelObject
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     private function createXlsObject(Spreadsheet $phpExcelObject): array
@@ -135,7 +130,6 @@ class XlsFactory
     }
 
     /**
-     * @param Spreadsheet $phpExcelObject
      * @param Defunt[] $defunts
      *
      * @return mixed

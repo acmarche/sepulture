@@ -14,24 +14,17 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class SecurityController extends AbstractController
 {
-    private CsrfTokenManagerInterface $tokenManager;
-
-    public function __construct(CsrfTokenManagerInterface $tokenManager)
+    public function __construct(private CsrfTokenManagerInterface $tokenManager)
     {
-        $this->tokenManager = $tokenManager;
     }
 
-    /**
-     * @Route("/login", name="app_login")
-     */
-    public function login(Request $request): Response
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(Request $request) : Response
     {
         /** @var $session Session */
         $session = $request->getSession();
-
         $authErrorKey = Security::AUTHENTICATION_ERROR;
         $lastUsernameKey = Security::LAST_USERNAME;
-
         // get the error if any (works with forward and redirect -- see below)
         if ($request->attributes->has($authErrorKey)) {
             $error = $request->attributes->get($authErrorKey);
@@ -41,18 +34,14 @@ class SecurityController extends AbstractController
         } else {
             $error = null;
         }
-
         if (!$error instanceof AuthenticationException) {
             $error = null; // The value does not come from the security component.
         }
-
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
-
         $csrfToken = $this->tokenManager
             ? $this->tokenManager->getToken('authenticate')->getValue()
             : null;
-
         return $this->renderLogin(
             [
                 'last_username' => $lastUsername,
@@ -62,18 +51,14 @@ class SecurityController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/login_check", name="app_login_check")
-     */
-    public function check(): void
+    #[Route(path: '/login_check', name: 'app_login_check')]
+    public function check() : void
     {
         throw new RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
-    public function logout(): void
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout() : void
     {
         throw new RuntimeException('You must activate the logout in your security firewall configuration.');
     }

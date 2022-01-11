@@ -17,11 +17,8 @@ use Symfony\Component\Finder\Finder;
 
 class FinderJf
 {
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(private ParameterBagInterface $parameterBag)
     {
-        $this->parameterBag = $parameterBag;
     }
 
     function find_all_files(string $path, string $slugname): array

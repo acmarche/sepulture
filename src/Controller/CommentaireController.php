@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\Sepulture;
@@ -19,39 +21,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Commentaire controller.
- *
- * @Route("/commentaire")
  */
+#[Route(path: '/commentaire')]
 class CommentaireController extends AbstractController
 {
-    private CimetiereUtil $cimetiereUtil;
-    private Mailer $mailer;
-    private CommentaireRepository $commentaireRepository;
-    private Captcha $captcha;
-
-    public function __construct(
-        CommentaireRepository $commentaireRepository,
-        CimetiereUtil         $cimetiereUtil,
-        Mailer                $mailer,
-        Captcha               $captcha
-    )
+    public function __construct(private CommentaireRepository $commentaireRepository, private CimetiereUtil         $cimetiereUtil, private Mailer                $mailer, private Captcha               $captcha, private ManagerRegistry $managerRegistry)
     {
-        $this->cimetiereUtil = $cimetiereUtil;
-        $this->mailer = $mailer;
-        $this->commentaireRepository = $commentaireRepository;
-        $this->captcha = $captcha;
     }
-
     /**
      * Lists all Commentaire entities.
-     *
-     * @Route("/", name="commentaire", methods={"GET"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function index(): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/', name: 'commentaire', methods: ['GET'])]
+    public function index() : Response
     {
         $entities = $this->commentaireRepository->findAll();
-
         return $this->render(
             '@Sepulture/commentaire/index.html.twig',
             [
@@ -59,22 +43,17 @@ class CommentaireController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to create a new Commentaire entity.
-     *
-     * @Route("/new/{id}", name="commentaire_new", methods={"GET","POST"})
      */
-    public function new(Request $request, Sepulture $sepulture): Response
+    #[Route(path: '/new/{id}', name: 'commentaire_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Sepulture $sepulture) : RedirectResponse
     {
         $commentaire = new Commentaire();
         $commentaire->setSepulture($sepulture);
-
         $form = $this->createForm(CommentaireType::class, $commentaire);
-
         $form->handleRequest($request);
         $session = $request->getSession();
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->get('commentaire');
             if ($this->captcha->check($data['captcha'])) {
@@ -94,20 +73,16 @@ class CommentaireController extends AbstractController
         } else {
             $this->addFlash('danger', 'Form error: ' . $form->getErrors());
         }
-
         return $this->redirectToRoute('sepulture_show', array('slug' => $sepulture->getSlug()));
     }
-
     /**
      * Finds and displays a Commentaire entity.
-     *
-     * @Route("/{id}", name="commentaire_show", methods={"GET"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function show(Commentaire $commentaire): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}', name: 'commentaire_show', methods: ['GET'])]
+    public function show(Commentaire $commentaire) : Response
     {
         $deleteForm = $this->createDeleteForm($commentaire->getId());
-
         return $this->render(
             '@Sepulture/commentaire/show.html.twig',
             [
@@ -116,20 +91,17 @@ class CommentaireController extends AbstractController
             ]
         );
     }
-
     /**
      * Deletes a Commentaire entity.
-     *
-     * @Route("/{id}/delete", name="commentaire_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/delete', name: 'commentaire_delete', methods: ['POST'])]
+    public function delete(Request $request, $id) : RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Commentaire::class)->find($id);
 
             if ($entity === null) {
@@ -139,10 +111,8 @@ class CommentaireController extends AbstractController
             $em->remove($entity);
             $em->flush();
         }
-
         return $this->redirectToRoute('commentaire');
     }
-
     /**
      * Creates a form to delete a Commentaire entity by id.
      *

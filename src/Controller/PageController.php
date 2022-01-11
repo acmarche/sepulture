@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use AcMarche\Sepulture\Entity\Page;
 use AcMarche\Sepulture\Form\PageType;
 use AcMarche\Sepulture\Service\FileHelper;
@@ -17,27 +19,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Page controller.
- *
- * @Route("/page")
  */
+#[Route(path: '/page')]
 class PageController extends AbstractController
 {
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper)
+    public function __construct(private FileHelper $fileHelper, private ManagerRegistry $managerRegistry)
     {
-        $this->fileHelper = $fileHelper;
     }
-
     /**
      * Finds and displays a Page entity.
-     *
-     * @Route("/{slug}", name="page_show", methods={"GET"})
      */
-    public function show(Page $page): Response
+    #[Route(path: '/{slug}', name: 'page_show', methods: ['GET'])]
+    public function show(Page $page) : Response
     {
         $deleteForm = $this->createDeleteForm($page->getId());
-
         return $this->render(
             '@Sepulture/page/show.html.twig',
             [
@@ -46,21 +41,16 @@ class PageController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to edit an existing Page entity.
-     *
-     * @Route("/{id}/edit", name="page_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Page $page): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'page_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Page $page) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $editForm = $this->createForm(PageType::class, $page);
-
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em->flush();
 
@@ -70,7 +60,6 @@ class PageController extends AbstractController
 
             return $this->redirectToRoute('home');
         }
-
         return $this->render(
             '@Sepulture/page/edit.html.twig',
             [
@@ -79,20 +68,17 @@ class PageController extends AbstractController
             ]
         );
     }
-
     /**
      * Deletes a Page entity.
-     *
-     * @Route("/{id}/delete", name="page_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/delete', name: 'page_delete', methods: ['POST'])]
+    public function delete(Request $request, $id) : RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Page::class)->find($id);
 
             if ($entity === null) {
@@ -106,10 +92,8 @@ class PageController extends AbstractController
 
             return $this->redirectToRoute('home');
         }
-
         return $this->redirectToRoute('home');
     }
-
     /**
      * Creates a form to delete a Page entity by id.
      *
@@ -125,7 +109,6 @@ class PageController extends AbstractController
             ->add('submit', SubmitType::class, ['label' => 'Delete'])
             ->getForm();
     }
-
     private function traitfiles(FormInterface $form, Page $page): void
     {
         $image = $form->get('imageFile')->getData();
@@ -146,7 +129,7 @@ class PageController extends AbstractController
         }
 
         if ($fileName) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $em->flush();
         }
     }

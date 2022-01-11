@@ -17,21 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchSepultureType extends AbstractType
 {
-    private TypeSepultureRepository $typeSepultureRepository;
-    private CimetiereRepository $cimetiereRepository;
-    private VisuelRepository $visuelRepository;
-    private SihlRepository $sihlRepository;
-
-    public function __construct(
-        TypeSepultureRepository $typeSepultureRepository,
-        CimetiereRepository $cimetiereRepository,
-        VisuelRepository $visuelRepository,
-        SihlRepository $sihlRepository
-    ) {
-        $this->typeSepultureRepository = $typeSepultureRepository;
-        $this->cimetiereRepository = $cimetiereRepository;
-        $this->visuelRepository = $visuelRepository;
-        $this->sihlRepository = $sihlRepository;
+    public function __construct(private TypeSepultureRepository $typeSepultureRepository, private CimetiereRepository $cimetiereRepository, private VisuelRepository $visuelRepository, private SihlRepository $sihlRepository)
+    {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

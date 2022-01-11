@@ -13,7 +13,7 @@ class UtilisateurEditType extends AbstractType
             ->remove('plainPassword');
     }
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return UserType::class;
     }

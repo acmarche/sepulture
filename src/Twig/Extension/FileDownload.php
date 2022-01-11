@@ -10,13 +10,8 @@ use Twig\TwigFilter;
 
 class FileDownload extends AbstractExtension
 {
-    private ParameterBagInterface $parameterBag;
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper, ParameterBagInterface $parameterBag)
+    public function __construct(private FileHelper $fileHelper, private ParameterBagInterface $parameterBag)
     {
-        $this->parameterBag = $parameterBag;
-        $this->fileHelper = $fileHelper;
     }
 
     /**
@@ -43,7 +38,7 @@ class FileDownload extends AbstractExtension
     public function getImage(string $idsepulture)
     {
         $file = $this->fileHelper->getImages($idsepulture, 1);
-        if (count($file) > 0) {
+        if ($file !== []) {
             return $file[0];
         }
 

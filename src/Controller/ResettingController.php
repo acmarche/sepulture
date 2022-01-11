@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use AcMarche\Sepulture\Entity\User;
 use Exception;
 
 use AcMarche\Sepulture\Form\User\LostPasswordType;
@@ -17,41 +18,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RegisterController.
- *
- * @Route("password/lost")
  */
+#[Route(path: 'password/lost')]
 class ResettingController extends AbstractController
 {
-    private UserRepository $userRepository;
-    private UserPasswordHasherInterface $userPasswordHasher;
-    private Mailer $mailer;
-
-    public function __construct(
-        UserRepository $userRepository,
-        UserPasswordHasherInterface $userPasswordHasher,
-        Mailer $mailer
-    ) {
-        $this->userRepository = $userRepository;
-        $this->mailer = $mailer;
-        $this->userPasswordHasher = $userPasswordHasher;
+    public function __construct(private UserRepository $userRepository, private UserPasswordHasherInterface $userPasswordHasher, private Mailer $mailer)
+    {
     }
-
     /**
-     * @Route("/", name="sepulture_password_lost", methods={"GET", "POST"})
-     *
      *
      * @throws Exception
      */
-    public function request(Request $request): Response
+    #[Route(path: '/', name: 'sepulture_password_lost', methods: ['GET', 'POST'])]
+    public function request(Request $request) : Response
     {
         $form = $this->createForm(LostPasswordType::class)
             ->add('submit', SubmitType::class, ['label' => 'Demander un nouveau mot de passe']);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->userRepository->findOneBy(['email' => $form->getData()->getEmail()]);
-            if ($user === null) {
+            if (!$user instanceof User) {
                 $this->addFlash('warning', 'Aucun utilisateur trouvé');
 
                 return $this->redirectToRoute('sepulture_password_lost');
@@ -63,7 +49,6 @@ class ResettingController extends AbstractController
 
             return $this->redirectToRoute('sepulture_password_confirmation');
         }
-
         return $this->render(
             '@Sepulture/resetting/request.html.twig',
             [
@@ -71,39 +56,31 @@ class ResettingController extends AbstractController
             ]
         );
     }
-
-    /**
-     * @Route("/confirmation", name="sepulture_password_confirmation", methods={"GET"})
-     */
-    public function requestConfirmed(): Response
+    #[Route(path: '/confirmation', name: 'sepulture_password_confirmation', methods: ['GET'])]
+    public function requestConfirmed() : Response
     {
         return $this->render(
             'resetting/confirmed.html.twig'
         );
     }
-
     /**
      * Reset user password.
      *
-     * @Route("/reset/{token}", name="sepulture_password_reset", methods={"GET","POST"})
      *
      * @param string $token
      */
-    public function reset(Request $request, $token): Response
+    #[Route(path: '/reset/{token}', name: 'sepulture_password_reset', methods: ['GET', 'POST'])]
+    public function reset(Request $request, $token) : Response
     {
         $user = $this->userRepository->findOneBy(['confirmationToken' => $token]);
-
-        if (null === $user) {
+        if (!$user instanceof User) {
             $this->addFlash('warning', 'Jeton non trouvé');
 
             return $this->redirectToRoute('app_login');
         }
-
         $form = $this->createForm(ResettingFormType::class, $user)
             ->add('submit', SubmitType::class, ['label' => 'Valider']);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $form->getData()->getPlainPassword()));
             $user->setConfirmationToken(null);
@@ -113,7 +90,6 @@ class ResettingController extends AbstractController
 
             return $this->redirectToRoute('app_login');
         }
-
         return $this->render(
             '@Sepulture/resetting/reset.html.twig',
             [
@@ -122,7 +98,6 @@ class ResettingController extends AbstractController
             ]
         );
     }
-
     /**
      * @throws Exception
      */

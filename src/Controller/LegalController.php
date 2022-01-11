@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
@@ -16,22 +18,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Legal controller.
- *
- * @Route("/legal")
  */
+#[Route(path: '/legal')]
 class LegalController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $managerRegistry)
+    {
+    }
     /**
      * Lists all Legal entities.
-     *
-     * @Route("/", name="legal", methods={"GET"})
      */
-    public function index(): Response
+    #[Route(path: '/', name: 'legal', methods: ['GET'])]
+    public function index() : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $entities = $em->getRepository(Legal::class)->findAll();
-
         return $this->render(
             '@Sepulture/legal/index.html.twig',
             [
@@ -39,7 +40,6 @@ class LegalController extends AbstractController
             ]
         );
     }
-
     /**
      * Creates a form to create a Legal entity.
      *
@@ -49,7 +49,7 @@ class LegalController extends AbstractController
      */
     private function createCreateForm(Legal $entity): FormInterface
     {
-        $form = $this->createForm(
+     return    $this->createForm(
             LegalType::class,
             $entity,
             [
@@ -57,33 +57,25 @@ class LegalController extends AbstractController
                 'method' => 'POST',
             ]
         );
-
-        $form;
-
-        return $form;
     }
-
     /**
      * Displays a form to create a new Legal entity.
-     *
-     * @Route("/new", name="legal_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function new(Request $request): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/new', name: 'legal_new', methods: ['GET', 'POST'])]
+    public function new(Request $request) : Response
     {
         $entity = new Legal();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $em->persist($entity);
             $em->flush();
             $this->addFlash('success', "L'aspect légal a bien été ajouté");
 
             return $this->redirectToRoute('legal');
         }
-
         return $this->render(
             '@Sepulture/legal/new.html.twig',
             [
@@ -92,16 +84,13 @@ class LegalController extends AbstractController
             ]
         );
     }
-
     /**
      * Finds and displays a Legal entity.
-     *
-     * @Route("/{id}", name="legal_show", methods={"GET"})
      */
-    public function show(Legal $legal): Response
+    #[Route(path: '/{id}', name: 'legal_show', methods: ['GET'])]
+    public function show(Legal $legal) : Response
     {
         $deleteForm = $this->createDeleteForm($legal->getId());
-
         return $this->render(
             '@Sepulture/legal/show.html.twig',
             [
@@ -110,28 +99,22 @@ class LegalController extends AbstractController
             ]
         );
     }
-
     /**
      * Displays a form to edit an existing Legal entity.
-     *
-     * @Route("/{id}/edit", name="legal_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function edit(Request $request, Legal $legal): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'legal_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Legal $legal) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
+        $em = $this->managerRegistry->getManager();
         $editForm = $this->createEditForm($legal);
-
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em->flush();
             $this->addFlash('success', "L'aspect légal a bien été modifié");
 
             return $this->redirectToRoute('legal');
         }
-
         return $this->render(
             '@Sepulture/legal/edit.html.twig',
             [
@@ -140,7 +123,6 @@ class LegalController extends AbstractController
             ]
         );
     }
-
     /**
      * Creates a form to edit a Legal entity.
      *
@@ -150,7 +132,7 @@ class LegalController extends AbstractController
      */
     private function createEditForm(Legal $entity): FormInterface
     {
-        $form = $this->createForm(
+        return $this->createForm(
             LegalType::class,
             $entity,
             [
@@ -158,25 +140,18 @@ class LegalController extends AbstractController
 
             ]
         );
-
-
-
-        return $form;
     }
-
     /**
      * Deletes a Legal entity.
-     *
-     * @Route("/{id}/delete", name="legal_delete", methods={"POST"})
-     * @IsGranted("ROLE_SEPULTURE_ADMIN")
      */
-    public function delete(Request $request, $id): Response
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/delete', name: 'legal_delete', methods: ['POST'])]
+    public function delete(Request $request, $id) : RedirectResponse
     {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->managerRegistry->getManager();
             $entity = $em->getRepository(Legal::class)->find($id);
 
             if ($entity === null) {
@@ -187,10 +162,8 @@ class LegalController extends AbstractController
             $em->flush();
             $this->addFlash('success', "L'aspect légal a bien été supprimé");
         }
-
         return $this->redirectToRoute('legal');
     }
-
     /**
      * Creates a form to delete a Legal entity by id.
      *

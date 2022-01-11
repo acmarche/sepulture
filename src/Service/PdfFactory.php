@@ -27,36 +27,20 @@ use Twig\Environment;
 
 class PdfFactory
 {
-    private FileHelper $fileHelper;
-    private Environment $environment;
-    private Pdf $pdf;
-    private SepultureRepository $sepultureRepository;
-    private CimetiereUtil $cimetiereUtil;
-    private ParameterBagInterface $parameterBag;
-    private FormFactoryInterface $formFactory;
-    private FinderJf $finderJf;
     private SessionInterface $session;
 
     public function __construct(
-        FileHelper            $fileHelper,
-        Environment           $environment,
-        Pdf                   $pdf,
-        SepultureRepository   $sepultureRepository,
-        CimetiereUtil         $cimetiereUtil,
-        ParameterBagInterface $parameterBag,
-        FormFactoryInterface  $formFactory,
-        FinderJf              $finderJf,
+        private FileHelper            $fileHelper,
+        private Environment           $environment,
+        private Pdf                   $pdf,
+        private SepultureRepository   $sepultureRepository,
+        private CimetiereUtil         $cimetiereUtil,
+        private ParameterBagInterface $parameterBag,
+        private FormFactoryInterface  $formFactory,
+        private FinderJf              $finderJf,
         RequestStack          $requestStack
     )
     {
-        $this->fileHelper = $fileHelper;
-        $this->environment = $environment;
-        $this->pdf = $pdf;
-        $this->sepultureRepository = $sepultureRepository;
-        $this->cimetiereUtil = $cimetiereUtil;
-        $this->parameterBag = $parameterBag;
-        $this->formFactory = $formFactory;
-        $this->finderJf = $finderJf;
         $this->session = $requestStack->getSession();
     }
 
@@ -162,6 +146,7 @@ class PdfFactory
 
     public function sihl(Cimetiere $cimetiere, bool $rw = false): ?PdfResponse
     {
+        $content = null;
         $ville = $this->parameterBag->get('acmarche_sepulture_nom_ville');
 
         $sepultures = $this->sepultureRepository->getImportanceHistorique($cimetiere);
@@ -239,6 +224,7 @@ class PdfFactory
 
     public function a1945(Cimetiere $cimetiere, bool $rw = false): ?PdfResponse
     {
+        $content = null;
         $ville = $this->parameterBag->get('acmarche_sepulture_nom_ville');
 
         $sepultures = $this->sepultureRepository->getAvant1945($cimetiere);

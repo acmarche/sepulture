@@ -16,11 +16,8 @@ use AcMarche\Sepulture\Entity\Cimetiere;
 
 class ZipFactory
 {
-    private FinderJf $finderJf;
-
-    public function __construct(FinderJf $finderJf)
+    public function __construct(private FinderJf $finderJf)
     {
-        $this->finderJf = $finderJf;
     }
 
     public function create(Cimetiere $cimetiere): ZipArchive

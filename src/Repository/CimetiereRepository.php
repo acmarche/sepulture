@@ -35,7 +35,7 @@ class CimetiereRepository extends ServiceEntityRepository
      */
     public function search($criteria): array
     {
-        $nom = isset($criteria['nom']) ? $criteria['nom'] : null;
+        $nom = $criteria['nom'] ?? null;
 
         $qb = $this->createQueryBuilder('c');
         $qb->leftJoin('c.sepultures', 's', 'WITH');

@@ -2,6 +2,8 @@
 
 namespace AcMarche\Sepulture\Entity;
 
+use AcMarche\Sepulture\Repository\VisuelRepository;
+use Stringable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,38 +11,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Visuel.
- *
- * @ORM\Table(name="visuel")
- * @ORM\Entity(repositoryClass="AcMarche\Sepulture\Repository\VisuelRepository")
  */
-class Visuel
+#[ORM\Table(name: 'visuel')]
+#[ORM\Entity(repositoryClass: VisuelRepository::class)]
+class Visuel implements Stringable
 {
-    /**
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
-
-    /**
-     *
-     * @ORM\Column(name="nom", type="string", length=100, nullable=false, options={"comment" = "nom"})
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(name: 'nom', type: 'string', length: 100, nullable: false, options: ['comment' => 'nom'])]
+    #[Assert\NotBlank]
     private ?string $nom = null;
-
     /**
      * @var Sepulture[]|iterable
-     * @ORM\OneToMany(targetEntity="Sepulture", mappedBy="visuel")
      */
+    #[ORM\OneToMany(targetEntity: 'Sepulture', mappedBy: 'visuel')]
     private Collection $sepultures;
-
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->nom;
+        return (string) $this->nom;
     }
-
     /**
      * Constructor.
      */
@@ -48,32 +39,27 @@ class Visuel
     {
         $this->sepultures = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getNom(): ?string
     {
         return $this->nom;
     }
-
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
-
     /**
      * @return Collection|Sepulture[]
      */
-    public function getSepultures(): iterable
+    public function getSepultures(): Collection
     {
         return $this->sepultures;
     }
-
     public function addSepulture(Sepulture $sepulture): self
     {
         if (!$this->sepultures->contains($sepulture)) {
@@ -83,7 +69,6 @@ class Visuel
 
         return $this;
     }
-
     public function removeSepulture(Sepulture $sepulture): self
     {
         if ($this->sepultures->contains($sepulture)) {

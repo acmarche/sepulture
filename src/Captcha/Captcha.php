@@ -4,12 +4,16 @@
 namespace AcMarche\Sepulture\Captcha;
 
 
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 class Captcha
 {
-    const SESSION_NAME = 'sepul_comment';
+    public const SESSION_NAME = 'sepul_comment';
     private HttpClientInterface $client;
 
     public function __construct()
@@ -26,35 +30,34 @@ class Captcha
     }
 
     /**
-     * @return string
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getDog(): string
     {
         $url = "https://dog.ceo/api/breeds/image/random";
         $response = $this->client->request('GET', $url);
 
-        $content = json_decode($response->getContent(), true);
+        $content = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         return $content['message'];
     }
 
     public function getCat(): string
     {
-        $number = rand(1, 16);
+        $number = random_int(1, 16);
 
         return 'https://placekitten.com/150/150?image='.$number;
     }
 
     /**
      * @return string[]
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getAnimals(): array
     {

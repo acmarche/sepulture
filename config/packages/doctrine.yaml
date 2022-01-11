@@ -3,7 +3,6 @@ doctrine:
     mappings:
       AcMarche\Sepulture:
         is_bundle: false
-        type: annotation
         dir: '%kernel.project_dir%/src/AcMarche/Sepulture/src/Entity'
         prefix: 'AcMarche\Sepulture'
         alias: AcMarche\Sepulture
