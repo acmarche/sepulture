@@ -34,7 +34,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         $this->userRepository = $userRepository;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
         $password = $request->request->get('password', '');

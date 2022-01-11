@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,20 +28,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExportController extends AbstractController
 {
     private PdfFactory $pdfFactory;
-    private SessionInterface $session;
     private XlsFactory $xlsFactory;
     private FinderJf $finderJf;
     private ZipFactory $zipFactory;
 
     public function __construct(
-        SessionInterface $session,
         PdfFactory $pdfFactory,
         XlsFactory $xlsFactory,
         FinderJf $finderJf,
         ZipFactory $zipFactory
     ) {
         $this->pdfFactory = $pdfFactory;
-        $this->session = $session;
         $this->xlsFactory = $xlsFactory;
         $this->finderJf = $finderJf;
         $this->zipFactory = $zipFactory;
@@ -57,9 +55,9 @@ class ExportController extends AbstractController
     /**
      * @Route("/search", name="export_sepulture_search_pdf", methods={"GET"})
      */
-    public function search(): Response
+    public function search(Request$request): Response
     {
-        if (!$this->session->has('sepulture_search')) {
+        if (!$request->getSession()->has('sepulture_search')) {
             return $this->redirectToRoute('sepulture');
         }
 

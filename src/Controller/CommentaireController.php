@@ -2,9 +2,6 @@
 
 namespace AcMarche\Sepulture\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Component\Form\FormInterface;
 use AcMarche\Sepulture\Captcha\Captcha;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\Sepulture;
@@ -15,8 +12,9 @@ use AcMarche\Sepulture\Service\Mailer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,20 +28,18 @@ class CommentaireController extends AbstractController
     private Mailer $mailer;
     private CommentaireRepository $commentaireRepository;
     private Captcha $captcha;
-    private SessionInterface $session;
 
     public function __construct(
         CommentaireRepository $commentaireRepository,
-        CimetiereUtil $cimetiereUtil,
-        Mailer $mailer,
-        Captcha $captcha,
-        SessionInterface $session
-    ) {
+        CimetiereUtil         $cimetiereUtil,
+        Mailer                $mailer,
+        Captcha               $captcha
+    )
+    {
         $this->cimetiereUtil = $cimetiereUtil;
         $this->mailer = $mailer;
         $this->commentaireRepository = $commentaireRepository;
         $this->captcha = $captcha;
-        $this->session = $session;
     }
 
     /**
@@ -77,6 +73,7 @@ class CommentaireController extends AbstractController
         $form = $this->createForm(CommentaireType::class, $commentaire);
 
         $form->handleRequest($request);
+        $session = $request->getSession();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $request->request->get('commentaire');
@@ -85,17 +82,17 @@ class CommentaireController extends AbstractController
                 $this->commentaireRepository->persist($commentaire);
                 $this->commentaireRepository->flush();
 
-                if ($this->session->has(Captcha::SESSION_NAME)) {
-                    $this->session->remove(Captcha::SESSION_NAME);
+                if ($session->has(Captcha::SESSION_NAME)) {
+                    $session->remove(Captcha::SESSION_NAME);
                 }
 
                 $this->addFlash('success', 'Le commentaire a bien été ajouté, merci de votre collaboration');
             } else {
-                $this->session->set(Captcha::SESSION_NAME, $commentaire);
+                $session->set(Captcha::SESSION_NAME, $commentaire);
                 $this->addFlash('danger', 'Le contrôle anti-spam a échoué');
             }
         } else {
-            $this->addFlash('danger', 'Form error: '.$form->getErrors());
+            $this->addFlash('danger', 'Form error: ' . $form->getErrors());
         }
 
         return $this->redirectToRoute('sepulture_show', array('slug' => $sepulture->getSlug()));
@@ -157,7 +154,6 @@ class CommentaireController extends AbstractController
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('commentaire_delete', ['id' => $id]))
-
             ->add('submit', SubmitType::class, ['label' => 'Delete'])
             ->getForm();
     }

@@ -14,25 +14,27 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CimetiereFileService
 {
     private ParameterBagInterface $parameterBag;
     private FileHelper $fileHelper;
-    private FlashBagInterface $flashBag;
     private CimetiereRepository $cimetiereRepository;
+    private SessionInterface $session;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
-        FileHelper $fileHelper,
-        FlashBagInterface $flashBag,
-        CimetiereRepository $cimetiereRepository
-    ) {
+        FileHelper            $fileHelper,
+        CimetiereRepository   $cimetiereRepository,
+        RequestStack          $requestStack
+    )
+    {
         $this->parameterBag = $parameterBag;
         $this->fileHelper = $fileHelper;
-        $this->flashBag = $flashBag;
         $this->cimetiereRepository = $cimetiereRepository;
+        $this->session = $requestStack->getSession();
     }
 
     public function traitfiles(FormInterface $form, Cimetiere $cimetiere): void
@@ -45,24 +47,24 @@ class CimetiereFileService
         $fileName = false;
 
         if ($image instanceof UploadedFile) {
-            $fileName = md5(uniqid()).'.'.$image->guessClientExtension();
+            $fileName = md5(uniqid()) . '.' . $image->guessClientExtension();
 
             try {
                 $this->fileHelper->uploadFile($directory, $image, $fileName);
                 $cimetiere->setImageName($fileName);
             } catch (FileException $error) {
-                $this->flashBag->add('danger', $error->getMessage());
+                $this->session->getFlashBag()->add('danger', $error->getMessage());
             }
         }
 
         if ($plan instanceof UploadedFile) {
-            $fileName = md5(uniqid()).'.'.$plan->guessClientExtension();
+            $fileName = md5(uniqid()) . '.' . $plan->guessClientExtension();
 
             try {
                 $this->fileHelper->uploadFile($directory, $plan, $fileName);
                 $cimetiere->setPlanName($fileName);
             } catch (FileException $error) {
-                $this->flashBag->add('danger', $error->getMessage());
+                $this->session->getFlashBag()->add('danger', $error->getMessage());
             }
         }
 

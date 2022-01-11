@@ -41,22 +41,17 @@ class SepultureController extends AbstractController
     private CimetiereUtil $cimetiereUtil;
     private SepultureRepository $sepultureRepository;
     private Captcha $captcha;
-    private SessionInterface $session;
 
     public function __construct(
         SepultureRepository $sepultureRepository,
         FileHelper $fileHelper,
-        Mailer $mailer,
         CimetiereUtil $cimetiereUtil,
-        ParameterBagInterface $parameterBag,
-        Captcha $captcha,
-        SessionInterface $session
+        Captcha $captcha
     ) {
         $this->fileHelper = $fileHelper;
         $this->cimetiereUtil = $cimetiereUtil;
         $this->sepultureRepository = $sepultureRepository;
         $this->captcha = $captcha;
-        $this->session = $session;
     }
 
     /**
@@ -163,12 +158,14 @@ class SepultureController extends AbstractController
      *
      * @Route("/{slug}", name="sepulture_show", methods={"GET"})
      */
-    public function show(Sepulture $sepulture): Response
+    public function show(Request $request, Sepulture $sepulture): Response
     {
         $images = $this->fileHelper->getImages($sepulture->getId());
 
-        if ($this->session->has(Captcha::SESSION_NAME)) {
-            $commentaire = $this->session->get(Captcha::SESSION_NAME);
+        $session = $request->getSession();
+
+        if ($session->has(Captcha::SESSION_NAME)) {
+            $commentaire = $session->get(Captcha::SESSION_NAME);
         } else {
             $commentaire = new Commentaire();
             $commentaire->setSepulture($sepulture);

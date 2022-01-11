@@ -5,6 +5,7 @@ namespace AcMarche\Sepulture\Service;
 use AcMarche\Sepulture\Entity\Commentaire;
 use AcMarche\Sepulture\Entity\User;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -22,16 +23,17 @@ class Mailer
 
     public function __construct(
         ParameterBagInterface $parameterBag,
-        Environment $twig,
-        FlashBagInterface $flashBag,
-        RouterInterface $router,
-        MailerInterface $swiftMailer
-    ) {
+        Environment           $twig,
+        RouterInterface       $router,
+        MailerInterface       $swiftMailer,
+        RequestStack          $requestStack
+    )
+    {
         $this->twig = $twig;
-        $this->flashBag = $flashBag;
         $this->mailer = $swiftMailer;
         $this->parameterBag = $parameterBag;
         $this->router = $router;
+        $this->flashBag = $requestStack->getSession()->getFlashBag();
     }
 
     public function send($from, $destinataires, $sujet, $body): void

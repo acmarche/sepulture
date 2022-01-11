@@ -12,8 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class RegisterController.
@@ -23,17 +23,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ResettingController extends AbstractController
 {
     private UserRepository $userRepository;
-    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
     private Mailer $mailer;
 
     public function __construct(
         UserRepository $userRepository,
-        UserPasswordEncoderInterface $userPasswordEncoder,
+        UserPasswordHasherInterface $userPasswordHasher,
         Mailer $mailer
     ) {
         $this->userRepository = $userRepository;
-        $this->userPasswordEncoder = $userPasswordEncoder;
         $this->mailer = $mailer;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     /**
@@ -105,7 +105,7 @@ class ResettingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($this->userPasswordEncoder->encodePassword($user, $form->getData()->getPlainPassword()));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $form->getData()->getPlainPassword()));
             $user->setConfirmationToken(null);
             $this->userRepository->save();
 

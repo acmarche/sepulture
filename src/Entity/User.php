@@ -66,7 +66,12 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 
     public function __toString()
     {
-        return (string) $this->email;
+        return (string)$this->email;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
     }
 
     public function getId(): ?int
@@ -93,7 +98,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -120,7 +125,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -135,7 +140,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
      */
     public function getSalt(): string
     {
-        return (string) $this->salt;  // not needed when using the "bcrypt" algorithm in security.yaml
+        return (string)$this->salt;  // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**

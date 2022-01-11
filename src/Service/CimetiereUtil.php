@@ -22,10 +22,7 @@ class CimetiereUtil
     private ParameterBagInterface $parameterBag;
     private PreferenceRepository $preferenceRepository;
     private HttpClientInterface $httpClient;
-    /**
-     * @var string
-     */
-    public $error;
+    public string $error;
     private ContactRwRepository $contactRwRepository;
 
     public function __construct(
