@@ -63,7 +63,7 @@ class CommentaireController extends AbstractController
         $form->handleRequest($request);
         $session = $request->getSession();
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $request->request->get('commentaire');
+            $data = $request->request->all('commentaire');
             if ($this->captcha->check($data['captcha'])) {
                 $this->mailer->sendCommentaire($commentaire, $this->cimetiereUtil->error);
                 $this->commentaireRepository->persist($commentaire);
