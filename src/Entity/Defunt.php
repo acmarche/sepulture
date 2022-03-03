@@ -84,7 +84,7 @@ class Defunt implements SluggableInterface, TimestampableInterface, Stringable
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
