@@ -1,8 +1,7 @@
 <br/>
-<div class="panel panel-default">
-    <div class="panel-heading">{{ sepultures | length }} sépultures</div>
-    <div class="panel-body">
-
+<div class="card">
+    <h4 class="card-header">{{ sepultures | length }} sépultures</h4>
+    <div class="card-body">
         {% if sepultures | length > 0 %}
             <table class="table table-bordered table-hover table-condensed table-responsive">
                 <thead>
@@ -26,7 +25,8 @@
                                     <div class="media-middle">
                                         <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}"
                                            class="pull-left" title="Consulter le détail">
-                                            <img src="{{ image.url | imagine_filter('acmarche_sepulture_thumb') }}" alt="img"
+                                            <img src="{{ image.url | imagine_filter('acmarche_sepulture_thumb') }}"
+                                                 alt="img"
                                                  class="media-object img-responsive img-thumbnail">
                                         </a>
                                     </div>

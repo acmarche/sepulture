@@ -3,8 +3,10 @@
 namespace AcMarche\Sepulture\Repository;
 
 use AcMarche\Sepulture\Entity\Cimetiere;
+use AcMarche\Sepulture\Entity\Ossuaire;
 use AcMarche\Sepulture\Entity\Sepulture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,7 +27,7 @@ class SepultureRepository extends ServiceEntityRepository
      *
      * @return Sepulture[]
      */
-    public function search($criteria)
+    public function search($criteria): array
     {
         $parcelle = $criteria['parcelle'] ?? null;
         $visuel = $criteria['visuel'] ?? null;
@@ -41,14 +43,7 @@ class SepultureRepository extends ServiceEntityRepository
         $annee = $criteria['annee'] ?? null;
 
         $qb = $this->createQueryBuilder('sepulture');
-        $qb->leftJoin('sepulture.types', 'types', 'WITH');
-        $qb->leftJoin('sepulture.materiaux', 'materiaux', 'WITH');
-        $qb->leftJoin('sepulture.visuel', 'visuel', 'WITH');
-        $qb->leftJoin('sepulture.legal', 'legal', 'WITH');
-        $qb->leftJoin('sepulture.defunts', 'defunts', 'WITH');
-        $qb->leftJoin('sepulture.cimetiere', 'cimetiere', 'WITH');
-        $qb->leftJoin('sepulture.sihls', 'sihls', 'WITH');
-        $qb->addSelect('types', 'materiaux', 'defunts', 'sihls', 'legal', 'visuel', 'cimetiere');
+        $this->addJoins($qb);
 
         if ($parcelle) {
             $qb->andwhere('sepulture.parcelle LIKE :parcelle')
@@ -119,27 +114,13 @@ class SepultureRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function getAllOrderByIdDesc(): array
-    {
-        return $this->findBy([], [
-            'id' => 'desc',
-        ]);
-    }
-
     /**
      * @return Sepulture[]
      */
-    public function getImportanceHistorique(Cimetiere $cimetiere)
+    public function getImportanceHistorique(Cimetiere $cimetiere): array
     {
         $qb = $this->createQueryBuilder('sepulture');
-        $qb->innerJoin('sepulture.sihls', 'sihls', 'ON');
-        $qb->leftJoin('sepulture.types', 'types', 'WITH');
-        $qb->leftJoin('sepulture.materiaux', 'materiaux', 'WITH');
-        $qb->leftJoin('sepulture.visuel', 'visuel', 'WITH');
-        $qb->leftJoin('sepulture.legal', 'legal', 'WITH');
-        $qb->leftJoin('sepulture.defunts', 'defunts', 'WITH');
-        $qb->leftJoin('sepulture.cimetiere', 'cimetiere', 'WITH');
-        $qb->addSelect('types', 'materiaux', 'defunts', 'sihls', 'legal', 'visuel', 'cimetiere');
+        $this->addJoins($qb);
 
         $qb->andWhere('cimetiere = :cim')
             ->setParameter('cim', $cimetiere);
@@ -152,17 +133,10 @@ class SepultureRepository extends ServiceEntityRepository
     /**
      * @return Sepulture[]
      */
-    public function getAvant1945(Cimetiere $cimetiere)
+    public function getAvant1945(Cimetiere $cimetiere): array
     {
         $qb = $this->createQueryBuilder('sepulture');
-        $qb->innerJoin('sepulture.sihls', 'sihls', 'WITH');
-        $qb->leftJoin('sepulture.types', 'types', 'WITH');
-        $qb->leftJoin('sepulture.materiaux', 'materiaux', 'WITH');
-        $qb->leftJoin('sepulture.visuel', 'visuel', 'WITH');
-        $qb->leftJoin('sepulture.legal', 'legal', 'WITH');
-        $qb->leftJoin('sepulture.defunts', 'defunts', 'WITH');
-        $qb->leftJoin('sepulture.cimetiere', 'cimetiere', 'WITH');
-        $qb->addSelect('types', 'materiaux', 'defunts', 'sihls', 'legal', 'visuel', 'cimetiere');
+        $this->addJoins($qb);
 
         $qb->andWhere('cimetiere = :cim')
             ->setParameter('cim', $cimetiere);
@@ -177,17 +151,10 @@ class SepultureRepository extends ServiceEntityRepository
     /**
      * @return Sepulture[]
      */
-    public function getIndigents()
+    public function getIndigents(): array
     {
         $qb = $this->createQueryBuilder('sepulture');
-        $qb->leftJoin('sepulture.types', 'types', 'WITH');
-        $qb->leftJoin('sepulture.materiaux', 'materiaux', 'WITH');
-        $qb->leftJoin('sepulture.visuel', 'visuel', 'WITH');
-        $qb->leftJoin('sepulture.legal', 'legal', 'WITH');
-        $qb->leftJoin('sepulture.defunts', 'defunts', 'WITH');
-        $qb->leftJoin('sepulture.cimetiere', 'cimetiere', 'WITH');
-        $qb->leftJoin('sepulture.sihls', 'sihls', 'WITH');
-        $qb->addSelect('types', 'materiaux', 'defunts', 'sihls', 'legal', 'visuel', 'cimetiere');
+        $this->addJoins($qb);
 
         $qb->andwhere(
             'sepulture.parcelle LIKE :a OR sepulture.parcelle LIKE :b OR sepulture.parcelle LIKE :c OR sepulture.parcelle LIKE :d'
@@ -202,5 +169,35 @@ class SepultureRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @return Sepulture[]
+     */
+    public function findSepulturesByOssuraire(Ossuaire $ossuaire): array
+    {
+        $qb = $this->createQueryBuilder('sepulture');
+
+        $this->addJoins($qb);
+
+        return
+            $qb->andWhere('sepulture.ossuaire = :ossuaire')
+                ->setParameter('ossuaire', $ossuaire)
+                ->orderBy('sepulture.parcelle', 'ASC')
+                ->getQuery()
+                ->getResult();
+    }
+
+    private function addJoins(QueryBuilder $builder): void
+    {
+        $builder->leftJoin('sepulture.types', 'types', 'WITH');
+        $builder->leftJoin('sepulture.materiaux', 'materiaux', 'WITH');
+        $builder->leftJoin('sepulture.visuel', 'visuel', 'WITH');
+        $builder->leftJoin('sepulture.legal', 'legal', 'WITH');
+        $builder->leftJoin('sepulture.defunts', 'defunts', 'WITH');
+        $builder->leftJoin('sepulture.cimetiere', 'cimetiere', 'WITH');
+        $builder->leftJoin('sepulture.sihls', 'sihls', 'WITH');
+        $builder->leftJoin('sepulture.ossuaire', 'ossuaire', 'WITH');
+        $builder->addSelect('types', 'materiaux', 'defunts', 'sihls', 'legal', 'visuel', 'cimetiere', 'ossuaire');
     }
 }

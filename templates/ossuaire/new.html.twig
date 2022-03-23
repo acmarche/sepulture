@@ -1,0 +1,17 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Nouvel ossuaire</h3>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" name="search" value="Sauvegarder" class="btn btn-primary my-1 mr-sm-2">
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+

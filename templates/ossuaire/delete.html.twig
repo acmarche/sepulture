@@ -1,0 +1,25 @@
+{% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Supprimer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Etes vous sur de vouloir <strong>supprimer</strong> <br/> <strong>{{ ossuaire }} ? </strong>
+                </div>
+                <div class="modal-footer">
+                    {{ form_start(delete_form) }}
+                    {{ form_errors(delete_form) }}
+                    {{ form_widget(delete_form) }}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+                    </button>
+                    <button type="submit" class="btn btn-danger">Supprimer le ossuaire</button>
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

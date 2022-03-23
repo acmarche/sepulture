@@ -1,0 +1,32 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ ossuaire }}</h3>
+        <div class="card-body">
+
+            {% include '@Sepulture/ossuaire/actions.html.twig' %}
+
+            <br/>
+            {% if ossuaire.description %}
+                <br/>
+                <span class="text-muted">{{ ossuaire.description|nl2br }}</span>
+                <br/><br/>
+            {% endif %}
+
+            {% if ossuaire.document %}
+                <a href="{{ vich_uploader_asset(ossuaire.document, 'file') }}">
+                    <img class="img-thumbnail"
+                         src="{{ vich_uploader_asset(ossuaire.document, 'file') | imagine_filter('acmarche_sepulture_thumb') }}"
+                         alt="image">
+                </a><br/>
+            {% endif %}
+
+            {% include '@Sepulture/cimetiere/sepultures.html.twig' %}
+
+            {% include '@Sepulture/ossuaire/delete.html.twig' %}
+
+        </div>
+    </div>
+{% endblock %}

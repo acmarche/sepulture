@@ -1,0 +1,35 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body -%}
+
+    <div class="card"><h3 class="card-header">Liste des ossuaires</h3>
+        <div class="card-body">
+
+            {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
+                <a href="{{ path('ossuaire_new') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Ajouter un ossuaire
+                </a>
+                <br/> <br/>
+            {% endif %}
+
+            <table class="table table-bordered table-hover table-condensed table-responsive">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Nombre de sépultures</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ossuaire in ossuaires %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('ossuaire_show', { 'id': ossuaire.id }) }}">{{ ossuaire }}</a>
+                        </td>
+                        <td>{{ ossuaire.sepultures|length }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

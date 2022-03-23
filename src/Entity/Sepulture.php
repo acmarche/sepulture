@@ -138,7 +138,6 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
     private ?string $url = null;
     /**
      * @var Commentaire[]|iterable
-     *
      * */
     #[ORM\OneToMany(targetEntity: 'Commentaire', mappedBy: 'sepulture', cascade: ['persist', 'remove'])]
     private Collection $commentaires;
@@ -148,6 +147,10 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $user = null;
     public array $images;
+
+    #[ORM\ManyToOne(targetEntity: Ossuaire::class, inversedBy: 'sepultures')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private $ossuaire;
 
     public function __toString(): string
     {
@@ -637,6 +640,18 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
     public function setStatutSih(?int $statutSih): self
     {
         $this->statutSih = $statutSih;
+
+        return $this;
+    }
+
+    public function getOssuaire(): ?Ossuaire
+    {
+        return $this->ossuaire;
+    }
+
+    public function setOssuaire(?Ossuaire $ossuaire): self
+    {
+        $this->ossuaire = $ossuaire;
 
         return $this;
     }

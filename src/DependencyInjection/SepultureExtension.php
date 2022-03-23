@@ -48,6 +48,9 @@ class SepultureExtension extends Extension implements PrependExtensionInterface
                     case 'liip_imagine':
                         $this->loadConfig($container, 'liip_imagine');
                         break;
+                    case 'vich_uploader':
+                        $this->loadConfig($container, 'vich_uploader');
+                        break;
                 }
             }
         }
