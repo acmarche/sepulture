@@ -4,6 +4,7 @@ namespace AcMarche\Sepulture\Form;
 
 use AcMarche\Sepulture\Entity\Legal;
 use AcMarche\Sepulture\Entity\Materiaux;
+use AcMarche\Sepulture\Entity\Ossuaire;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Entity\Sihl;
 use AcMarche\Sepulture\Entity\TypeSepulture;
@@ -27,6 +28,14 @@ class SepultureType extends AbstractType
         $statuts = CimetiereUtil::getStatuts();
 
         $builder
+            ->add(
+                'ossuaire',
+                EntityType::class,
+                [
+                    'class' => Ossuaire::class,
+                    'required' => false,
+                ]
+            )
             ->add(
                 'types',
                 EntityType::class,

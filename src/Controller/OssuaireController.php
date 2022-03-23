@@ -3,10 +3,11 @@
 namespace AcMarche\Sepulture\Controller;
 
 use AcMarche\Sepulture\Entity\Ossuaire;
+use AcMarche\Sepulture\Form\OssuaireAddSepultureType;
 use AcMarche\Sepulture\Form\OssuaireType;
+use AcMarche\Sepulture\Form\SearchSimpleSepultureType;
 use AcMarche\Sepulture\Repository\OssuaireRepository;
 use AcMarche\Sepulture\Repository\SepultureRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -22,7 +23,6 @@ class OssuaireController extends AbstractController
     public function __construct(
         private OssuaireRepository $ossuaireRepository,
         private SepultureRepository $sepultureRepository,
-        private ManagerRegistry $managerRegistry
     ) {
     }
 
@@ -77,8 +77,6 @@ class OssuaireController extends AbstractController
     {
         $sepultures = $this->sepultureRepository->findSepulturesByOssuraire($ossuaire);
         $deleteForm = $this->createDeleteForm($ossuaire->getId());
-
-        dump($ossuaire->getDocument());
 
         return $this->render(
             '@Sepulture/ossuaire/show.html.twig',
@@ -138,6 +136,52 @@ class OssuaireController extends AbstractController
 
         return $this->redirectToRoute('ossuaire');
     }
+
+    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[Route(path: '/{id}/add/sepulture', name: 'ossuaire_add_sepulture', methods: ['GET', 'POST'])]
+    public function addSepultures(Request $request, Ossuaire $ossuaire): Response
+    {
+        $editForm = $this->createForm(OssuaireAddSepultureType::class, null);
+        $searchForm = $this->createForm(SearchSimpleSepultureType::class, []);
+        $sepultures = [];
+
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $args = $searchForm->getData();
+            $sepultures = $this->sepultureRepository->search($args);
+        }
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $sepulturesToAdd = $request->get('sepultures', []);
+            foreach ($sepulturesToAdd as $sepultureId) {
+                $sepultureToAdd = $this->sepultureRepository->find($sepultureId);
+                if ($sepultureToAdd) {
+                    $ossuaire->addSepulture($sepultureToAdd);
+                }
+            }
+            $this->ossuaireRepository->flush();
+
+            $this->addFlash('success', 'Les sépultures ont bien été ajoutées');
+
+            return $this->redirectToRoute('ossuaire_show', [
+                'id' => $ossuaire->getId(),
+            ]);
+        }
+
+        return $this->render(
+            '@Sepulture/ossuaire/add_sepulture.html.twig',
+            [
+                'ossuaire' => $ossuaire,
+                'form' => $editForm->createView(),
+                'search_form' => $searchForm->createView(),
+                'search' => $searchForm->isSubmitted(),
+                'sepultures' => $sepultures,
+            ]
+        );
+    }
+
 
     /**
      * Creates a form to delete a Ossuaire entity by id.

@@ -29,6 +29,16 @@
                 <div class="col-md6 col-lg-6">
                     <table class="table table-bordered table-hover">
                         <tbody>
+                        {% if sepulture.ossuaire %}
+                            <tr>
+                                <th>Ossuaire</th>
+                                <td>
+                                    <a href="{{ path('ossuaire_show', {'id': sepulture.ossuaire.id}) }}">
+                                        {{ sepulture.ossuaire }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                         <tr>
                             <th>Type(s) de sépulture</th>
                             <td>{{ sepulture.types | join('|') }}</td>
