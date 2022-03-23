@@ -23,10 +23,15 @@
                 {{ form_errors(form) }}
                 {% if sepultures | length > 0 %}
                     <h4 class="text-success">{{ sepultures | length }} sépulture(s) trouvée(s)</h4>
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover"{{ stimulus_controller('checkbox-select-all') }}>
                         <thead>
                         <tr>
-                            <th></th>
+                            <th>
+                                <label>
+                                    <input type="checkbox" data-checkbox-select-all-target="checkboxAll"/>
+                                    <span>Sélectionner tout / Déselectionner tout</span>
+                                </label>
+                            </th>
                             <th style="w4idth: 10%;">Parcelle</th>
                             <th style="wi4dth: 15%;">Cimetière</th>
                             <th style="wi4dth: 10%;">Images</th>
@@ -36,7 +41,8 @@
                         {% for sepulture in sepultures %}
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="sepultures[]" value="{{ sepulture.id }}">
+                                    <input type="checkbox" name="sepultures[]" value="{{ sepulture.id }}"
+                                           data-checkbox-select-all-target="checkbox">
                                 </td>
                                 <td>
                                     <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}">{{ sepulture.parcelle }}</a>

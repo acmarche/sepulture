@@ -1,4 +1,4 @@
-import {Controller} from 'stimulus';
+import {Controller} from '@hotwired/stimulus';
 import L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/images/marker-icon.png';
