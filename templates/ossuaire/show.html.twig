@@ -1,9 +1,11 @@
 {% extends '@Sepulture/base.html.twig' %}
 
+{% block title %}ossuaire {{ ossuaire }} {{ ossuaire.cimetiere }} {% endblock %}
+
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">{{ ossuaire }}</h3>
+        <h3 class="card-header">{{ ossuaire }} dans {{ ossuaire.cimetiere }}</h3>
         <div class="card-body">
 
             {% include '@Sepulture/ossuaire/actions.html.twig' %}

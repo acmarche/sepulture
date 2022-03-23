@@ -42,12 +42,17 @@ class Cimetiere implements SluggableInterface, Stringable
     protected ?File $imageFile = null;
     #[ORM\Column(type: 'string', nullable: true)]
     protected ?string $imageName = null;
+
+    #[ORM\OneToMany(mappedBy: 'cimetiere', targetEntity: Ossuaire::class)]
+    private $ossuaires;
+
     protected int $ihsCount = 0;
     protected int $a1945Count = 0;
 
     public function __construct()
     {
         $this->sepultures = new ArrayCollection();
+        $this->ossuaires = new ArrayCollection();
     }
 
     public function getSluggableFields(): array
@@ -178,6 +183,37 @@ class Cimetiere implements SluggableInterface, Stringable
             // set the owning side to null (unless already changed)
             if ($sepulture->getCimetiere() === $this) {
                 $sepulture->setCimetiere(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ossuaire[]
+     */
+    public function getOssuaires(): iterable
+    {
+        return $this->ossuaires;
+    }
+
+    public function addOssuaire(Ossuaire $ossuaire): self
+    {
+        if (! $this->ossuaires->contains($ossuaire)) {
+            $this->ossuaires[] = $ossuaire;
+            $ossuaire->setCimetiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOssuaire(Ossuaire $ossuaire): self
+    {
+        if ($this->ossuaires->contains($ossuaire)) {
+            $this->ossuaires->removeElement($ossuaire);
+            // set the owning side to null (unless already changed)
+            if ($ossuaire->getCimetiere() === $this) {
+                $ossuaire->setCimetiere(null);
             }
         }
 

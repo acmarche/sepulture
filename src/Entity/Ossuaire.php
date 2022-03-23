@@ -22,6 +22,9 @@ class Ossuaire
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
+    #[ORM\ManyToOne(targetEntity: Cimetiere::class, inversedBy: 'ossuaires')]
+    private $cimetiere;
+
     #[ORM\OneToMany(mappedBy: 'ossuaire', targetEntity: Sepulture::class)]
     private $sepultures;
 
@@ -109,4 +112,15 @@ class Ossuaire
 
         return $this;
     }
+
+    public function getCimetiere()
+    {
+        return $this->cimetiere;
+    }
+
+    public function setCimetiere($cimetiere): void
+    {
+        $this->cimetiere = $cimetiere;
+    }
+
 }

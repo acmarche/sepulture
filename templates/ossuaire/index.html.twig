@@ -1,5 +1,7 @@
 {% extends '@Sepulture/base.html.twig' %}
 
+{% block title %}Liste des ossuaires{% endblock %}
+
 {% block body -%}
 
     <div class="card"><h3 class="card-header">Liste des ossuaires</h3>
@@ -16,6 +18,7 @@
                 <thead>
                 <tr>
                     <th>Nom</th>
+                    <th>Cimetière</th>
                     <th>Nombre de sépultures</th>
                 </tr>
                 </thead>
@@ -24,6 +27,9 @@
                     <tr>
                         <td>
                             <a href="{{ path('ossuaire_show', { 'id': ossuaire.id }) }}">{{ ossuaire }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('cimetiere_show', { 'slug': ossuaire.cimetiere.slug }) }}">{{ ossuaire.cimetiere }}</a>
                         </td>
                         <td>{{ ossuaire.sepultures|length }}</td>
                     </tr>
