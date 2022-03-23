@@ -127,7 +127,9 @@ class OssuaireController extends AbstractController
         $form = $this->createDeleteForm($ossuaire->getId());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            if ($ossuaire->getDocument()) {
+                $this->ossuaireRepository->remove($ossuaire->getDocument());
+            }
             $this->ossuaireRepository->remove($ossuaire);
             $this->ossuaireRepository->flush();
 

@@ -31,7 +31,7 @@ class Document implements TimestampableInterface
     private ?string $description;
 
     #[ORM\Column(type: 'string', length: 120, nullable: false)]
-    private string $fileName;
+    private ?string $fileName = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $mime = null;
@@ -64,7 +64,7 @@ class Document implements TimestampableInterface
         return $this->fileName;
     }
 
-    public function setFileName(string $fileName): self
+    public function setFileName(?string $fileName): self
     {
         $this->fileName = $fileName;
 
