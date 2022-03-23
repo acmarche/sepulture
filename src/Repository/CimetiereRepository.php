@@ -79,7 +79,7 @@ class CimetiereRepository extends ServiceEntityRepository
     public function getForList(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
-        $qb->orderBy('c.nom', 'DESC');
+        $qb->orderBy('c.nom', 'ASC');
 
         return $qb;
     }
