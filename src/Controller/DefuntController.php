@@ -174,10 +174,6 @@ class DefuntController extends AbstractController
             ->setAction($this->generateUrl('defunt_delete', [
                 'id' => $id,
             ]))
-
-            ->add('submit', SubmitType::class, [
-                'label' => 'Delete',
-            ])
             ->getForm();
     }
 }
