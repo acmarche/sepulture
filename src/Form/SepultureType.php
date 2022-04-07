@@ -33,6 +33,9 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Ossuaire::class,
+                    'choice_label' => function (Ossuaire $ossuaire) {
+                        return $ossuaire->getNom().' ('.$ossuaire->getCimetiere().')';
+                    },
                     'required' => false,
                 ]
             )
@@ -101,7 +104,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Visuel::class,
-                    'query_builder' => fn (VisuelRepository $cr) => $cr->getForList(),
+                    'query_builder' => fn(VisuelRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
@@ -110,7 +113,7 @@ class SepultureType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Legal::class,
-                    'query_builder' => fn (LegalRepository $cr) => $cr->getForList(),
+                    'query_builder' => fn(LegalRepository $cr) => $cr->getForList(),
                     'required' => false,
                 ]
             )
