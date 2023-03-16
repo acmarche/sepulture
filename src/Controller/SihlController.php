@@ -15,10 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Sihl controller.
- */
 #[Route(path: '/sihl')]
+#[IsGranted('ROLE_SEPULTURE_EDITEUR')]
 class SihlController extends AbstractController
 {
     public function __construct(
@@ -52,7 +50,7 @@ class SihlController extends AbstractController
      */
     private function createCreateForm(Sihl $entity): FormInterface
     {
-        return      $this->createForm(
+        return $this->createForm(
             SihlType::class,
             $entity,
             [
@@ -189,16 +187,18 @@ class SihlController extends AbstractController
     private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('sihl_delete', [
-                'id' => $id,
-            ]))
-
+            ->setAction(
+                $this->generateUrl('sihl_delete', [
+                    'id' => $id,
+                ])
+            )
             ->add('submit', SubmitType::class, [
                 'label' => 'Delete',
                 'attr' => [
                     'class' => 'btn-danger',
-                    
-                ], ])
+
+                ],
+            ])
             ->getForm();
     }
 }

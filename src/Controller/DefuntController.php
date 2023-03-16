@@ -26,9 +26,6 @@ class DefuntController extends AbstractController
     ) {
     }
 
-    /**
-     * Displays a form to create a new Defunt entity.
-     */
     #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/new/{id}', name: 'defunt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Sepulture $sepulture): Response
