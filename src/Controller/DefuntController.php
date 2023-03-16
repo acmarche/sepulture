@@ -6,7 +6,7 @@ use AcMarche\Sepulture\Entity\Defunt;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Form\DefuntType;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -29,7 +29,7 @@ class DefuntController extends AbstractController
     /**
      * Displays a form to create a new Defunt entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/new/{id}', name: 'defunt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Sepulture $sepulture): Response
     {
@@ -84,7 +84,7 @@ class DefuntController extends AbstractController
     /**
      * Displays a form to edit an existing Defunt entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/{id}/edit', name: 'defunt_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Defunt $defunt): Response
     {
@@ -132,7 +132,7 @@ class DefuntController extends AbstractController
     /**
      * Deletes a Defunt entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/{id}/delete', name: 'defunt_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

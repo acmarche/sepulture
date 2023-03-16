@@ -10,7 +10,7 @@ use AcMarche\Sepulture\Repository\CommentaireRepository;
 use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\Mailer;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -37,7 +37,7 @@ class CommentaireController extends AbstractController
     /**
      * Lists all Commentaire entities.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/', name: 'commentaire', methods: ['GET'])]
     public function index(): Response
     {
@@ -90,7 +90,7 @@ class CommentaireController extends AbstractController
     /**
      * Finds and displays a Commentaire entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}', name: 'commentaire_show', methods: ['GET'])]
     public function show(Commentaire $commentaire): Response
     {
@@ -108,7 +108,7 @@ class CommentaireController extends AbstractController
     /**
      * Deletes a Commentaire entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'commentaire_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

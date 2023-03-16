@@ -6,7 +6,7 @@ use AcMarche\Sepulture\Entity\Page;
 use AcMarche\Sepulture\Form\PageType;
 use AcMarche\Sepulture\Service\FileHelper;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -49,7 +49,7 @@ class PageController extends AbstractController
     /**
      * Displays a form to edit an existing Page entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'page_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Page $page): Response
     {
@@ -78,7 +78,7 @@ class PageController extends AbstractController
     /**
      * Deletes a Page entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'page_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

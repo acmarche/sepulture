@@ -15,7 +15,7 @@ use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\FileHelper;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -86,7 +86,7 @@ class SepultureController extends AbstractController
     /**
      * Displays a form to create a new Sepulture entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/new', name: 'sepulture_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -176,7 +176,7 @@ class SepultureController extends AbstractController
     /**
      * Displays a form to edit an existing Sepulture entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/{slug}/edit', name: 'sepulture_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sepulture $sepulture): Response
     {
@@ -209,7 +209,7 @@ class SepultureController extends AbstractController
     /**
      * Deletes a Sepulture entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/{id}/delete', name: 'sepulture_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

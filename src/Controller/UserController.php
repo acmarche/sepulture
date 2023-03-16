@@ -7,7 +7,7 @@ use AcMarche\Sepulture\Form\User\UserType;
 use AcMarche\Sepulture\Form\User\UtilisateurEditType;
 use AcMarche\Sepulture\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+#[IsGranted('ROLE_SEPULTURE_ADMIN')]
 #[Route(path: '/user')]
 class UserController extends AbstractController
 {

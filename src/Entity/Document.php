@@ -10,12 +10,8 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Document.
- *
- * @Vich\Uploadable
- */
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[Vich\Uploadable]
 class Document implements TimestampableInterface
@@ -36,10 +32,8 @@ class Document implements TimestampableInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $mime = null;
 
-    /**
-     * @Vich\UploadableField(mapping="ossuaire", fileNameProperty="fileName")
-     */
-    #[Assert\Image(maxSize: '7M')]
+    #[Vich\UploadableField(mapping: 'ossuaire', fileNameProperty: 'fileName')]
+    #[Assert\Image(maxSize: '15M')]
     private ?File $file = null;
 
     public function getId(): ?int

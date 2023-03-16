@@ -4,15 +4,13 @@ namespace AcMarche\Sepulture\Controller;
 
 use AcMarche\Sepulture\Entity\Page;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DefaultController extends AbstractController
 {
-    private $propo;
-
     public function __construct(
         private ManagerRegistry $managerRegistry
     ) {
@@ -35,7 +33,7 @@ class DefaultController extends AbstractController
         );
     }
 
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/plantage', methods: ['GET', 'POST'])]
     public function plantage(): Response
     {

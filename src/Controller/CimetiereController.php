@@ -10,7 +10,7 @@ use AcMarche\Sepulture\Service\CimetiereFileService;
 use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\FileHelper;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -61,7 +61,7 @@ class CimetiereController extends AbstractController
     /**
      * Displays a form to create a new Cimetiere entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'cimetiere_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -126,7 +126,7 @@ class CimetiereController extends AbstractController
     /**
      * Displays a form to edit an existing Cimetiere entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{slug}/edit', name: 'cimetiere_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Cimetiere $cimetiere): Response
     {
@@ -175,7 +175,7 @@ class CimetiereController extends AbstractController
     /**
      * Deletes a Cimetiere entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}', name: 'cimetiere_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {
@@ -216,7 +216,7 @@ class CimetiereController extends AbstractController
     /**
      * Deletes a Image entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/delete/file/{id}', name: 'cimetiere_file_delete', methods: ['POST'])]
     public function deleteFile(Request $request, Cimetiere $cimetiere): RedirectResponse
     {
@@ -286,7 +286,7 @@ class CimetiereController extends AbstractController
             ->getForm();
     }
 
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/setdefault/{id}', name: 'cimetiere_set_default', methods: ['GET'])]
     public function setDefaultCimetiere(Request $request, Cimetiere $cimetiere): RedirectResponse
     {

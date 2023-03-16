@@ -14,9 +14,6 @@ use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Sepulture.
- */
 #[ORM\Table(name: 'sepultures')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: SepultureRepository::class)]

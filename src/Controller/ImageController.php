@@ -7,7 +7,7 @@ use AcMarche\Sepulture\Form\ImageType;
 use AcMarche\Sepulture\Service\FileHelper;
 use AcMarche\Sepulture\Service\Mailer;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -34,7 +34,7 @@ class ImageController extends AbstractController
     /**
      * Displays a form to create a new Image entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/new/{id}', name: 'image_edit', methods: ['GET'])]
     public function edit(Sepulture $sepulture): Response
     {
@@ -57,7 +57,7 @@ class ImageController extends AbstractController
         );
     }
 
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/upload/{id}', name: 'image_upload', methods: ['POST'])]
     public function upload(Request $request, Sepulture $sepulture): Response
     {
@@ -91,7 +91,7 @@ class ImageController extends AbstractController
     /**
      * Deletes a Image entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+    #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/delete/{sepultureId}', name: 'image_delete', methods: ['POST'])]
     public function delete(Request $request, $sepultureId): RedirectResponse
     {

@@ -5,7 +5,7 @@ namespace AcMarche\Sepulture\Controller;
 use AcMarche\Sepulture\Entity\Legal;
 use AcMarche\Sepulture\Form\LegalType;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -65,7 +65,7 @@ class LegalController extends AbstractController
     /**
      * Displays a form to create a new Legal entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'legal_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -110,7 +110,7 @@ class LegalController extends AbstractController
     /**
      * Displays a form to edit an existing Legal entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'legal_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Legal $legal): Response
     {
@@ -156,7 +156,7 @@ class LegalController extends AbstractController
     /**
      * Deletes a Legal entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'legal_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

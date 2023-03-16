@@ -5,7 +5,7 @@ namespace AcMarche\Sepulture\Controller;
 use AcMarche\Sepulture\Entity\User;
 use AcMarche\Sepulture\Form\User\UserPasswordType;
 use AcMarche\Sepulture\Repository\UserRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Password controller.
  */
-#[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+#[IsGranted('ROLE_SEPULTURE_ADMIN')]
 #[Route(path: '/security/password')]
 class PasswordController extends AbstractController
 {

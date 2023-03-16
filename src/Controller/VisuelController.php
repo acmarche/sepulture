@@ -5,7 +5,7 @@ namespace AcMarche\Sepulture\Controller;
 use AcMarche\Sepulture\Entity\Visuel;
 use AcMarche\Sepulture\Form\VisuelType;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -65,7 +65,7 @@ class VisuelController extends AbstractController
     /**
      * Displays a form to create a new Visuel entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'visuel_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -110,7 +110,7 @@ class VisuelController extends AbstractController
     /**
      * Displays a form to edit an existing Visuel entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'visuel_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Visuel $visuel): Response
     {
@@ -156,7 +156,7 @@ class VisuelController extends AbstractController
     /**
      * Deletes a Visuel entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'visuel_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

@@ -8,7 +8,7 @@ use AcMarche\Sepulture\Form\OssuaireType;
 use AcMarche\Sepulture\Form\SearchSimpleSepultureType;
 use AcMarche\Sepulture\Repository\OssuaireRepository;
 use AcMarche\Sepulture\Repository\SepultureRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,7 +45,7 @@ class OssuaireController extends AbstractController
     /**
      * Displays a form to create a new Ossuaire entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'ossuaire_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -91,7 +91,7 @@ class OssuaireController extends AbstractController
     /**
      * Displays a form to edit an existing Ossuaire entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'ossuaire_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ossuaire $ossuaire): Response
     {
@@ -120,7 +120,7 @@ class OssuaireController extends AbstractController
     /**
      * Deletes a Ossuaire entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}', name: 'ossuaire_delete', methods: ['POST'])]
     public function delete(Request $request, Ossuaire $ossuaire): RedirectResponse
     {
@@ -139,7 +139,7 @@ class OssuaireController extends AbstractController
         return $this->redirectToRoute('ossuaire');
     }
 
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/add/sepulture', name: 'ossuaire_add_sepulture', methods: ['GET', 'POST'])]
     public function addSepultures(Request $request, Ossuaire $ossuaire): Response
     {

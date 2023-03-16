@@ -9,7 +9,7 @@ use AcMarche\Sepulture\Service\PdfFactory;
 use AcMarche\Sepulture\Service\XlsFactory;
 use AcMarche\Sepulture\Service\ZipFactory;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-#[IsGranted(data: 'ROLE_SEPULTURE_EDITEUR')]
+#[IsGranted('ROLE_SEPULTURE_EDITEUR')]
 #[Route(path: '/export')]
 class ExportController extends AbstractController
 {

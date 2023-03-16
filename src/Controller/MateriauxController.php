@@ -5,7 +5,7 @@ namespace AcMarche\Sepulture\Controller;
 use AcMarche\Sepulture\Entity\Materiaux;
 use AcMarche\Sepulture\Form\MateriauxType;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -65,7 +65,7 @@ class MateriauxController extends AbstractController
     /**
      * Displays a form to create a new Materiaux entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/new', name: 'materiaux_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -110,7 +110,7 @@ class MateriauxController extends AbstractController
     /**
      * Displays a form to edit an existing Materiaux entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/edit', name: 'materiaux_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Materiaux $materiaux): Response
     {
@@ -156,7 +156,7 @@ class MateriauxController extends AbstractController
     /**
      * Deletes a Materiaux entity.
      */
-    #[IsGranted(data: 'ROLE_SEPULTURE_ADMIN')]
+    #[IsGranted('ROLE_SEPULTURE_ADMIN')]
     #[Route(path: '/{id}/delete', name: 'materiaux_delete', methods: ['POST'])]
     public function delete(Request $request, $id): RedirectResponse
     {

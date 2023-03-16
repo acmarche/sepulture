@@ -4,6 +4,7 @@ namespace AcMarche\Sepulture\Form\User;
 
 use AcMarche\Sepulture\Entity\User;
 use AcMarche\Sepulture\Security\LocatorRoles;
+use AcMarche\Sepulture\Security\SecurityRoles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -13,20 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    public function __construct(
-        private LocatorRoles $locatorRoles
-    ) {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $roles = [[]];
-        foreach ($this->locatorRoles->get() as $t) {
-            $roles[] = $t->roles();
-        }
-
-        $roles = array_merge(...$roles);
-        $roles = array_combine($roles, $roles);
+        $roles = SecurityRoles::roles();
 
         $builder
             ->add('nom', TextType::class)
