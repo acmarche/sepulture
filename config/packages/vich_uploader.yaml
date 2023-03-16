@@ -1,6 +1,0 @@
-vich_uploader:
-  mappings:
-    ossuaire:
-      uri_prefix: /images/ossuaires
-      upload_destination: '%kernel.project_dir%/public/images/ossuaires'
-      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

@@ -1,7 +1,0 @@
-twig:
-  form_themes: ['bootstrap_5_layout.html.twig']
-  paths:
-    '%kernel.project_dir%/src/AcMarche/Sepulture/templates': AcMarcheSepulture
-  globals:
-    ga_tracking: "%env(GA_TRACKING)%"
-    sepulture_ville: "%env(SEPULTURE_VILLE)%"
