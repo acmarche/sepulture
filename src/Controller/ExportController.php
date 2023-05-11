@@ -6,22 +6,24 @@ use AcMarche\Sepulture\Entity\Cimetiere;
 use AcMarche\Sepulture\Entity\Sepulture;
 use AcMarche\Sepulture\Service\FinderJf;
 use AcMarche\Sepulture\Service\PdfFactory;
+use AcMarche\Sepulture\Service\SpreadsheetDownloaderTrait;
 use AcMarche\Sepulture\Service\XlsFactory;
 use AcMarche\Sepulture\Service\ZipFactory;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
 #[Route(path: '/export')]
 class ExportController extends AbstractController
 {
+    use SpreadsheetDownloaderTrait;
+
     public function __construct(
         private PdfFactory $pdfFactory,
         private XlsFactory $xlsFactory,
@@ -39,7 +41,7 @@ class ExportController extends AbstractController
     #[Route(path: '/search', name: 'export_sepulture_search_pdf', methods: ['GET'])]
     public function search(Request $request): Response
     {
-        if (! $request->getSession()->has('sepulture_search')) {
+        if (!$request->getSession()->has('sepulture_search')) {
             return $this->redirectToRoute('sepulture');
         }
 
@@ -75,9 +77,21 @@ class ExportController extends AbstractController
     }
 
     #[Route(path: '/indigent/', name: 'export_indigent_xls', methods: ['GET'])]
-    public function indigent(): BinaryFileResponse
+    public function indigent(): Response
     {
-        return $this->xlsFactory->create();
+        $xls = $this->xlsFactory->create();
+        $fileName = 'indigeants.xls';
+
+        return $this->downloadXls($xls, $fileName);
+    }
+
+    #[Route(path: '/defunts/', name: 'export_defunts_xls', methods: ['GET'])]
+    public function defunts(): Response
+    {
+        $xls = $this->xlsFactory->createDefunts();
+        $fileName = 'indigeants.xls';
+
+        return $this->downloadXls($xls, $fileName);
     }
 
     #[Route(path: '/finish/{slug}', name: 'export_rw_cimetiere', methods: ['GET'])]

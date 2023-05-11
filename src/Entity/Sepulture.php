@@ -22,6 +22,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 {
     use TimestampableTrait;
     use SluggableTrait;
+
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
@@ -148,15 +149,15 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
     #[ORM\ManyToOne(targetEntity: Ossuaire::class, inversedBy: 'sepultures')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $ossuaire;
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'sepulture', cascade: ['remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    protected ?iterable $histories;
 
     public function __toString(): string
     {
-        return (string) $this->parcelle;
+        return (string)$this->parcelle;
     }
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->types = new ArrayCollection();
@@ -165,6 +166,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
         $this->defunts = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->statutSih = 0;
+        $this->histories = new ArrayCollection();
     }
 
     public function getSluggableFields(): array
@@ -463,7 +465,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 
     public function addType(TypeSepulture $type): self
     {
-        if (! $this->types->contains($type)) {
+        if (!$this->types->contains($type)) {
             $this->types[] = $type;
         }
 
@@ -489,7 +491,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 
     public function addSihl(Sihl $sihl): self
     {
-        if (! $this->sihls->contains($sihl)) {
+        if (!$this->sihls->contains($sihl)) {
             $this->sihls[] = $sihl;
         }
 
@@ -515,7 +517,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 
     public function addMateriaux(Materiaux $materiaux): self
     {
-        if (! $this->materiaux->contains($materiaux)) {
+        if (!$this->materiaux->contains($materiaux)) {
             $this->materiaux[] = $materiaux;
         }
 
@@ -565,7 +567,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 
     public function addDefunt(Defunt $defunt): self
     {
-        if (! $this->defunts->contains($defunt)) {
+        if (!$this->defunts->contains($defunt)) {
             $this->defunts[] = $defunt;
             $defunt->setSepulture($this);
         }
@@ -596,7 +598,7 @@ class Sepulture implements SluggableInterface, TimestampableInterface, Stringabl
 
     public function addCommentaire(Commentaire $commentaire): self
     {
-        if (! $this->commentaires->contains($commentaire)) {
+        if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires[] = $commentaire;
             $commentaire->setSepulture($this);
         }

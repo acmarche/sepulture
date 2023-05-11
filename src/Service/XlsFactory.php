@@ -11,21 +11,19 @@
 namespace AcMarche\Sepulture\Service;
 
 use AcMarche\Sepulture\Entity\Defunt;
+use AcMarche\Sepulture\Repository\DefuntRepository;
 use AcMarche\Sepulture\Repository\SepultureRepository;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Exception;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class XlsFactory
 {
     public function __construct(
-        private SepultureRepository $sepultureRepository
+        private SepultureRepository $sepultureRepository,
+        private DefuntRepository $defuntRepository
     ) {
     }
 
-    public function create(): BinaryFileResponse
+    public function create(): Spreadsheet
     {
         $phpExcelObject = new Spreadsheet();
 
@@ -38,25 +36,8 @@ class XlsFactory
 
         $defunts = $this->createXlsObject($phpExcelObject);
 
-        $this->defuntsXlsObject($phpExcelObject, $defunts);
+        return $this->defuntsXlsObject($phpExcelObject, $defunts);
 
-        $writer = new Xlsx($phpExcelObject);
-        $temp_file = tempnam(sys_get_temp_dir(), 'indigeants.xls');
-
-        // Create the excel file in the tmp directory of the system
-        try {
-            $writer->save($temp_file);
-        } catch (Exception) {
-        }
-
-        $fileName = 'indigeants.xls';
-        $response = new BinaryFileResponse($temp_file);
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $fileName ?? $response->getFile()->getFilename()
-        );
-
-        return $response;
     }
 
     /**
@@ -95,11 +76,6 @@ class XlsFactory
 
         foreach ($sepultures as $sepulture) {
             $lettre = 'A';
-
-            //$birthday = $sepulture->getNeLe() != null ? $sepulture->getNeLe()->format($format) : '';
-
-            //$sepulture = new Sepulture();
-
             $active
                 ->setCellValue($lettre++.$l, $sepulture->getId())
                 ->setCellValue($lettre++.$l, $sepulture->getParcelle())
@@ -163,11 +139,6 @@ class XlsFactory
 
         foreach ($defunts as $defunt) {
             $lettre = 'A';
-
-            //$birthday = $sepulture->getNeLe() != null ? $sepulture->getNeLe()->format($format) : '';
-
-            //  $defunt = new Defunt();
-
             $active
                 ->setCellValue($lettre++.$l, $defunt->getId())
                 ->setCellValue($lettre++.$l, $defunt->getSepulture()->getId())
@@ -185,5 +156,44 @@ class XlsFactory
         $phpExcelObject->setActiveSheetIndex(1);
 
         return $phpExcelObject;
+    }
+
+    public function createDefunts(): Spreadsheet
+    {
+        $spreadsheet = new Spreadsheet();
+        $active = $spreadsheet->getActiveSheet();
+
+        $column = 'A';
+        $line = 1;
+        $active
+            ->setCellValue($column++.$line, 'Id')
+            ->setCellValue($column++.$line, 'Nom')
+            ->setCellValue($column++.$line, 'Prenom')
+            ->setCellValue($column++.$line, 'Lieu naissance')
+            ->setCellValue($column++.$line, 'Date naissance')
+            ->setCellValue($column++.$line, 'Lieu Deces')
+            ->setCellValue($column++.$line, 'Date Deces')
+            ->setCellValue($column++.$line, 'Lieu inhumation')
+            ->setCellValue($column++.$line, 'Date inhumation');
+
+
+        $line = 2;
+        foreach ($this->defuntRepository->findAll() as $defunt) {
+            $column = 'A';
+            $sepulture = $defunt->getSepulture();
+            $active
+                ->setCellValue($column++.$line, $defunt->getId())
+                ->setCellValue($column++.$line, $defunt->getNom())
+                ->setCellValue($column++.$line, $defunt->getPrenom())
+                ->setCellValue($column++.$line, $defunt->getLieuNaissance())
+                ->setCellValue($column++.$line, $defunt->getBirthday())
+                ->setCellValue($column++.$line, $defunt->getLieuDeces())
+                ->setCellValue($column++.$line, $defunt->getDateDeces())
+                ->setCellValue($column++.$line, $sepulture?->getCimetiere()?->getNom())
+                ->setCellValue($column++.$line, 'no');
+            $line++;
+        }
+
+        return $spreadsheet;
     }
 }

@@ -66,7 +66,7 @@ class ResettingController extends AbstractController
     public function requestConfirmed(): Response
     {
         return $this->render(
-            'resetting/confirmed.html.twig'
+            '@Sepulture/resetting/confirmed.html.twig'
         );
     }
 
