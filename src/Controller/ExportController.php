@@ -80,18 +80,16 @@ class ExportController extends AbstractController
     public function indigent(): Response
     {
         $xls = $this->xlsFactory->create();
-        $fileName = 'indigeants.xls';
 
-        return $this->downloadXls($xls, $fileName);
+        return $this->downloadXls($xls, 'indigeants.xls');
     }
 
     #[Route(path: '/defunts/', name: 'export_defunts_xls', methods: ['GET'])]
     public function defunts(): Response
     {
         $xls = $this->xlsFactory->createDefunts();
-        $fileName = 'indigeants.xls';
 
-        return $this->downloadXls($xls, $fileName);
+        return $this->downloadXls($xls, 'defunts.xls');
     }
 
     #[Route(path: '/finish/{slug}', name: 'export_rw_cimetiere', methods: ['GET'])]
