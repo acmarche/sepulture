@@ -14,6 +14,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'entry_point' => AppAuthenticator::class,
         'switch_user' => true,
         'custom_authenticator' => AppAuthenticator::class,
+        'login_throttling' => [
+            'max_attempts' => 6, //per minute...
+        ],
     ];
 
     // focant en fin de
