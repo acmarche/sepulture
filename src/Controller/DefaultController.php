@@ -3,7 +3,7 @@
 namespace AcMarche\Sepulture\Controller;
 
 use AcMarche\Sepulture\Entity\Page;
-use Doctrine\Persistence\ManagerRegistry;
+use AcMarche\Sepulture\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,15 +12,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DefaultController extends AbstractController
 {
     public function __construct(
-        private ManagerRegistry $managerRegistry
+        private PageRepository $pageRepository,
     ) {
     }
 
     #[Route(path: '/', name: 'home')]
     public function index(): Response
     {
-        $em = $this->managerRegistry->getManager();
-        $page = $em->getRepository(Page::class)->find(1);
+        $page = $this->pageRepository->find(1);
         if (null === $page) {
             $page = $this->createHomePage();
         }
@@ -47,14 +46,12 @@ class DefaultController extends AbstractController
 
     protected function createHomePage(): Page
     {
-        $em = $this->managerRegistry->getManager();
         $page = new Page();
         $page->setSlug('home');
         $page->setTitre('Bienvenue sur le site des cimetières de la commune');
         $page->setContenu('Editer la page pour modifier le contenu');
-        $em->persist($page);
-
-        $em->flush();
+        $this->pageRepository->persist($page);
+        $this->pageRepository->flush();
 
         return $page;
     }

@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
 use AcMarche\Sepulture\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PageRepository extends ServiceEntityRepository
 {
+    use OrmCrudTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Page::class);
