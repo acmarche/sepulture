@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ContactRwController extends AbstractController
 {
     public function __construct(
-        private ManagerRegistry $managerRegistry
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

@@ -19,9 +19,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class ResettingController extends AbstractController
 {
     public function __construct(
-        private UserRepository $userRepository,
-        private UserPasswordHasherInterface $userPasswordHasher,
-        private Mailer $mailer
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly Mailer $mailer
     ) {
     }
 

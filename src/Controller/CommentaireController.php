@@ -25,11 +25,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class CommentaireController extends AbstractController
 {
     public function __construct(
-        private CommentaireRepository $commentaireRepository,
-        private CimetiereUtil $cimetiereUtil,
-        private Mailer $mailer,
-        private Captcha $captcha,
-        private ManagerRegistry $managerRegistry
+        private readonly CommentaireRepository $commentaireRepository,
+        private readonly CimetiereUtil $cimetiereUtil,
+        private readonly Mailer $mailer,
+        private readonly Captcha $captcha,
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

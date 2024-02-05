@@ -21,8 +21,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ImageController extends AbstractController
 {
     public function __construct(
-        private FileHelper $fileHelper,
-        private ManagerRegistry $managerRegistry
+        private readonly FileHelper $fileHelper,
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

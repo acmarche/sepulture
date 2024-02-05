@@ -31,11 +31,11 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class SepultureController extends AbstractController
 {
     public function __construct(
-        private SepultureRepository $sepultureRepository,
-        private FileHelper $fileHelper,
-        private CimetiereUtil $cimetiereUtil,
-        private Captcha $captcha,
-        private ManagerRegistry $managerRegistry
+        private readonly SepultureRepository $sepultureRepository,
+        private readonly FileHelper $fileHelper,
+        private readonly CimetiereUtil $cimetiereUtil,
+        private readonly Captcha $captcha,
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

@@ -26,12 +26,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class CimetiereController extends AbstractController
 {
     public function __construct(
-        private CimetiereRepository $cimetiereRepository,
-        private CimetiereUtil $cimetiereUtil,
-        private CimetiereFileService $cimetiereFileService,
-        private FileHelper $fileHelper,
-        private SepultureRepository $sepultureRepository,
-        private ManagerRegistry $managerRegistry
+        private readonly CimetiereRepository $cimetiereRepository,
+        private readonly CimetiereUtil $cimetiereUtil,
+        private readonly CimetiereFileService $cimetiereFileService,
+        private readonly FileHelper $fileHelper,
+        private readonly SepultureRepository $sepultureRepository,
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

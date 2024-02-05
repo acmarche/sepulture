@@ -23,8 +23,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class PageController extends AbstractController
 {
     public function __construct(
-        private FileHelper $fileHelper,
-        private ManagerRegistry $managerRegistry
+        private readonly FileHelper $fileHelper,
+        private readonly ManagerRegistry $managerRegistry
     ) {
     }
 

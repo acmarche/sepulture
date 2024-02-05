@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class OssuaireController extends AbstractController
 {
     public function __construct(
-        private OssuaireRepository $ossuaireRepository,
-        private SepultureRepository $sepultureRepository,
+        private readonly OssuaireRepository $ossuaireRepository,
+        private readonly SepultureRepository $sepultureRepository,
     ) {
     }
 

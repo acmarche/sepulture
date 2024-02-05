@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;use Symfony\Component\Security\Htt
 class DefaultController extends AbstractController
 {
     public function __construct(
-        private PageRepository $pageRepository,
+        private readonly PageRepository $pageRepository,
     ) {
     }
 

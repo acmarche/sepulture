@@ -24,10 +24,10 @@ class ExportController extends AbstractController
     use SpreadsheetDownloaderTrait;
 
     public function __construct(
-        private PdfFactory $pdfFactory,
-        private XlsFactory $xlsFactory,
-        private FinderJf $finderJf,
-        private ZipFactory $zipFactory
+        private readonly PdfFactory $pdfFactory,
+        private readonly XlsFactory $xlsFactory,
+        private readonly FinderJf $finderJf,
+        private readonly ZipFactory $zipFactory
     ) {
     }
 
