@@ -11,9 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-/**
- * Password controller.
- */
+
 #[IsGranted('ROLE_SEPULTURE_ADMIN')]
 #[Route(path: '/security/password')]
 class PasswordController extends AbstractController
@@ -24,9 +22,6 @@ class PasswordController extends AbstractController
     ) {
     }
 
-    /**
-     * Displays a form to edit an existing Abonnement entity.
-     */
     #[Route(path: '/{id}', name: 'user_change_password', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user): Response
     {
@@ -38,7 +33,7 @@ class PasswordController extends AbstractController
             $passwordCrypted = $this->userPasswordEncoder->hashPassword($user, $plainPassword);
             $user->setPassword($passwordCrypted);
 
-            $this->userRepository->save();
+            $this->userRepository->flush();
 
             $this->addFlash('success', 'Le mot de passe a bien été modifié.');
 

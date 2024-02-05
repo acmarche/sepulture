@@ -115,7 +115,7 @@ class CimetiereUtil
 
         $preference->setValeur($cimetiere->getId());
 
-        $this->preferenceRepository->save();
+        $this->preferenceRepository->flush();
     }
 
     public function getContactRw(): ?ContactRw

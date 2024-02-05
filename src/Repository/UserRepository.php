@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
 use AcMarche\Sepulture\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -15,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    use OrmCrudTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -34,10 +37,5 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('username', $username)
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    public function save(): void
-    {
-        $this->_em->flush();
     }
 }

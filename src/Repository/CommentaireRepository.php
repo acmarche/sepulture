@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
 use AcMarche\Sepulture\Entity\Commentaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentaireRepository extends ServiceEntityRepository
 {
+    use OrmCrudTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Commentaire::class);
@@ -24,15 +27,5 @@ class CommentaireRepository extends ServiceEntityRepository
         return $this->findBy([], [
             'createdAt' => 'DESC',
         ]);
-    }
-
-    public function persist(Commentaire $commentaire): void
-    {
-        $this->_em->persist($commentaire);
-    }
-
-    public function flush(): void
-    {
-        $this->_em->flush();
     }
 }

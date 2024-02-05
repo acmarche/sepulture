@@ -47,7 +47,7 @@ class ResettingController extends AbstractController
             }
             $token = $this->generateToken();
             $user->setConfirmationToken($token);
-            $this->userRepository->save();
+            $this->userRepository->flush();
             $this->mailer->sendRequestNewPassword($user);
 
             return $this->redirectToRoute('sepulture_password_confirmation');
@@ -93,7 +93,7 @@ class ResettingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $form->getData()->getPlainPassword()));
             $user->setConfirmationToken(null);
-            $this->userRepository->save();
+            $this->userRepository->flush();
 
             $this->addFlash('success', 'Votre mot de passe a bien été changé');
 

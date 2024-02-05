@@ -2,6 +2,7 @@
 
 namespace AcMarche\Sepulture\Repository;
 
+use AcMarche\Sepulture\Doctrine\OrmCrudTrait;
 use AcMarche\Sepulture\Entity\Preference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -15,25 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PreferenceRepository extends ServiceEntityRepository
 {
+    use OrmCrudTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Preference::class);
-    }
-
-    public function persist(Preference $preference): void
-    {
-        $this->_em->persist($preference);
-    }
-
-    public function save(): void
-    {
-        $this->_em->flush();
-    }
-
-    public function remove(Preference $preference): void
-    {
-        $this->_em->remove($preference);
-        $this->save();
     }
 
     /**
