@@ -7,6 +7,7 @@ use AcMarche\Sepulture\Form\User\LostPasswordType;
 use AcMarche\Sepulture\Form\User\ResettingFormType;
 use AcMarche\Sepulture\Repository\UserRepository;
 use AcMarche\Sepulture\Service\Mailer;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,6 +22,7 @@ class ResettingController extends AbstractController
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly ManagerRegistry $managerRegistry,
         private readonly Mailer $mailer
     ) {
     }
@@ -47,7 +49,8 @@ class ResettingController extends AbstractController
             }
             $token = $this->generateToken();
             $user->setConfirmationToken($token);
-            $this->userRepository->flush();
+            $em = $this->managerRegistry->getManager();
+            $em->flush();
             $this->mailer->sendRequestNewPassword($user);
 
             return $this->redirectToRoute('sepulture_password_confirmation');
