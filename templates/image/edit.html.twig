@@ -6,10 +6,10 @@
         <h3 class="card-header">Gestion des images pour la sépulture {{ sepulture.parcelle }}</h3>
         <div class="card-body">
             <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}" class="btn btn-primary"
-               role="button"><i class="fas fa-list"></i> Retour à la sépulture</a>
+               role="button"><i class="ti ti-list"></i> Retour à la sépulture</a>
 
             <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" class="btn btn-primary"
-               role="button"><i class="fas fa-pencil-alt"></i> Editer la sépulture</a>
+               role="button"><i class="ti ti-pencil"></i> Editer la sépulture</a>
 
             {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone', 'data-controller': 'dropzone'}}) }}
             {{ form_errors(form) }}

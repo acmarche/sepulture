@@ -88,7 +88,7 @@
                             <th>Aucune inscription sociale</th>
                             <td>
                                 {% if sepulture.socialecheck %}
-                                    <i class="fas fa-check"></i>
+                                    <i class="ti ti-check"></i>
                                 {% else %}
                                     Non défini
                                 {% endif %}
@@ -98,7 +98,7 @@
                             <th>Inhumation avant 1945 ?</th>
                             <td>
                                 {% if sepulture.guerre %}
-                                    <i class="fas fa-check"></i>
+                                    <i class="ti ti-check"></i>
                                 {% else %}
                                     Non
                                 {% endif %}
@@ -108,7 +108,7 @@
                             <th>Combattant 14-18</th>
                             <td>
                                 {% if sepulture.combattant14 %}
-                                    <i class="fas fa-check"></i>
+                                    <i class="ti ti-check"></i>
                                 {% else %}
                                     Non
                                 {% endif %}
@@ -118,7 +118,7 @@
                             <th>Combattant 40-45</th>
                             <td>
                                 {% if sepulture.combattant40 %}
-                                    <i class="fas fa-check"></i>
+                                    <i class="ti ti-check"></i>
                                 {% else %}
                                     Non
                                 {% endif %}
@@ -189,7 +189,7 @@
     {% include '@Sepulture/sepulture/delete.html.twig' %}
 {% endblock %}
 
-{% block javascripts %}
+{% block scripts %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var btns = document.querySelectorAll('.animal');

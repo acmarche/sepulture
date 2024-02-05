@@ -1,19 +1,19 @@
 <a href="{{ path('cimetiere') }}" class="btn btn-primary" role='button'><i
-            class="fas fa-list"></i> Retour à la Liste</a>
+            class="ti ti-list"></i> Retour à la Liste</a>
 
 {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
     <a href="{{ path('export_cimetiere_pdf', { 'slug': cimetiere.slug }) }}" role="button"
-       class="btn btn-success" rel="nofollow"><i class="fas fa-file-export"></i> Exporter</a>
+       class="btn btn-success" rel="nofollow"><i class="ti ti-file-export"></i> Exporter</a>
 
     <a href="{{ path('cimetiere_set_default', { 'id': cimetiere.id }) }}" role="button"
-       class="btn btn-primary"><i class="far fa-bookmark"></i> Définir par défaut pour l'encodate</a>
+       class="btn btn-primary"><i class="ti ti-bookmark"></i> Définir par défaut pour l'encodate</a>
 {% endif %}
 
 {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
     <a href="{{ path('cimetiere_edit', { 'slug': cimetiere.slug }) }}" role="button"
-       class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Editer</a>
+       class="btn btn-primary"><i class="ti ti-pencil"></i> Editer</a>
 
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="fas fa-trash"></i> Supprimer
+        <i class="ti ti-trash"></i> Supprimer
     </button>
 {% endif %}

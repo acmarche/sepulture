@@ -1,10 +1,10 @@
 {% if is_granted('ROLE_SEPULTURE_ADMIN') %}
     <a href="{{ path('materiaux_edit', { 'id': entity.id }) }}" role="button" class="btn btn-primary"><i
-                class="fas fa-pencil-alt"></i> Editer</a>
+                class="ti ti-pencil"></i> Editer</a>
     <a href="{{ path('materiaux') }}" class="btn btn-primary" role='button'><i
-                class="fas fa-list"></i> Retour à la Liste</a>
+                class="ti ti-list"></i> Retour à la Liste</a>
 
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-        <i class="fas fa-trash"></i> Supprimer
+        <i class="ti ti-trash"></i> Supprimer
     </button>
 {% endif %}

@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Cimetière - sépultures {% endblock %} {{ sepulture_ville }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('bundles/sepulture/favicon.ico') }}"/>
-    {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+    {% block stylesheets %}
 
-    {{ encore_entry_link_tags('app') }}
-    {{ encore_entry_script_tags('app') }}
-
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
 </head>
 <body class="d-flex flex-column h-100">
 {% set action = app.request.attributes.get("_route") %}
@@ -36,7 +38,6 @@
     </footer>
 {% endblock %}
 {% block scripts %}{% endblock %}
-{% block javascripts %}{% endblock %}
 {% include '@Sepulture/default/google.html.twig' %}
 </body>
 </html>

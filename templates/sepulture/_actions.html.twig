@@ -1,21 +1,21 @@
 <div class="d-print-none">
     <a href="{{ path('sepulture') }}" role="button" class="btn btn-primary">
-        <i class="fas fa-list"></i> Retour à la Liste</a>
+        <i class="ti ti-list"></i> Retour à la Liste</a>
     {% if is_granted('ROLE_SEPULTURE_EDITEUR') %}
         <a href="{{ path('export_sepulture_pdf', { 'slug': sepulture.slug }) }}" role="button"
-           class="btn btn-success" rel="nofollow"><i class="fas fa-file-pdf"></i> Exporter</a>
+           class="btn btn-success" rel="nofollow"><i class="ti ti-file-type-pdf"></i> Exporter</a>
 
         <a href="{{ path('sepulture_edit', { 'slug': sepulture.slug }) }}" role="button"
-           class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Editer</a>
+           class="btn btn-primary"><i class="ti ti-pencil"></i> Editer</a>
 
         <a href="{{ path('image_edit', { 'id': sepulture.id }) }}" role="button"
-           class="btn btn-primary"><i class="fas fa-images"></i> Images</a>
+           class="btn btn-primary"><i class="ti ti-photo"></i> Images</a>
 
         <a href="{{ path('defunt_new', { 'id': sepulture.id }) }}" role="button"
-           class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter un défunt</a>
+           class="btn btn-primary"><i class="ti ti-plus"></i> Ajouter un défunt</a>
 
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="fas fa-trash"></i> Supprimer
+            <i class="ti ti-trash"></i> Supprimer
         </button>
     {% endif %}
 </div>
