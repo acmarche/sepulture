@@ -19,9 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-/**
- * Cimetiere controller.
- */
+
 #[Route(path: '/cimetiere')]
 class CimetiereController extends AbstractController
 {
@@ -35,15 +33,12 @@ class CimetiereController extends AbstractController
     ) {
     }
 
-    /**
-     * Lists all Cimetiere entities.
-     */
     #[Route(path: '/', name: 'cimetiere', methods: ['GET'])]
     public function index(): Response
     {
-        $entities = $this->cimetiereRepository->search([]);
-        foreach ($entities as $cimetiere) {
-            $ihs = $this->sepultureRepository->getImportanceHistorique($cimetiere);
+        $cimetieres = $this->cimetiereRepository->search([]);
+        foreach ($cimetieres as $cimetiere) {
+            $ihs  = $this->sepultureRepository->getImportanceHistorique($cimetiere);
             $cimetiere->setIhsCount(\count($ihs));
             $a1945 = $this->sepultureRepository->getAvant1945($cimetiere);
             $cimetiere->setA1945Count(\count($a1945));
@@ -52,7 +47,7 @@ class CimetiereController extends AbstractController
         return $this->render(
             '@Sepulture/cimetiere/index.html.twig',
             [
-                'entities' => $entities,
+                'entities' => $cimetieres,
             ]
         );
     }
@@ -183,7 +178,7 @@ class CimetiereController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $this->cimetiereRepository->find($id);
 
-            if (! $entity instanceof Cimetiere) {
+            if (!$entity instanceof Cimetiere) {
                 throw $this->createNotFoundException('Unable to find Cimetiere entity.');
             }
 
@@ -206,9 +201,11 @@ class CimetiereController extends AbstractController
     private function createDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('cimetiere_delete', [
-                'id' => $id,
-            ]))
+            ->setAction(
+                $this->generateUrl('cimetiere_delete', [
+                    'id' => $id,
+                ])
+            )
             ->getForm();
     }
 
@@ -226,7 +223,7 @@ class CimetiereController extends AbstractController
             $image = $request->get('imageName', false);
             $plan = $request->get('planName', false);
 
-            if (! $image && ! $plan) {
+            if (!$image && !$plan) {
                 $this->addFlash('danger', "Vous n'avez sélectionnez aucun fichier");
 
                 return $this->redirectToRoute('cimetiere_show', [
@@ -268,10 +265,11 @@ class CimetiereController extends AbstractController
     private function createFileDeleteForm($id): FormInterface
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('cimetiere_file_delete', [
-                'id' => $id,
-            ]))
-
+            ->setAction(
+                $this->generateUrl('cimetiere_file_delete', [
+                    'id' => $id,
+                ])
+            )
             ->add(
                 'submit',
                 SubmitType::class,
@@ -279,8 +277,9 @@ class CimetiereController extends AbstractController
                     'label' => 'Supprimer les fichiers sélectionnés',
                     'attr' => [
                         'class' => 'btn-danger btn-xs',
-                        
-                    ], ]
+
+                    ],
+                ]
             )
             ->getForm();
     }

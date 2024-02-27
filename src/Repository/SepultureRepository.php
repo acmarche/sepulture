@@ -119,15 +119,21 @@ class SepultureRepository extends ServiceEntityRepository
      */
     public function getImportanceHistorique(Cimetiere $cimetiere): array
     {
+        $ihs = [];
         $qb = $this->createQueryBuilder('sepulture');
         $this->addJoins($qb);
+        $sepultures = $qb
+            ->andWhere('cimetiere = :cim')
+            ->setParameter('cim', $cimetiere)
+            ->getQuery()->getResult();
 
-        $qb->andWhere('cimetiere = :cim')
-            ->setParameter('cim', $cimetiere);
+        foreach ($sepultures as $sepulture) {
+            if (count($sepulture->getSihls()) > 0) {
+                $ihs[] = $sepulture;
+            }
+        }
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $ihs;
     }
 
     /**
