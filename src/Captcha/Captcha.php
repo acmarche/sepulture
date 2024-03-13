@@ -25,7 +25,7 @@ class Captcha
             return false;
         }
 
-        return (bool)preg_match('#kitten#', $value);
+        return (bool)preg_match('#thecatapi#', $value);
     }
 
     /**
