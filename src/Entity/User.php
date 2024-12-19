@@ -18,8 +18,8 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
     private ?int $id = null;
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;
-    #[ORM\Column(type: 'array', nullable: true)]
-    private $roles;
+    #[ORM\Column( nullable: true)]
+    private array $roles;
 
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
