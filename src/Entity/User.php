@@ -3,6 +3,7 @@
 namespace AcMarche\Sepulture\Entity;
 
 use AcMarche\Sepulture\Repository\UserRepository;
+use AcMarche\Sepulture\Security\SecurityRoles;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
@@ -18,8 +19,8 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
     private ?int $id = null;
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;
-    #[ORM\Column( nullable: true)]
-    private array $roles;
+    #[ORM\Column(nullable: true)]
+    private ?array $roles = [];
 
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
@@ -41,12 +42,12 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
 
     public function __toString(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     public function getId(): ?int
@@ -73,7 +74,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -100,7 +101,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -115,7 +116,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, S
      */
     public function getSalt(): string
     {
-        return (string) $this->salt;  // not needed when using the "bcrypt" algorithm in security.yaml
+        return (string)$this->salt;  // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
