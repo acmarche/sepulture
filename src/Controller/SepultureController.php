@@ -35,9 +35,8 @@ class SepultureController extends AbstractController
         private readonly FileHelper $fileHelper,
         private readonly CimetiereUtil $cimetiereUtil,
         private readonly Captcha $captcha,
-        private readonly ManagerRegistry $managerRegistry
-    ) {
-    }
+        private readonly ManagerRegistry $managerRegistry,
+    ) {}
 
 
     #[Route(path: '/', name: 'sepulture', methods: ['GET'])]
@@ -54,7 +53,7 @@ class SepultureController extends AbstractController
             $data,
             [
                 'method' => 'GET',
-            ]
+            ],
         );
         $search_form->handleRequest($request);
         if ($search_form->isSubmitted() && $search_form->isValid()) {
@@ -68,13 +67,16 @@ class SepultureController extends AbstractController
             $entities = $this->sepultureRepository->search($data);
         }
 
+        $response = new Response(null, $search_form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@Sepulture/sepulture/index.html.twig',
             [
                 'search' => $search,
                 'search_form' => $search_form->createView(),
                 'entities' => $entities,
-            ]
+            ],
+            $response,
         );
     }
 
@@ -100,11 +102,13 @@ class SepultureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $sepulture->setUserAdd($user);
-
-            $em->persist($sepulture);
-            $em->flush();
-
-            $this->addFlash('success', 'La sépulture a bien été ajoutée');
+            try {
+                $em->persist($sepulture);
+                $em->flush();
+                $this->addFlash('success', 'La sépulture a bien été ajouté');
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', $exception->getMessage());
+            }
 
             return $this->redirectToRoute('sepulture_show', [
                 'slug' => $sepulture->getSlug(),
@@ -119,7 +123,7 @@ class SepultureController extends AbstractController
                 'entity' => $sepulture,
                 'form' => $form->createView(),
             ]
-            , $response
+            , $response,
         );
     }
 
@@ -148,9 +152,9 @@ class SepultureController extends AbstractController
                     'commentaire_new',
                     [
                         'id' => $sepulture->getId(),
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
 
         return $this->render(
@@ -161,7 +165,7 @@ class SepultureController extends AbstractController
                 'images' => $images,
                 'animals' => $animals,
                 'delete_form' => $deleteForm->createView(),
-            ]
+            ],
         );
     }
 
@@ -175,14 +179,19 @@ class SepultureController extends AbstractController
         $images = $this->fileHelper->getImages($sepulture->getId(), 5);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-
-            $this->addFlash('success', 'La sépulture a bien été modifiée');
+            try {
+                $em->flush();
+                $this->addFlash('success', 'La sépulture a bien été modifiée');
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', $exception->getMessage());
+            }
 
             return $this->redirectToRoute('sepulture_show', [
                 'slug' => $sepulture->getSlug(),
             ]);
         }
+
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
         return $this->render(
             '@Sepulture/sepulture/edit.html.twig',
@@ -191,7 +200,8 @@ class SepultureController extends AbstractController
                 'images' => $images,
                 'form' => $form->createView(),
                 'delete_form' => $deleteForm->createView(),
-            ]
+            ],
+            $response,
         );
     }
 
@@ -220,11 +230,12 @@ class SepultureController extends AbstractController
 
     private function createDeleteForm($id): FormInterface
     {
-        return $this->createFormBuilder()
+        return $this
+            ->createFormBuilder()
             ->setAction(
                 $this->generateUrl('sepulture_delete', [
                     'id' => $id,
-                ])
+                ]),
             )
             ->getForm();
     }
@@ -239,7 +250,7 @@ class SepultureController extends AbstractController
             [
                 'sepultures' => $sepultures,
                 'cimetiere' => $cimetiere,
-            ]
+            ],
         );
     }
 
@@ -253,7 +264,7 @@ class SepultureController extends AbstractController
             [
                 'sepultures' => $sepultures,
                 'cimetiere' => $cimetiere,
-            ]
+            ],
         );
     }
 }

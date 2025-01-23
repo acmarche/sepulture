@@ -192,7 +192,7 @@
 {% block scripts %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var btns = document.querySelectorAll('.animal');
+            const btns = document.querySelectorAll('.animal');
             Array.prototype.forEach.call(btns, function (el, i) {
                 el.addEventListener('click', () => {
                     el.classList.toggle('border-0');
