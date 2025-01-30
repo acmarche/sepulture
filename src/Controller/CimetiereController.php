@@ -10,7 +10,6 @@ use AcMarche\Sepulture\Service\CimetiereFileService;
 use AcMarche\Sepulture\Service\CimetiereUtil;
 use AcMarche\Sepulture\Service\FileHelper;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -19,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/cimetiere')]
 class CimetiereController extends AbstractController
@@ -29,16 +29,15 @@ class CimetiereController extends AbstractController
         private readonly CimetiereFileService $cimetiereFileService,
         private readonly FileHelper $fileHelper,
         private readonly SepultureRepository $sepultureRepository,
-        private readonly ManagerRegistry $managerRegistry
-    ) {
-    }
+        private readonly ManagerRegistry $managerRegistry,
+    ) {}
 
     #[Route(path: '/', name: 'cimetiere', methods: ['GET'])]
     public function index(): Response
     {
         $cimetieres = $this->cimetiereRepository->search([]);
         foreach ($cimetieres as $cimetiere) {
-            $ihs  = $this->sepultureRepository->getImportanceHistorique($cimetiere);
+            $ihs = $this->sepultureRepository->getImportanceHistorique($cimetiere);
             $cimetiere->setIhsCount(\count($ihs));
             $a1945 = $this->sepultureRepository->getAvant1945($cimetiere);
             $cimetiere->setA1945Count(\count($a1945));
@@ -48,7 +47,7 @@ class CimetiereController extends AbstractController
             '@Sepulture/cimetiere/index.html.twig',
             [
                 'entities' => $cimetieres,
-            ]
+            ],
         );
     }
 
@@ -90,7 +89,7 @@ class CimetiereController extends AbstractController
             [
                 'entity' => $entity,
                 'form' => $form->createView(),
-            ]
+            ],
         );
     }
 
@@ -113,7 +112,7 @@ class CimetiereController extends AbstractController
                 'cimetiere' => $cimetiere,
                 'delete_form' => $deleteForm->createView(),
                 'delete_file_form' => $deleteFileForm->createView(),
-            ]
+            ],
         );
     }
 
@@ -142,7 +141,7 @@ class CimetiereController extends AbstractController
             [
                 'entity' => $cimetiere,
                 'form' => $editForm->createView(),
-            ]
+            ],
         );
     }
 
@@ -162,7 +161,7 @@ class CimetiereController extends AbstractController
                 'action' => $this->generateUrl('cimetiere_edit', [
                     'slug' => $entity->getSlug(),
                 ]),
-            ]
+            ],
         );
     }
 
@@ -200,11 +199,12 @@ class CimetiereController extends AbstractController
      */
     private function createDeleteForm($id): FormInterface
     {
-        return $this->createFormBuilder()
+        return $this
+            ->createFormBuilder()
             ->setAction(
                 $this->generateUrl('cimetiere_delete', [
                     'id' => $id,
-                ])
+                ]),
             )
             ->getForm();
     }
@@ -264,11 +264,12 @@ class CimetiereController extends AbstractController
 
     private function createFileDeleteForm($id): FormInterface
     {
-        return $this->createFormBuilder()
+        return $this
+            ->createFormBuilder()
             ->setAction(
                 $this->generateUrl('cimetiere_file_delete', [
                     'id' => $id,
-                ])
+                ]),
             )
             ->add(
                 'submit',
@@ -279,19 +280,19 @@ class CimetiereController extends AbstractController
                         'class' => 'btn-danger btn-xs',
 
                     ],
-                ]
+                ],
             )
             ->getForm();
     }
 
     #[IsGranted('ROLE_SEPULTURE_EDITEUR')]
     #[Route(path: '/setdefault/{id}', name: 'cimetiere_set_default', methods: ['GET'])]
-    public function setDefaultCimetiere(Request $request, Cimetiere $cimetiere): RedirectResponse
+    public function setDefaultCimetiere(Request $request, int $id): RedirectResponse
     {
         $user = $this->getUser();
         $em = $this->managerRegistry->getManager();
         $cimetiereId = $request->get('cimetiere');
-        $cimetiere = $em->getRepository(Cimetiere::class)->find($cimetiereId);
+        $cimetiere = $em->getRepository(Cimetiere::class)->find($id);
         if (null === $cimetiere) {
             $this->addFlash('error', 'Cimetière non trouvé');
 
