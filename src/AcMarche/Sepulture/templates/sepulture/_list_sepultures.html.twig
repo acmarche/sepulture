@@ -1,0 +1,42 @@
+<table class="table table-bordered table-hover table-responsive">
+    <thead>
+    <tr>
+        <th style="width: 15%;">Parcelle</th>
+        <th style="width: 20%;">Cimetière</th>
+        <th style="width: 20%;">Images</th>
+        <th>Défunts</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sepulture in sepultures %}
+        <tr>
+            <td>
+                <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}">{{ sepulture.parcelle }}</a>
+            </td>
+            <td>
+                {{ sepulture.cimetiere }}
+            </td>
+            <td>
+                {% set image = sepulture.id | acmarche_sepulture_getimage %}
+                {% if image %}
+                    <a href="{{ path('sepulture_show', { 'slug': sepulture.slug }) }}"
+                       title="Consulter le détail">
+                        <img src="{{ image.url | imagine_filter('acmarche_sepulture_thumb') }}" alt="img"
+                             class="img-responsive img-thumbnail">
+                    </a>
+                {% else %}
+                    Aucune
+                {% endif %}
+            </td>
+            <td>
+                {% if sepulture.defunts | length > 0 %}
+                    {% for defunt in sepulture.defunts %}
+                        <a href="{{ path('defunt_show', {'id': defunt.id }) }}">{{ defunt }}</a>
+                        {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

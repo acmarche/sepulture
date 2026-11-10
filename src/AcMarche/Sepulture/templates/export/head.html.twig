@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="{{ absolute_url(asset('bundles/sepulture/css/pdf.css')) }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{{ entity }}</title>
+    <style type="text/css">
+        table {
+            page-break-inside: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
+
+        .radio {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {% if cimetiere and rw == false %}
+        <h1>{{ entity }} {{ sepultures | length }} sépultures</h1>
+        <div class="page-breaker"></div>
+    {% endif %}

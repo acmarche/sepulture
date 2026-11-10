@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Cimetière - sépultures {% endblock %} {{ sepulture_ville }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/sepulture/favicon.ico') }}"/>
+    {% block stylesheets %}
+
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+{% set action = app.request.attributes.get("_route") %}
+{% include '@Sepulture/_header.html.twig' %}
+
+<main role="main" class="container pt-3">
+
+    {% include '@Sepulture/_flash_messages.html.twig' %}
+
+    {% block notifications %}
+
+    {% endblock %}
+
+    {% block body %}
+
+    {% endblock %}
+</main>
+
+{% block footer %}
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted"> {% include '@Sepulture/signature.html.twig' %}</span>
+        </div>
+    </footer>
+{% endblock %}
+{% block scripts %}{% endblock %}
+{% include '@Sepulture/default/google.html.twig' %}
+</body>
+</html>

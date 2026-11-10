@@ -1,0 +1,21 @@
+<div class="text-center table-bordered">
+    <h4>Demande d’enlèvement de monument antérieur à 1945</h4>
+    <span class="text-muted">(Décret du GW 6 mars 2009 – Art 1232-28)</span> <br/>
+    <strong>Formulaire de renseignements</strong><br/>
+</div>
+<br/>
+<div class="table-bordered" style="padding-left: 15px;">
+    Cadre réservé au Service public de Wallonie (SPW)<br/>
+    <br/>
+    {{ form(formRw) }}
+</div>
+<br/><br/>
+Date : {{ contactRw.dateRapport|date('d/m/Y') }}<br/>
+Gestionnaire public : {{ contactRw.gestionnaire }}<br/>
+Adresse : {{ contactRw.adresse }}<br/>
+Code INS : {{ contactRw.codeIns }}<br/>
+Personne de contact (nom + tel./courriel) : {{ contactRw.nom }} {{ contactRw.telephone }} {{ contactRw.email }}<br/>
+<br/><br/>
+Le délai laissé pour reprendre les signes indicatifs de sépulture expire le {{ contactRw.dateExpiration|date('d/m/Y') }}
+<br/><br/>
+Description du monument

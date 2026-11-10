@@ -1,0 +1,16 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="card"><h3 class="card-header">Nouveau contact</h3>
+        <div class="card-body">
+
+            {{ include('@Sepulture/contact_rw/_form.html.twig') }}
+
+            <a href="{{ path('contact_rw_index') }}">
+                <span class="ti ti-list"></span> Annuler et retour à la liste
+            </a>
+        </div>
+    </div>
+{% endblock %}

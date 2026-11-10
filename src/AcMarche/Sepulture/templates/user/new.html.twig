@@ -1,0 +1,13 @@
+{% extends '@Sepulture/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Nouvel utilisateur</h3>
+        <div class="card-body">
+
+            {{ include('@Sepulture/user/_form.html.twig') }}
+
+        </div>
+    </div>
+{% endblock %}
