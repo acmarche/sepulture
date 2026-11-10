@@ -22,6 +22,8 @@
 /.idea
 /data
 /public/uploads
+/public/images
+/public/export
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
