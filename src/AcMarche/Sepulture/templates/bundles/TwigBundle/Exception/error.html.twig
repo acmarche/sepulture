@@ -1,19 +1,14 @@
-{% extends '@Sepulture/base.html.twig' %}
+{% extends '@Twig/Exception/_layout.html.twig' %}
 
-{% block title %}
-    Une erreur est survenue: {{ status_text }}
-{% endblock %}
+{% block icon %}{{ status_code >= 500 ? 'ti-tool' : 'ti-alert-triangle' }}{% endblock %}
 
-{% block body -%}
-    <div class="card">
-        <h3 class="card-header">Oups une erreur est survenue</h3>
-        <div class="card-body">
+{% block heading %}Oups, une erreur est survenue{% endblock %}
 
-            <h4>Le serveur a retourné : "{{ status_code }} {{ status_text }}".</h4>
-
-            <div>
-                Merci de prévenir votre administrateur.
-            </div>
-        </div>
-    </div>
+{% block message %}
+    {% if status_code >= 500 %}
+        <p>Le serveur a rencontré un problème et n'a pas pu afficher cette page.</p>
+        <p class="mb-0 fs-6">Le service informatique a été prévenu automatiquement. Veuillez réessayer dans quelques instants.</p>
+    {% else %}
+        <p>La requête n'a pas pu être traitée ({{ status_code }} {{ status_text }}).</p>
+    {% endif %}
 {% endblock %}

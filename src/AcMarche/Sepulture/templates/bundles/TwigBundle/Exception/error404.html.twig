@@ -1,20 +1,10 @@
-{% extends '@Sepulture/base.html.twig' %}
+{% extends '@Twig/Exception/_layout.html.twig' %}
 
-{% block title %}
-    {{ status_text }}
-{% endblock %}
+{% block icon %}ti-map-search{% endblock %}
 
-{% block body -%}
-    <div class="card">
-        <h3 class="card-header">Page non trouvée</h3>
-        <div class="card-body">
+{% block heading %}Page introuvable{% endblock %}
 
-            <div class="alert alert-danger">
-
-                {{ exception.message|nl2br|format_file_from_text |trans }}
-
-            </div>
-
-        </div>
-    </div>
+{% block message %}
+    <p>La page, la sépulture ou le défunt que vous cherchez n'existe pas ou a été déplacé.</p>
+    <p class="mb-0 fs-6">Vérifiez l'adresse ou utilisez la recherche pour retrouver une sépulture.</p>
 {% endblock %}

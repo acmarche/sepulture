@@ -1,17 +1,23 @@
-{% extends '@Sepulture/base.html.twig' %}
+{% extends '@Twig/Exception/_layout.html.twig' %}
 
-{% block title %}
-    {{ status_text }}
+{% block icon %}ti-lock{% endblock %}
+
+{% block heading %}Accès non autorisé{% endblock %}
+
+{% block message %}
+    <p>Vous n'avez pas le droit d'accéder à cette page.</p>
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <p class="mb-0 fs-6">Si vous disposez d'un compte, connectez-vous pour continuer.</p>
+    {% endif %}
 {% endblock %}
 
-{% block body -%}
-    <div class="card">
-        <h3 class="card-header">Accès non autorisé</h3>
-        <div class="card-body">
-
-            <img src="{{ asset('bundles/sepulture/images/denied.png') }}" alt="denied" class="pull-left"/>
-            <p class="pull-left text-danger">Vous n'avez pas le droit d'accèder à cette page</p>
-
-        </div>
-    </div>
+{% block actions %}
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('app_login') }}" class="btn btn-primary">
+            <i class="ti ti-login-2"></i> Se connecter
+        </a>
+    {% endif %}
+    <a href="{{ path('home') }}" class="btn btn-outline-secondary">
+        <i class="ti ti-home"></i> Retour à l'accueil
+    </a>
 {% endblock %}
