@@ -9,7 +9,7 @@
 #   - Secrets and private data (.env*.local, data/, .git): OWNER only (or read-only for the web server for .env).
 #
 # Usage (as root):  sudo ./permissions.sh [WEB_USER] [OWNER]
-#   WEB_USER  user running PHP (default: www-data; frankenphp on the dev machine)
+#   WEB_USER  user running PHP (default: frankenphp if that user exists (dev), otherwise www-data (prod))
 #   OWNER     user who deploys/edits the code (default: current owner of this directory)
 
 set -euo pipefail
@@ -17,7 +17,13 @@ set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
 ROOT=$(pwd)
 
-WEB_USER=${1:-${WEB_USER:-www-data}}
+# Dev runs FrankenPHP, prod runs nginx + php-fpm as www-data (dev also has www-data, so check frankenphp first).
+if id frankenphp &>/dev/null; then
+    DEFAULT_WEB_USER=frankenphp
+else
+    DEFAULT_WEB_USER=www-data
+fi
+WEB_USER=${1:-${WEB_USER:-$DEFAULT_WEB_USER}}
 OWNER=${2:-${OWNER:-$(stat -c %U "$ROOT")}}
 
 if [[ $EUID -ne 0 ]]; then
