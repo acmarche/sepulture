@@ -31,7 +31,6 @@ class ImageController extends AbstractController
     public function edit(Request $request, Sepulture $sepulture): Response
     {
         $form = $this->createForm(ImageDropZoneType::class);
-        $images = $this->fileHelper->getImages($sepulture->getId());
         $deleteForm = $this->createDeleteForm($sepulture->getId());
 
         $form->handleRequest($request);
@@ -48,7 +47,7 @@ class ImageController extends AbstractController
                         $this->addFlash('danger', 'Uniquement des images');
 
                         return $this->redirectToRoute('image_edit', [
-                            'sepulture' => $sepulture->getSlug(),
+                            'id' => $sepulture->getId(),
                         ]);
                     }
 
@@ -64,18 +63,22 @@ class ImageController extends AbstractController
                     }
                 }
             }
+
+            // Post/Redirect/Get: Turbo only follows a redirect after a form POST, and the
+            // fresh GET lists the images that were just uploaded.
+            return $this->redirectToRoute('image_edit', [
+                'id' => $sepulture->getId(),
+            ]);
         }
-        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
         return $this->render(
             '@Sepulture/image/edit.html.twig',
             [
-                'images' => $images,
+                'images' => $this->fileHelper->getImages($sepulture->getId()),
                 'form' => $form,
                 'form_delete' => $deleteForm->createView(),
                 'sepulture' => $sepulture,
             ]
-            , $response
         );
     }
 
