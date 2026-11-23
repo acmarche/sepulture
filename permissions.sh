@@ -53,8 +53,11 @@ echo "Project : $ROOT"
 echo "Owner   : $OWNER  |  web server: $WEB_USER:$WEB_GROUP"
 
 # 1. Whole tree: owner rw, web group read-only, others nothing.
+#    setgid on directories (2750) so files created later (editors saving via rename,
+#    git checkout, composer) inherit WEB_GROUP instead of the owner's primary group;
+#    otherwise PHP can't read them (e.g. AssetMapper "File must be readable").
 chown -R "$OWNER:$WEB_GROUP" "$ROOT"
-find "$ROOT" -type d -exec chmod 750 {} +
+find "$ROOT" -type d -exec chmod 2750 {} +
 find "$ROOT" -type f -exec chmod 640 {} +
 
 # Executables.
@@ -67,6 +70,7 @@ for private in .git data .idea .phpunit.cache; do
     if [[ -e $private ]]; then
         chown -R "$OWNER:$OWNER" "$private"
         chmod -R go-rwx "$private"
+        find "$private" -type d -exec chmod g-s {} +
     fi
 done
 
