@@ -220,8 +220,8 @@ class CimetiereController extends AbstractController
         $form = $this->createFileDeleteForm($cimetiere->getId());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $image = $request->get('imageName', false);
-            $plan = $request->get('planName', false);
+            $image = $request->request->get('imageName');
+            $plan = $request->request->get('planName');
 
             if (!$image && !$plan) {
                 $this->addFlash('danger', "Vous n'avez sélectionnez aucun fichier");
@@ -291,7 +291,6 @@ class CimetiereController extends AbstractController
     {
         $user = $this->getUser();
         $em = $this->managerRegistry->getManager();
-        $cimetiereId = $request->get('cimetiere');
         $cimetiere = $em->getRepository(Cimetiere::class)->find($id);
         if (null === $cimetiere) {
             $this->addFlash('error', 'Cimetière non trouvé');

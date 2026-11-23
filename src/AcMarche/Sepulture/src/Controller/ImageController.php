@@ -91,13 +91,13 @@ class ImageController extends AbstractController
         $form = $this->createDeleteForm($sepultureId);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $files = $request->get('img', false);
+            $files = $request->request->all('img');
 
             if (!$files) {
                 $this->addFlash('danger', "Vous n'avez sélectionnez aucune photo");
 
                 return $this->redirectToRoute('image_edit', [
-                    'sepulture' => $sepulture->getSlug(),
+                    'id' => $sepulture->getId(),
                 ]);
             }
 

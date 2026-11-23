@@ -155,7 +155,7 @@ class OssuaireController extends AbstractController
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
-            $sepulturesToAdd = $request->get('sepultures', []);
+            $sepulturesToAdd = $request->request->all('sepultures');
             foreach ($sepulturesToAdd as $sepultureId) {
                 $sepultureToAdd = $this->sepultureRepository->find($sepultureId);
                 if ($sepultureToAdd) {
